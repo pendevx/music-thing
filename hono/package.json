@@ -1,0 +1,16 @@
+{
+    "name": "jsx-ssr",
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "wrangler dev --live-reload src/index.tsx",
+        "deploy": "wrangler deploy src/index.tsx"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@cloudflare/workers-types": "^4.20240419.0",
+        "hono": "^3.11.11"
+    },
+    "devDependencies": {
+        "wrangler": "3.17.1"
+    }
+}

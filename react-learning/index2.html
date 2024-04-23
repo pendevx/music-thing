@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Used to compile JSX (into JS) -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        // const p = React.createElement("p", {}, "a paragraph element");
+
+        // const h1 = React.createElement("h1", {
+        //     title: "First React element"
+        // }, "Hello World", "Hello", "World", p);
+
+        const h1 = <h1 title="First React element">Hello World <p>a paragraph element</p></h1>;
+
+        // ReactDOM.render: turns a React element into real HTML nodes.
+        ReactDOM.render(h1, document.querySelector("#root"));
+    </script>
+</body>
+
+</html>

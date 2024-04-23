@@ -1,0 +1,11 @@
+name = "test"
+compatibility_date = "2023-01-01"
+
+
+
+account_id = "5bd71e5c0bd966913bd56e0717ddc2c1" # ← Replace with your Account ID.
+workers_dev = true
+
+[[r2_buckets]]
+binding = 'MUSIC' # <~ valid JavaScript variable name
+bucket_name = 'music'

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- The core React library -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <!-- Links React's core functionality with the web page. The code here depends on the core React library above. -->
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <script>
+        // React.createElement(type, attrs, ...children): Creates a React element object, called the Virtual DOM.
+        
+        // param 'type': the type of the React element. If it's a string, it will return an HTML element of that tag name.
+        // param 'attrs': the attributes of the React element. Parameter type is an object.
+        // param 'children': the child React element objects of the React element to be created.
+
+        const p = React.createElement("p", {}, "a paragraph element");
+
+        const h1 = React.createElement("h1", {
+            title: "First React element"
+        }, "Hello World", "Hello", "World", p);
+
+        console.log(h1);
+
+        // ReactDOM.render: turns a React element into real HTML nodes.
+        ReactDOM.render(h1, document.querySelector("#root"));
+
+
+
+        /*
+        Findings: React, at its core, is very ugly. But, it is crucial to understand how React works at its core, in order to understand it fully.
+
+        JSX: A syntax extension of JS.
+
+        Since JSX is not accepted into the EcmaScript standards (yet), we will need to use Babel to transform it.
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+what i learnt 18th:
+
+javascript promises
+	what are they
+	what do they achieve
+	how they support JS single-threaded concurrency model
+	async, await
+
+network requests (fetch, XHR)
+manipulating the DOM using the most original WebAPI
+
+
+
+what i learnt 19th:
+
+H5: semantics, void elements, replaced elements
+CSS2:
+	box model, style computation process
+
+
+
+
+what i learnt 20th:
+
+CSS visual formatting model
+	CSS3 flex, grid
+
+
+
+
+What i've learnt 21st:
+
+
+wrangler
+cloudflare workers
+service binding
+cloudflare workers integration with r2
+server-side rendering with jsx (react)
+
+
+
+
+
+
+what i learnt day 2 22nd:
+
+
+SSR isn't the key to everything
+Why does frontend frameworks like React exist?
+	To solve the problem of the real DOM being a pain in the ass
+	To provide simpler APIs for faster development of frontend web applications
+		... cuz the WebAPI is really good, but can get very lengthy for short purposes
+
+
+
+start studying React, so i can begin my migration (25th)
+
+
+learning basics of react
+what is react?
+what is JSX?
+what is React, what is ReactDOM?
+
+
+
+more React (26th)
+
+React elements are just objects
+React elements properties - props, children, type, etc
+	props: the stuff passed into it
+	children: the logical children of the React element
+	type: either a string, class (constructor), or function, depending on the component type
+		e.g. <button>: $type="button"
+		e.g. <MyClassComponent>: $type= class constructor
+case sensitivity: caps vs non-caps first char is what React uses to determine whether it is a user-defined React Element (component) or an inbuilt React Element
+
+
+
+more React (27th)
+
+***React Philosophy***: single-directional data flow
+	better debugging - only one owner of the data, meaning data can and will only be changed in one place
+Two types of data in react:
+	React props: a way which a parent element may pass data to its children
+	React state: data which is owned by that component itself
+event listeners (for inbuilt react elements): they are no different to props! they are just a prop which have their value equal to a function. directly uses the DOM element's event.
+
+
+
+
+more React (28th)
+
+(the old, React version < 16.0.0) lifecycle hooks: only existent in class components
+
+mounting stage:
+	constructor: only runs once per component instance. DO NOT USE setState HERE.
+	componentWillMount: runs just before component will be added to DOM. normally speaking, will only run once, but may run multiple times if React needs to take it down internally. DO NOT USE setState HERE.
+	render: returns a virtual DOM, which gets rendered as real DOM. may run multiple times, DO NOT USE setState HERE as that will cause infinite loop. (state update -> render -> state update -> ...)
+	componentDidMount: runs once the component has been added to the DOM. ONLY runs once. CAN use setState. most init operations (fetch data, start timers, etc) will be done here.
+
+updating stage: when props or state changes.
+	[props update only] componentWillReceiveProps: when the props are about to change, but haven't changed yet.
+	shouldComponentUpdate: return value indicates to React whether or not to rerender. DEFAULT: true
+	componentWillUpdate: the component's about to rerender
+	componentDidUpdate: the component just finished rerendering
+
+destroying stage:
+	componentWillUnmount: the component will be taken out of the virtual DOM
+
+
+
+
+more React (29th)
+
+(the new, React version >= 16.0.0) lifecycle hooks: only existent in class components
+
+mounting stage:
+	constructor
+	static getDerivedStateFromProps: called right before any render, regardless of whether it's mounting or updating stage.
+	render
+	componentDidMount
+
+updating stage:
+	static getDerivedStateFromProps
+	shouldComponentUpdate
+	render
+	getSnapshotBeforeUpdate: real DOM has been constructed, but fires this just just just before being rendered on the page's DOM.
+	componentDidUpdate
+
+destroying stage:
+	componentWillUnmount
+
+
+
+
+what i learnt day [ASODFJADSOFJ]:
+
+starting migrating my app to React

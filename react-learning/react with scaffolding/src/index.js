@@ -1,9 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import FuncComp1 from "./FuncComp1";
-import MyClassComp from "./ClassComp1";
+import Component from "./Component";
 
 ReactDOM.render(<div>
-    <FuncComp1/>
-    <MyClassComp/>
+    <Component />
 </div>, document.getElementById("root"));

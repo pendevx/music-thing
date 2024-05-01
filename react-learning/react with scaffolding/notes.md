@@ -65,3 +65,17 @@ const div = <div dangerouslySetInnerHTML={{
 ```
 
 ## JSX objects, once created, are immutable
+
+## the class components' `setState()` function *may* be asynchronous. but when?
+
+it is only async if the `setState()` call is inside the event listener of an html element. OTHERWISE it is synchronous.
+
+if inside some event handler, and it's required to get the most updated version of the state, use the function method.
+
+for any asynchronous `setState()` handling, React will merge all the `setState()`, and then update the real `state`, finally it will call `render()`
+
+best practice:
+1. treat all `setState()` calls as asynchronous
+2. never trust the value of the state after any `setState()` calls
+3. if needing to access the value after calling `setState()`, use the second function parameter
+4. if needing to set the state based on the current state's value, use the first function parameter

@@ -1,7 +1,10 @@
-import React from "react";
+import React from 'react';
 import ReactDOM from "react-dom";
-import Component from "./Component";
 
-ReactDOM.render(<div>
+function Component(){
+    return <h1>hi</h1>;
+}
+
+ReactDOM.render(<>
     <Component />
-</div>, document.getElementById("root"));
+</>, document.getElementById("root"));

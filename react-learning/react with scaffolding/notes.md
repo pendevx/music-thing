@@ -44,7 +44,7 @@ const div = React.createElement("div", {}, `${a} * ${b} = ${a * b}`);
 
 ## regular JS objects cannot be children of a JSX expression
 
-## JS arrays of primitive types or JSX elements may be children of a JSX expression - it will be added as text nodes.
+## JS arrays of primitive types or React elements may be children of a React expression - the primitives will be added as text nodes.
 
 ## arrays of JSX which get rendered must contain a `key` property.
 

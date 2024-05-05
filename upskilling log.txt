@@ -1,5 +1,7 @@
 what i learnt 18th:
 
+* WEBDEV ASSIGNMENT 2 *
+
 javascript promises
 	what are they
 	what do they achieve

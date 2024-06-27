@@ -4,12 +4,18 @@ import App from "./App";
 import "./reset.css";
 import "./index.css";
 
-import keys from "./keys";
+const res = await fetch("https://describe-files.pendevx.workers.dev/", {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+});
 
-// const musicList = await fetch("thing");
+const musicList = await res.json();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <App musicList={keys} />
+        <App musicList={musicList} />
     </React.StrictMode>
 )

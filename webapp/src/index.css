@@ -17,11 +17,6 @@ a {
     text-decoration: none;
 }
 
-.playing {
-    background: #5e5e5e;
-    color: #f2b200;
-}
-
 svg {
     fill: black;
     background: transparent;

@@ -1,6 +1,14 @@
 import { MusicPlayerControl, MusicItem, CircularSvg, MusicIconSvg, MusicLoopSvg, MusicShuffleSvg } from "./icons";
+import React from "react";
+import { MusicContext } from "./contexts/MusicContext";
 
 export default function App({ musicList }) {
+    const musicContext = React.useContext(MusicContext);
+
+    async function onSongSelect(url) {
+        musicContext.setCurrentSong({ key: url });
+    }
+
     return (
         <div className="font-sans">
             <div className="w-[min(600px,70vw)] ml-auto mr-auto mb-8">
@@ -8,8 +16,8 @@ export default function App({ musicList }) {
                     <MusicPlayerControl />
                 </div>
 
-                <div id="music-list" className="bg-[#363636] text-white rounded-xl overflow-hidden">
-                    {musicList.objects.map(x => <MusicItem key={x.etag} item={x} />)}
+                <div id="music-list" className="bg-[#363636] text-white rounded-xl overflow-hidden" >
+                    {musicList.objects.map(x => <MusicItem key={x.etag} item={x} onClick={onSongSelect} playing={musicContext.currentSong.key === x.key}/> )}
                 </div>
             </div>
 

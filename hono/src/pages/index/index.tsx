@@ -103,47 +103,47 @@ class State {
 
 const state = new State(musicList.children);
 
-musicList.addEventListener("click", async e => {
-    if (e.target.tagName === "A") {
-        audio.pause();
-        document.querySelector(".playing")?.classList.remove("playing");
+// musicList.addEventListener("click", async e => {
+//     if (e.target.tagName === "A") {
+//         audio.pause();
+//         document.querySelector(".playing")?.classList.remove("playing");
 
-        audio.src = e.target.dataset.fetch;
-        try {
-            audio.load();
-            await audio.play();
-            if (isNaN(audio.duration)) {
-                totalMins.innerText = "--";
-                totalSecs.innerText = "--";
-            } else {
-                totalMins.innerText = Math.floor(audio.duration / 60).toString().padStart(2, "0");
-                totalSecs.innerText = Math.floor(audio.duration % 60).toString().padStart(2, "0");
-                audioTime.max = audio.duration;
-                audio.dataset.playing = true;
-            }
-        } catch (e) {}
+//         audio.src = e.target.dataset.fetch;
+//         try {
+//             audio.load();
+//             await audio.play();
+//             if (isNaN(audio.duration)) {
+//                 totalMins.innerText = "--";
+//                 totalSecs.innerText = "--";
+//             } else {
+//                 totalMins.innerText = Math.floor(audio.duration / 60).toString().padStart(2, "0");
+//                 totalSecs.innerText = Math.floor(audio.duration % 60).toString().padStart(2, "0");
+//                 audioTime.max = audio.duration;
+//                 audio.dataset.playing = true;
+//             }
+//         } catch (e) {}
 
-        e.target.classList.add("playing");
-    }
-});
+//         e.target.classList.add("playing");
+//     }
+// });
 
-const timeUpdateHandler = () => {
-    audioTime.value = audio.currentTime;
-    mins.innerText = Math.floor(audio.currentTime / 60).toString().padStart(2, "0");
-    secs.innerText = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
-};
+// const timeUpdateHandler = () => {
+//     audioTime.value = audio.currentTime;
+//     mins.innerText = Math.floor(audio.currentTime / 60).toString().padStart(2, "0");
+//     secs.innerText = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+// };
 
-audioTime.addEventListener("mousedown", () => {
-    audio.removeEventListener("timeupdate", timeUpdateHandler);
-});
+// audioTime.addEventListener("mousedown", () => {
+//     audio.removeEventListener("timeupdate", timeUpdateHandler);
+// });
 
-audioTime.addEventListener("mouseup", () => {
-    audio.addEventListener("timeupdate", timeUpdateHandler);
-});
+// audioTime.addEventListener("mouseup", () => {
+//     audio.addEventListener("timeupdate", timeUpdateHandler);
+// });
 
-audioTime.addEventListener("change", () => {
-    audio.currentTime = audioTime.value;
-});
+// audioTime.addEventListener("change", () => {
+//     audio.currentTime = audioTime.value;
+// });
 
 playBtn.addEventListener("click", () => {
     if (audio.paused) {

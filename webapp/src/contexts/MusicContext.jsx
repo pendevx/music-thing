@@ -1,5 +1,5 @@
 import React from "react";
-import repository, { keys } from "../repositories/localstorage";
+import repository, { keys } from "../repositories/LocalStorageRepository";
 
 export const MusicContext = React.createContext();
 

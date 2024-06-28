@@ -21,6 +21,7 @@ export default function MusicPlayerControl() {
 
     function onPlayBtnClick() {
         audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
+        musicContext.setIsPlaying(!audioRef.current.paused);
     }
 
     function musicEndHandler() {
@@ -53,7 +54,7 @@ export default function MusicPlayerControl() {
                 console.error(e);
             }
         })();
-    }, [musicContext.currentSong]);
+    }, [musicContext]);
 
     return (
         <div className="bg-black">

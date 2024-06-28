@@ -11,10 +11,6 @@ export default function MusicProvider({ children, musicList }) {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(repository.get(keys.PLAY_BEHAVIOUR));
 
-    React.useEffect(function () {
-        repository.set(keys.PLAY_BEHAVIOUR, playBehaviour);
-    }, [playBehaviour]);
-
     function nextSong() {
         let nextIndex;
 
@@ -49,6 +45,7 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid playBehaviour");
         }
 
+        repository.set(keys.PLAY_BEHAVIOUR, behaviour);
         _setPlayBehaviour(behaviour);
     }
 

@@ -36,6 +36,7 @@ export default function MusicProvider({ children, musicList }) {
         const key = musicList[index].key;
 
         setCurrentSong({ key, index });
+        setIsPlaying(true);
     }
 
     function setPlayBehaviour(behaviour) {

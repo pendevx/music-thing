@@ -23,7 +23,6 @@ export default function MusicPlayerControl() {
     function onPlayBtnClick() {
         if (musicContext.currentSong.key === null) {
             musicContext.chooseSong(0);
-            musicContext.setIsPlaying(true);
         } else {
             audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
             musicContext.setIsPlaying(!audioRef.current.paused);

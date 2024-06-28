@@ -1,7 +1,12 @@
 class LocalStorageRepository {
     get(key) {
         try {
-            return localStorage.getItem(key);
+            let value = localStorage.getItem(key);
+
+            if (value === "null")
+                value = null;
+
+            return value;
         } catch (e) {
             console.error(e);
             throw new Error("Failed to get item from local storage");

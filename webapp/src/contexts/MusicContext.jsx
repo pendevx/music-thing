@@ -29,7 +29,7 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid playBehaviour or developer is just bad");
         }
 
-        setCurrentSong({ key: musicList[nextIndex].key, index: nextIndex });
+        chooseSong(nextIndex);
     }
 
     function chooseSong(index) {

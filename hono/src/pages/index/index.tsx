@@ -57,51 +57,51 @@ export default async function Page({ env }: any) {
 
             <script>
 {html`
-const musicList = document.getElementById("music-list");
-const audio = document.querySelector("audio");
-const audioTime = document.getElementById("audio-time");
-const mins = document.getElementById("mins");
-const secs = document.getElementById("secs");
-const totalMins = document.getElementById("total-mins");
-const totalSecs = document.getElementById("total-secs");
-const playBtn = document.getElementById("play-btn");
-const musicIcon = document.getElementById("music-icon");
-const musicLoop = document.getElementById("music-loop");
-const musicShuffle = document.getElementById("music-shuffle");
+// const musicList = document.getElementById("music-list");
+// const audio = document.querySelector("audio");
+// const audioTime = document.getElementById("audio-time");
+// const mins = document.getElementById("mins");
+// const secs = document.getElementById("secs");
+// const totalMins = document.getElementById("total-mins");
+// const totalSecs = document.getElementById("total-secs");
+// const playBtn = document.getElementById("play-btn");
+// const musicIcon = document.getElementById("music-icon");
+// const musicLoop = document.getElementById("music-loop");
+// const musicShuffle = document.getElementById("music-shuffle");
 
-class State {
-    constructor(songsList) {
-        this.playBehaviour = localStorage.getItem("playBehaviour") || "";
-        this.songIndex = 0;
-        this.songsList = songsList;
-    }
+// class State {
+//     constructor(songsList) {
+//         this.playBehaviour = localStorage.getItem("playBehaviour") || "";
+//         this.songIndex = 0;
+//         this.songsList = songsList;
+//     }
 
-    get playBehaviour() {
-        return localStorage.getItem("playBehaviour") || "";
-    }
+//     get playBehaviour() {
+//         return localStorage.getItem("playBehaviour") || "";
+//     }
 
-    set playBehaviour(value) {
-        localStorage.setItem("playBehaviour", value);
-    }
+//     set playBehaviour(value) {
+//         localStorage.setItem("playBehaviour", value);
+//     }
 
-    get nextSong() {
-        this.songIndex++;
-        if (this.songIndex >= this.songsList.length) this.songIndex = 0;
-        return this.songsList[this.songIndex];
-    }
+//     get nextSong() {
+//         this.songIndex++;
+//         if (this.songIndex >= this.songsList.length) this.songIndex = 0;
+//         return this.songsList[this.songIndex];
+//     }
 
-    get prevSong() {
-        this.songIndex--;
-        if (this.songIndex < 0) this.songIndex = this.songsList.length - 1;
-        return this.songsList[this.songIndex];
-    }
+//     get prevSong() {
+//         this.songIndex--;
+//         if (this.songIndex < 0) this.songIndex = this.songsList.length - 1;
+//         return this.songsList[this.songIndex];
+//     }
 
-    get randomSong() {
-        return this.songsList[Math.floor(Math.random() * this.songsList.length)];
-    }
-}
+//     get randomSong() {
+//         return this.songsList[Math.floor(Math.random() * this.songsList.length)];
+//     }
+// }
 
-const state = new State(musicList.children);
+// const state = new State(musicList.children);
 
 // musicList.addEventListener("click", async e => {
 //     if (e.target.tagName === "A") {
@@ -155,62 +155,62 @@ const state = new State(musicList.children);
 //     }
 // });
 
-const musicEndHandler = e => {
-    if (state.playBehaviour === "shuffle") {
-        const musicItems = document.querySelectorAll("#music-list a");
-        const randomIndex = Math.floor(Math.random() * musicItems.length);
-        musicItems[randomIndex].click();
-    } else if (state.playBehaviour === "loop") {
-        e.target.currentTime = 0;
-        e.target.play();
-    } else {
-        state.nextSong.click();
-    }
-};
+// const musicEndHandler = e => {
+//     if (state.playBehaviour === "shuffle") {
+//         const musicItems = document.querySelectorAll("#music-list a");
+//         const randomIndex = Math.floor(Math.random() * musicItems.length);
+//         musicItems[randomIndex].click();
+//     } else if (state.playBehaviour === "loop") {
+//         e.target.currentTime = 0;
+//         e.target.play();
+//     } else {
+//         state.nextSong.click();
+//     }
+// };
 
-const innerColor = "#00eaff";
-const outerColor = "#00b0f0";
-const circularButtonGradient = "radial-gradient(" + innerColor + " 65%, " + outerColor + " 65% 100%)";
-const defaultCircularButtonColor = 'radial-gradient("black")';
-const svgFillColor = "#5c5c5c";
+// const innerColor = "#00eaff";
+// const outerColor = "#00b0f0";
+// const circularButtonGradient = "radial-gradient(" + innerColor + " 65%, " + outerColor + " 65% 100%)";
+// const defaultCircularButtonColor = 'radial-gradient("black")';
+// const svgFillColor = "#5c5c5c";
 
-function handler(newPlayBehaviour, opposingElement) {
-    state.playBehaviour = state.playBehaviour === newPlayBehaviour ? "" : newPlayBehaviour;
-    opposingElement.style.background = "white";
-    opposingElement.querySelectorAll("svg,path").forEach(x => x.style.fill = "black");
+// function handler(newPlayBehaviour, opposingElement) {
+//     state.playBehaviour = state.playBehaviour === newPlayBehaviour ? "" : newPlayBehaviour;
+//     opposingElement.style.background = "white";
+//     opposingElement.querySelectorAll("svg,path").forEach(x => x.style.fill = "black");
     
-    this.style.background = state.playBehaviour === newPlayBehaviour ? circularButtonGradient : "";
-    this.querySelectorAll("svg,path").forEach(x => x.style.fill = state.playBehaviour === newPlayBehaviour ? svgFillColor : "black");
+//     this.style.background = state.playBehaviour === newPlayBehaviour ? circularButtonGradient : "";
+//     this.querySelectorAll("svg,path").forEach(x => x.style.fill = state.playBehaviour === newPlayBehaviour ? svgFillColor : "black");
 
-    audio.loop = newPlayBehaviour === "loop";
+//     audio.loop = newPlayBehaviour === "loop";
 
-    if (newPlayBehaviour === "shuffle") {
-        audio.addEventListener("ended", musicEndHandler);
-    } else {
-        audio.removeEventListener("ended", musicEndHandler);
-    }
-}
+//     if (newPlayBehaviour === "shuffle") {
+//         audio.addEventListener("ended", musicEndHandler);
+//     } else {
+//         audio.removeEventListener("ended", musicEndHandler);
+//     }
+// }
 
-musicLoop.addEventListener("click", () => {
-    handler.call(musicLoop, "loop", musicShuffle);
-});
+// musicLoop.addEventListener("click", () => {
+//     handler.call(musicLoop, "loop", musicShuffle);
+// });
 
-musicShuffle.addEventListener("click", () => {
-    handler.call(musicShuffle, "shuffle", musicLoop);
-});
+// musicShuffle.addEventListener("click", () => {
+//     handler.call(musicShuffle, "shuffle", musicLoop);
+// });
 
-(()=>{
-    if (state.playBehaviour === "loop") {
-        musicLoop.style.background = circularButtonGradient;
-        musicLoop.querySelectorAll("svg,path").forEach(x => x.style.fill = svgFillColor);
-    } else if (state.playBehaviour === "shuffle") {
-        audio.addEventListener("ended", musicEndHandler);
-        musicShuffle.style.background = circularButtonGradient;
-        musicShuffle.querySelectorAll("svg,path").forEach(x => x.style.fill = svgFillColor);
-    }
+// (()=>{
+//     if (state.playBehaviour === "loop") {
+//         musicLoop.style.background = circularButtonGradient;
+//         musicLoop.querySelectorAll("svg,path").forEach(x => x.style.fill = svgFillColor);
+//     } else if (state.playBehaviour === "shuffle") {
+//         audio.addEventListener("ended", musicEndHandler);
+//         musicShuffle.style.background = circularButtonGradient;
+//         musicShuffle.querySelectorAll("svg,path").forEach(x => x.style.fill = svgFillColor);
+//     }
 
-    audio.addEventListener("timeupdate", timeUpdateHandler);
-})();
+//     audio.addEventListener("timeupdate", timeUpdateHandler);
+// })();
 
 
 `}

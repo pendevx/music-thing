@@ -2,11 +2,15 @@ import { MusicPlayerControl, MusicItem, CircularSvg, MusicIconSvg, MusicLoopSvg,
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 
-export default function App({ musicList }) {
+export default function App() {
     const musicContext = React.useContext(MusicContext);
 
-    async function onSongSelect(url) {
-        musicContext.setCurrentSong({ key: url });
+    function onSongSelect(index) {
+        musicContext.chooseSong(index);
+    }
+
+    function onPlayBehaviourChange(behaviour) {
+        musicContext.setPlayBehaviour(behaviour === musicContext.playBehaviour ? null : behaviour);
     }
 
     return (
@@ -16,22 +20,22 @@ export default function App({ musicList }) {
                     <MusicPlayerControl />
                 </div>
 
-                <div id="music-list" className="bg-[#363636] text-white rounded-xl overflow-hidden" >
-                    {musicList.map(x => <MusicItem key={x.etag} item={x} onClick={onSongSelect} playing={musicContext.currentSong.key === x.key}/> )}
+                <div className="bg-[#363636] text-white rounded-xl overflow-hidden" >
+                    {musicContext.musicList.map((x,i) => <MusicItem key={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3/gi.exec(x.key)?.groups?.filename} /> )}
                 </div>
             </div>
 
             <div className="fixed bottom-8 right-6 flex flex-col-reverse gap-4 items-end">
-                <CircularSvg width="5rem" height="5rem" id="music-icon" className={`animate-spin ${musicContext.isPlaying ? "" : "animation-paused"}`}>
+                <CircularSvg width="5rem" height="5rem" className={`animate-spin ${musicContext.isPlaying ? "" : "animation-paused"}`}>
                     <MusicIconSvg />
                 </CircularSvg>
 
                 <div className="flex flex-col gap-4 mt-4">
-                    <CircularSvg width="2.5rem" height="2.5rem" id="music-loop">
+                    <CircularSvg width="2.5rem" height="2.5rem" onClick={() => onPlayBehaviourChange("loop")} selected={musicContext.playBehaviour === "loop"}>
                         <MusicLoopSvg />
                     </CircularSvg>
 
-                    <CircularSvg width="2.5rem" height="2.5rem" id="music-shuffle">
+                    <CircularSvg width="2.5rem" height="2.5rem" onClick={() => onPlayBehaviourChange("shuffle")} selected={musicContext.playBehaviour === "shuffle"}>
                         <MusicShuffleSvg />
                     </CircularSvg>
                 </div>

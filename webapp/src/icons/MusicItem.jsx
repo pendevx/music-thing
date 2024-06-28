@@ -1,10 +1,14 @@
-export default function MusicItem({ item, onClick, playing }) {
+import React from "react";
+import { MusicContext } from "../contexts/MusicContext";
+
+export default function MusicItem({ name, onClick, index }) {
+    const musicContext = React.useContext(MusicContext);
+
     return (
-        <div className="cursor-pointer" onClick={() => onClick(item.key)}>
-            <a className={`block pt-2 pb-2 pl-4 bg-[#363636] hover:bg-[#5e5e5e] transition-colors duration-200 ${playing ? "bg-[#5e5e5e] text-[#f2b200]" : ""}`}
-                key={item.key}
+        <div className="cursor-pointer" onClick={() => onClick(index)}>
+            <a className={`block pt-2 pb-2 pl-4 bg-[#363636] hover:bg-[#5e5e5e] transition-colors duration-200 ${musicContext.currentSong.index === index ? "bg-[#5e5e5e] text-[#f2b200]" : ""}`}
             >
-                {/\/(?<filename>.*)\.mp3/gi.exec(item.key)?.groups?.filename}
+                {name}
             </a>
         </div>
     );

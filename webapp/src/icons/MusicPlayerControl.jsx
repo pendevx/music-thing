@@ -23,6 +23,10 @@ export default function MusicPlayerControl() {
         audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
     }
 
+    function musicEndHandler() {
+        musicContext.nextSong();
+    }
+
     React.useEffect(function () {
         (async function() {
             if (!musicContext.currentSong.key) return;
@@ -43,7 +47,6 @@ export default function MusicPlayerControl() {
                     setTotalDuration(`${formatTimer(audioRef?.current.duration / 60)}:${formatTimer(audioRef?.current.duration % 60)}`);
 
                     setSongDurationSecs(audioRef?.current.duration);
-                    audioRef.current.dataset.playing = true;
                     musicContext.setIsPlaying(true);
                 }
             } catch (e) {
@@ -54,16 +57,16 @@ export default function MusicPlayerControl() {
 
     return (
         <div className="bg-black">
-            <audio ref={audioRef} onTimeUpdate={timeUpdateHandler} />
+            <audio ref={audioRef} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} />
 
             <div className="bg-white rounded-[2em] pl-4 pr-4">
                 <div className="w-full h-16 flex overflow-hidden items-center gap-2">
-                    <div id="play-btn" className="hover:bg-gray-200 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={onPlayBtnClick}>
+                    <div className="hover:bg-gray-200 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={onPlayBtnClick}>
                         <div className="border-l-black border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]"></div>
                     </div>
 
                     <div className="grow">
-                        <input type="range" id="audio-time" className="w-full block" min="0" max={songDurationSecs} value={audioTime} onChange={fastforwardHandler} />
+                        <input type="range" className="w-full block" min="0" max={songDurationSecs} value={audioTime} onChange={fastforwardHandler} />
                     </div>
 
                     <div>

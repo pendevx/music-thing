@@ -1,17 +1,67 @@
 import React from "react";
+import repository, { keys } from "../repositories/localstorage";
 
 export const MusicContext = React.createContext();
 
-export default function MusicProvider({ children }) {
-    const [ currentSong, setCurrentSong ] = React.useState({ key: null });
-    const [ isPlaying, setIsPlaying ] = React.useState(false);
+export default function MusicProvider({ children, musicList }) {
+    const [currentSong, setCurrentSong] = React.useState({ 
+        key: null,
+        index: null
+    });
+    const [isPlaying, setIsPlaying] = React.useState(false);
+    const [playBehaviour, _setPlayBehaviour] = React.useState(repository.get(keys.PLAY_BEHAVIOUR));
+
+    React.useEffect(function () {
+        repository.set(keys.PLAY_BEHAVIOUR, playBehaviour);
+    }, [playBehaviour]);
+
+    function nextSong() {
+        let nextIndex;
+
+        if (playBehaviour === "loop") {
+            nextIndex = currentSong.index;
+        } else if (playBehaviour === "shuffle") {
+            nextIndex = Math.floor(Math.random() * musicList.length);
+        } else if (playBehaviour == null) {
+            nextIndex = (currentSong.index + 1) % musicList.length;
+        } else {
+            // should never enter this path
+            throw new Error("Invalid playBehaviour or developer is just bad");
+        }
+
+        setCurrentSong({ key: musicList[nextIndex].key, index: nextIndex });
+    }
+
+    function chooseSong(index) {
+        if (index < 0 || index >= musicList.length) {
+            throw new Error("Invalid song key or index");
+        }
+
+        const key = musicList[index].key;
+
+        setCurrentSong({ key, index });
+    }
+
+    function setPlayBehaviour(behaviour) {
+        const allowed = ["loop", "shuffle", null];
+
+        if (!allowed.includes(behaviour)) {
+            throw new Error("Invalid playBehaviour");
+        }
+
+        _setPlayBehaviour(behaviour);
+    }
 
     return (
         <MusicContext.Provider value={{
             currentSong,
-            setCurrentSong,
             isPlaying,
             setIsPlaying,
+            playBehaviour,
+            setPlayBehaviour,
+            nextSong,
+            musicList,
+            chooseSong
         }}>
             {children}
         </MusicContext.Provider>

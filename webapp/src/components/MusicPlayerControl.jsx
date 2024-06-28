@@ -1,5 +1,6 @@
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
+import { MusicPausedSvg } from "../icons";
 
 export default function MusicPlayerControl() {
     const [time, setTime] = React.useState("00:00");
@@ -20,8 +21,13 @@ export default function MusicPlayerControl() {
     }
 
     function onPlayBtnClick() {
-        audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
-        musicContext.setIsPlaying(!audioRef.current.paused);
+        if (musicContext.currentSong.key === null) {
+            musicContext.chooseSong(0);
+            musicContext.setIsPlaying(true);
+        } else {
+            audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
+            musicContext.setIsPlaying(!audioRef.current.paused);
+        }
     }
 
     function musicEndHandler() {
@@ -54,7 +60,7 @@ export default function MusicPlayerControl() {
                 console.error(e);
             }
         })();
-    }, [musicContext]);
+    }, [musicContext.currentSong]);
 
     return (
         <div className="bg-black">
@@ -63,7 +69,9 @@ export default function MusicPlayerControl() {
             <div className="bg-white rounded-[2em] pl-4 pr-4">
                 <div className="w-full h-16 flex overflow-hidden items-center gap-2">
                     <div className="hover:bg-gray-200 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={onPlayBtnClick}>
-                        <div className="border-l-black border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]"></div>
+                        { musicContext.isPlaying ? 
+                            <MusicPausedSvg /> : 
+                            <div className="border-l-black border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]" /> }
                     </div>
 
                     <div className="grow">

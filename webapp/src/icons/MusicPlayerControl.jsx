@@ -44,6 +44,7 @@ export default function MusicPlayerControl() {
 
                     setSongDurationSecs(audioRef?.current.duration);
                     audioRef.current.dataset.playing = true;
+                    musicContext.setIsPlaying(true);
                 }
             } catch (e) {
                 console.error(e);

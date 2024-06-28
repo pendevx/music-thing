@@ -1,7 +1,6 @@
 export default function MusicIcon() {
     return (
-        <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 512 512" xmlSpace="preserve">
+        <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" className="fill-black bg-transparent h-full w-auto">
             <g>
                 <g>
                     <path d="M349.863,87.125c-57.579-25.237-72.939-70.357-73.515-72.128c-0.128-0.363-0.384-0.64-0.533-1.003

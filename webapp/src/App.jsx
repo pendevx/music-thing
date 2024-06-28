@@ -22,7 +22,7 @@ export default function App({ musicList }) {
             </div>
 
             <div className="fixed bottom-8 right-6 flex flex-col-reverse gap-4 items-end">
-                <CircularSvg width="5rem" height="5rem" id="music-icon">
+                <CircularSvg width="5rem" height="5rem" id="music-icon" className={`animate-spin ${musicContext.isPlaying ? "" : "animation-paused"}`}>
                     <MusicIconSvg />
                 </CircularSvg>
 

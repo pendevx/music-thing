@@ -1,7 +1,6 @@
 export default function MusicLoop() {
     return (
-        <svg fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="800px" height="800px" viewBox="0 0 64 64" enableBackground="new 0 0 64 64" xmlSpace="preserve">
+        <svg fill="#000000" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 64 64" enableBackground="new 0 0 64 64" xmlSpace="preserve" className="fill-black bg-transparent h-full w-auto">
             <g>
                 <path d="M54,46H12V28.828l4.586,4.586C16.977,33.805,17.488,34,18,34s1.023-0.195,1.414-0.586c0.781-0.781,0.781-2.047,0-2.828
 		l-7.999-7.999c-0.093-0.093-0.196-0.177-0.307-0.251c-0.047-0.031-0.099-0.053-0.148-0.08c-0.064-0.035-0.127-0.074-0.195-0.104

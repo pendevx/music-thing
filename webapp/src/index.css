@@ -12,11 +12,6 @@ html {
     background: black;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
 svg {
     fill: black;
     background: transparent;

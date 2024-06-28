@@ -15,6 +15,8 @@ const res = await fetch("https://describe-files.pendevx.workers.dev/", {
 
 const musicList = await res.json();
 
+console.log(musicList);
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <MusicContext>

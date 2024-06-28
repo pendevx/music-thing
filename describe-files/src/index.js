@@ -13,8 +13,10 @@ export default {
         }
 
         const keys = await env.MUSIC.list();
+        const { objects } = keys;
+        Object.groupBy(objects, x => x.key.substring(0, x.key.lastIndexOf("/")));
 
-		return new Response(JSON.stringify(keys), {
+		return new Response(JSON.stringify(objects), {
             status: 200,
             headers: corsHeaders
         });

@@ -145,15 +145,15 @@ const state = new State(musicList.children);
 //     audio.currentTime = audioTime.value;
 // });
 
-playBtn.addEventListener("click", () => {
-    if (audio.paused) {
-        audio.play();
-        audio.dataset.playing = true;
-    } else {
-        audio.pause();
-        audio.dataset.playing = false;
-    }
-});
+// playBtn.addEventListener("click", () => {
+//     if (audio.paused) {
+//         audio.play();
+//         audio.dataset.playing = true;
+//     } else {
+//         audio.pause();
+//         audio.dataset.playing = false;
+//     }
+// });
 
 const musicEndHandler = e => {
     if (state.playBehaviour === "shuffle") {

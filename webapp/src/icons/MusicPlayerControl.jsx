@@ -34,6 +34,7 @@ export default function MusicPlayerControl() {
             try {
                 audioRef.current.load();
                 await audioRef.current.play();
+                
                 if (isNaN(audioRef.current.duration)) {
                     setTime("--:--");
                 } else {

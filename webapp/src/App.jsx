@@ -17,7 +17,7 @@ export default function App({ musicList }) {
                 </div>
 
                 <div id="music-list" className="bg-[#363636] text-white rounded-xl overflow-hidden" >
-                    {musicList.objects.map(x => <MusicItem key={x.etag} item={x} onClick={onSongSelect} playing={musicContext.currentSong.key === x.key}/> )}
+                    {musicList.map(x => <MusicItem key={x.etag} item={x} onClick={onSongSelect} playing={musicContext.currentSong.key === x.key}/> )}
                 </div>
             </div>
 

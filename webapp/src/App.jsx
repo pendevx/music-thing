@@ -1,4 +1,5 @@
-import { MusicPlayerControl, MusicItem, CircularSvg, MusicIconSvg, MusicLoopSvg, MusicShuffleSvg } from "./icons";
+import { MusicIconSvg, MusicLoopSvg, MusicShuffleSvg } from "./icons";
+import { MusicPlayerControl, MusicItem, CircularSvg } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 

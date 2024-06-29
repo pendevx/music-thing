@@ -7,7 +7,7 @@ export default function App() {
     const musicContext = React.useContext(MusicContext);
 
     function onSongSelect(index) {
-        musicContext.play(index);
+        musicContext.selectSongAndPlay(index);
     }
 
     function onPlayBehaviourChange(behaviour) {
@@ -23,7 +23,7 @@ export default function App() {
                 if (musicContext.currentSong.key == null) {
                     musicContext.next();
                 } else {
-                    musicContext.setIsPlaying(!musicContext.isPlaying);
+                    musicContext.isPlaying ? musicContext.pause() : musicContext.play();
                 }
                 break;
             }

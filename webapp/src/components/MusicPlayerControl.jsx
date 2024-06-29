@@ -22,11 +22,12 @@ export default function MusicPlayerControl() {
     }
 
     function handlePlayPause() {
-        if (musicContext.currentSong.key === null) {
-            musicContext.play(0);
+        if (audioRef.current.paused) {
+            musicContext.pause();
+            audioRef.current.play();
         } else {
-            audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
-            musicContext.setIsPlaying(!audioRef.current.paused);
+            musicContext.play();
+            audioRef.current.pause();
         }
     }
 
@@ -38,7 +39,7 @@ export default function MusicPlayerControl() {
         (async function() {
             if (!musicContext.currentSong.key) return;
 
-            const songUrl = `${import.meta.env.VITE_FILE_URL}${musicContext.currentSong.key}`;
+            const songUrl = import.meta.env.VITE_FILE_URL + musicContext.currentSong.key;
             audioRef.current.pause();
             audioRef.current.src = songUrl;
 
@@ -50,13 +51,13 @@ export default function MusicPlayerControl() {
                     setTime("--:--");
                 } else {
                     setTotalDuration(`${formatTimer(audioRef?.current.duration / 60)}:${formatTimer(audioRef?.current.duration % 60)}`);
-
                     setSongDurationSecs(audioRef?.current.duration);
-                    musicContext.setIsPlaying(true);
+
+                    musicContext.play();
                 }
             } catch (e) {
                 console.error(e);
-                musicContext.setIsPlaying(false);
+                musicContext.pause();
             }
         })();
     }, [musicContext.currentSong]);

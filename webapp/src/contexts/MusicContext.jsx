@@ -27,10 +27,10 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid playBehaviour or developer is just bad");
         }
 
-        play(nextIndex);
+        selectSongAndPlay(nextIndex);
     }
 
-    function play(index) {
+    function selectSongAndPlay(index) {
         if (index < 0 || index >= musicList.length) {
             throw new Error("Invalid song key or index");
         }
@@ -52,16 +52,25 @@ export default function MusicProvider({ children, musicList }) {
         _setPlayBehaviour(behaviour);
     }
 
+    function play() {
+        setIsPlaying(true);
+    }
+
+    function pause() {
+        setIsPlaying(false);
+    }
+
     return (
         <MusicContext.Provider value={{
             currentSong,
             isPlaying,
-            setIsPlaying,
             playBehaviour,
             setPlayBehaviour,
             next,
             musicList,
-            play
+            selectSongAndPlay,
+            play,
+            pause
         }}>
             {children}
         </MusicContext.Provider>

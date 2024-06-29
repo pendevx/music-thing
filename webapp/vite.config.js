@@ -12,6 +12,7 @@ export default defineConfig({
             output: {
                 sourcemap: true
             }
-        }
+        },
+        target: "esnext"
     }
 })

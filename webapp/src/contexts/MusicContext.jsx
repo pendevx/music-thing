@@ -1,5 +1,5 @@
 import React from "react";
-import repository, { keys } from "../repositories/LocalStorageRepository";
+import localStorageRepository, { keys } from "../repositories/LocalStorageRepository";
 
 export const MusicContext = React.createContext();
 
@@ -9,7 +9,7 @@ export default function MusicProvider({ children, musicList }) {
         index: null
     });
     const [isPlaying, setIsPlaying] = React.useState(false);
-    const [playBehaviour, _setPlayBehaviour] = React.useState(repository.get(keys.PLAY_BEHAVIOUR));
+    const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
 
     function next() {
         let nextIndex;
@@ -48,7 +48,7 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid playBehaviour");
         }
 
-        repository.set(keys.PLAY_BEHAVIOUR, behaviour);
+        localStorageRepository.set(keys.PLAY_BEHAVIOUR, behaviour);
         _setPlayBehaviour(behaviour);
     }
 

@@ -20,9 +20,9 @@ export default function MusicPlayerControl() {
         audioRef.current.currentTime = e.target.value;
     }
 
-    function onPlayBtnClick() {
+    function handlePlayPause() {
         if (musicContext.currentSong.key === null) {
-            musicContext.chooseSong(0);
+            musicContext.play(0);
         } else {
             audioRef.current.paused ? audioRef.current.play() : audioRef.current.pause();
             musicContext.setIsPlaying(!audioRef.current.paused);
@@ -30,7 +30,7 @@ export default function MusicPlayerControl() {
     }
 
     function musicEndHandler() {
-        musicContext.nextSong();
+        musicContext.next();
     }
 
     React.useEffect(function () {
@@ -57,9 +57,18 @@ export default function MusicPlayerControl() {
                 }
             } catch (e) {
                 console.error(e);
+                musicContext.setIsPlaying(false);
             }
         })();
     }, [musicContext.currentSong]);
+
+    React.useEffect(function() {
+        if (musicContext.isPlaying) {
+            audioRef.current.play();
+        } else {
+            audioRef.current.pause();
+        }
+    }, [musicContext.isPlaying])
 
     return (
         <div className="bg-black">
@@ -67,7 +76,7 @@ export default function MusicPlayerControl() {
 
             <div className="bg-white rounded-[2em] pl-4 pr-4">
                 <div className="w-full h-16 flex overflow-hidden items-center gap-2">
-                    <div className="hover:bg-gray-200 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={onPlayBtnClick}>
+                    <div className="hover:bg-gray-200 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={handlePlayPause}>
                         { musicContext.isPlaying ? 
                             <MusicPausedSvg /> : 
                             <div className="border-l-black border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]" /> }

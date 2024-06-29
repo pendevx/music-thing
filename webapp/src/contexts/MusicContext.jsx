@@ -11,10 +11,12 @@ export default function MusicProvider({ children, musicList }) {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(repository.get(keys.PLAY_BEHAVIOUR));
 
-    function nextSong() {
+    function next() {
         let nextIndex;
 
-        if (playBehaviour === "loop") {
+        if (currentSong.index == null) {
+            nextIndex = 0;
+        } else if (playBehaviour === "loop") {
             nextIndex = currentSong.index;
         } else if (playBehaviour === "shuffle") {
             nextIndex = Math.floor(Math.random() * musicList.length);
@@ -25,10 +27,10 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid playBehaviour or developer is just bad");
         }
 
-        chooseSong(nextIndex);
+        play(nextIndex);
     }
 
-    function chooseSong(index) {
+    function play(index) {
         if (index < 0 || index >= musicList.length) {
             throw new Error("Invalid song key or index");
         }
@@ -57,9 +59,9 @@ export default function MusicProvider({ children, musicList }) {
             setIsPlaying,
             playBehaviour,
             setPlayBehaviour,
-            nextSong,
+            next,
             musicList,
-            chooseSong
+            play
         }}>
             {children}
         </MusicContext.Provider>

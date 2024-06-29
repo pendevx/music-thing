@@ -7,21 +7,37 @@ export default function App() {
     const musicContext = React.useContext(MusicContext);
 
     function onSongSelect(index) {
-        musicContext.chooseSong(index);
+        musicContext.play(index);
     }
 
     function onPlayBehaviourChange(behaviour) {
         musicContext.setPlayBehaviour(behaviour === musicContext.playBehaviour ? null : behaviour);
     }
 
+    function onKeyDown(e) {
+        
+        switch (e.key) {
+            case " ": {
+                e.preventDefault();
+
+                if (musicContext.currentSong.key == null) {
+                    musicContext.next();
+                } else {
+                    musicContext.setIsPlaying(!musicContext.isPlaying);
+                }
+                break;
+            }
+        }
+    }
+
     return (
-        <div className="font-sans">
+        <div className="font-sans" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="w-[min(600px,70vw)] ml-auto mr-auto mb-8">
                 <div className="bg-black pt-8 pb-8 sticky top-0">
                     <MusicPlayerControl />
                 </div>
 
-                <div className="bg-[#363636] text-white rounded-xl overflow-hidden" >
+                <div className="bg-[#363636] text-white rounded-xl overflow-hidden">
                     {musicContext.musicList.map((x,i) => <MusicItem key={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3/gi.exec(x.key)?.groups?.filename} /> )}
                 </div>
             </div>

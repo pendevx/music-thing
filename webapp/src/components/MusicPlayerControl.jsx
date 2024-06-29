@@ -2,6 +2,8 @@ import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg } from "../icons";
 
+const formatTimer = val => Math.floor(val).toString().padStart(2, "0");
+
 export default function MusicPlayerControl() {
     const [time, setTime] = React.useState("00:00");
     const [totalDuration, setTotalDuration] = React.useState("00:00");
@@ -11,8 +13,7 @@ export default function MusicPlayerControl() {
     const musicContext = React.useContext(MusicContext);
 
     function timeUpdateHandler() {
-        setTime(`${Math.floor(audioRef?.current.currentTime / 60).toString().padStart(2, "0")}:${Math.floor(audioRef?.current.currentTime % 60).toString().padStart(2, "0")}`);
-
+        setTime(formatTimer(audioRef?.current.currentTime / 60) + ":" + formatTimer(audioRef?.current.currentTime % 60));
         setAudioTime(audioRef?.current.currentTime);
     }
 
@@ -37,7 +38,7 @@ export default function MusicPlayerControl() {
         (async function() {
             if (!musicContext.currentSong.key) return;
 
-            const songUrl = `https://music-worker.pendevx.workers.dev/${musicContext.currentSong.key}`;
+            const songUrl = `${import.meta.env.VITE_FILE_URL}${musicContext.currentSong.key}`;
             audioRef.current.pause();
             audioRef.current.src = songUrl;
 
@@ -48,8 +49,6 @@ export default function MusicPlayerControl() {
                 if (isNaN(audioRef.current.duration)) {
                     setTime("--:--");
                 } else {
-                    const formatTimer = val => Math.floor(val).toString().padStart(2, "0");
-
                     setTotalDuration(`${formatTimer(audioRef?.current.duration / 60)}:${formatTimer(audioRef?.current.duration % 60)}`);
 
                     setSongDurationSecs(audioRef?.current.duration);

@@ -2,12 +2,17 @@ import React from "react";
 
 const commonStyles = "absolute mt-auto mb-auto top-0 bottom-0";
 
+let _sliderPos, _setSliderPos;
+
 export default function MusicProgressBar({ songDurationSecs, currentTime = 0, onFastForward }) {
     const [sliderPos, setSliderPos] = React.useState(null);
     const sliderRef = React.useRef(null);
 
+    _sliderPos = sliderPos;
+    _setSliderPos = setSliderPos;
+
     function onMouseDown() {
-        setSliderPos(currentTime);
+        _setSliderPos(currentTime);
 
         document.body.addEventListener("mousemove", onMouseMove);
         document.body.addEventListener("mouseup", onMouseUp);
@@ -15,21 +20,20 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
     }
 
     function onMouseMove(e) {
-        console.log(sliderPos);
         const sliderRect = sliderRef.current.getBoundingClientRect();
 
         if (e.clientX < sliderRect.left) {
-            setSliderPos(0);
+            _setSliderPos(0);
         } else if (e.clientX > sliderRect.right) {
-            setSliderPos(1);
+            _setSliderPos(1);
         } else {
-            setSliderPos((e.clientX - sliderRect.left) / sliderRect.width * songDurationSecs);
+            _setSliderPos((e.clientX - sliderRect.left) / sliderRect.width * songDurationSecs);
         }
     }
 
     function onMouseUp() {
-        onFastForward(sliderPos);
-        setSliderPos(null);
+        onFastForward(_sliderPos);
+        _setSliderPos(null);
 
         document.body.removeEventListener("mousemove", onMouseMove);
         document.body.removeEventListener("mouseup", onMouseUp);

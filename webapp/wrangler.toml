@@ -1,8 +1,0 @@
-[env.prod]
-name = "music-thing"
-compatibility_date = "2024-04-19"
-compatibility_flags = ["nodejs_compat"]
-
-[env.prod.vars]
-VITE_FILE_URL="https://music-worker.pendevx.workers.dev/"
-VITE_LIST_URL="https://describe-files.pendevx.workers.dev/"

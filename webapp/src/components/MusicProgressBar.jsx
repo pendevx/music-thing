@@ -11,8 +11,13 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
     _sliderPos = sliderPos;
     _setSliderPos = setSliderPos;
 
-    function onMouseDown() {
-        _setSliderPos(currentTime);
+    React.useEffect(function() {
+    }, [currentTime]);
+
+    function onMouseDown(e) {
+        const sliderRect = sliderRef.current.getBoundingClientRect();
+
+        _setSliderPos((e.clientX - sliderRect.left) / sliderRect.width * songDurationSecs);
 
         document.body.addEventListener("mousemove", onMouseMove);
         document.body.addEventListener("mouseup", onMouseUp);
@@ -25,7 +30,7 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
         if (e.clientX < sliderRect.left) {
             _setSliderPos(0);
         } else if (e.clientX > sliderRect.right) {
-            _setSliderPos(1);
+            _setSliderPos(songDurationSecs);
         } else {
             _setSliderPos((e.clientX - sliderRect.left) / sliderRect.width * songDurationSecs);
         }
@@ -41,10 +46,10 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
     }
 
     return (
-        <div className="w-full block relative h-3" ref={sliderRef}>
+        <div className="w-full block relative h-3" ref={sliderRef} onMouseDown={onMouseDown}>
             <div className={`${commonStyles} h-1 bg-gray-400 left-0 w-full`} />
             <div className={`${commonStyles} h-1 bg-black left-0`} style={{ width: `${(sliderPos != null ? sliderPos / songDurationSecs : currentTime / songDurationSecs) * 100}%` }}>
-                <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} h-3 bg-black right-0 w-1 hover:w-3 hover:rounded-[50%] translate-x-1/2 duration-200`} onMouseDown={onMouseDown} />
+                <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} h-3 bg-black right-0 w-1 hover:w-3 hover:rounded-[50%] translate-x-1/2 duration-200`} />
             </div>
         </div>
     )

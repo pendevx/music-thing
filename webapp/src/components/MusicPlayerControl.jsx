@@ -13,13 +13,14 @@ export default function MusicPlayerControl() {
     const audioRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
-    function timeUpdateHandler() {
+    function timeUpdateHandler() {        
         setTime(formatTimer(audioRef?.current.currentTime / 60) + ":" + formatTimer(audioRef?.current.currentTime % 60));
         setAudioTime(audioRef?.current.currentTime);
     }
 
     function fastforwardHandler(secs) {
         audioRef.current.currentTime = secs;
+        setAudioTime(secs);
     }
 
     function handlePlayPause() {

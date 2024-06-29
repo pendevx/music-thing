@@ -3,10 +3,11 @@ import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg } from "../icons";
 import { MusicProgressBar } from "./";
 
-const formatTimer = val => Math.floor(val).toString().padStart(2, "0");
+const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
+const formatTime = seconds => `${twoSpacePadding(Math.floor(seconds / 60))}:${twoSpacePadding(Math.floor(seconds % 60))}`;
 
 export default function MusicPlayerControl() {
-    const [time, setTime] = React.useState("00:00");
+    const [time, setTime] = React.useState("--:--");
     const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
     const [songDurationSecs, setSongDurationSecs] = React.useState(0);
@@ -14,7 +15,7 @@ export default function MusicPlayerControl() {
     const musicContext = React.useContext(MusicContext);
 
     function timeUpdateHandler() {        
-        setTime(formatTimer(audioRef?.current.currentTime / 60) + ":" + formatTimer(audioRef?.current.currentTime % 60));
+        setTime(formatTime(audioRef?.current.currentTime));
         setAudioTime(audioRef?.current.currentTime);
     }
 
@@ -50,7 +51,7 @@ export default function MusicPlayerControl() {
                 if (isNaN(audioRef.current.duration)) {
                     setTime("--:--");
                 } else {
-                    setTotalDuration(`${formatTimer(audioRef?.current.duration / 60)}:${formatTimer(audioRef?.current.duration % 60)}`);
+                    setTotalDuration(formatTime(audioRef?.current.duration));
                     setSongDurationSecs(audioRef?.current.duration);
 
                     musicContext.play();

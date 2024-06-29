@@ -1,0 +1,3 @@
+[vars]
+VITE_FILE_URL=https://music-worker.pendevx.workers.dev/
+VITE_LIST_URL=https://describe-files.pendevx.workers.dev/

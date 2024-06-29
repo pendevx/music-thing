@@ -1,6 +1,7 @@
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg } from "../icons";
+import { MusicProgressBar } from "./";
 
 const formatTimer = val => Math.floor(val).toString().padStart(2, "0");
 
@@ -17,17 +18,15 @@ export default function MusicPlayerControl() {
         setAudioTime(audioRef?.current.currentTime);
     }
 
-    function fastforwardHandler(e) {
-        audioRef.current.currentTime = e.target.value;
+    function fastforwardHandler(secs) {
+        audioRef.current.currentTime = secs;
     }
 
     function handlePlayPause() {
         if (audioRef.current.paused) {
-            musicContext.pause();
-            audioRef.current.play();
-        } else {
             musicContext.play();
-            audioRef.current.pause();
+        } else {
+            musicContext.pause();
         }
     }
 
@@ -83,7 +82,7 @@ export default function MusicPlayerControl() {
                     </div>
 
                     <div className="grow">
-                        <input type="range" className="w-full block" min="0" max={songDurationSecs} value={audioTime} onChange={fastforwardHandler} />
+                        <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />
                     </div>
 
                     <div>

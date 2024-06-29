@@ -7,3 +7,7 @@
         animation-play-state: paused;
     }
 }
+
+* {
+    user-select: none;
+}

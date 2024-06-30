@@ -17,6 +17,8 @@ export default {
         }
         const status = object.body ? (request.headers.get("range") !== null ? 206 : 200) : 304;
 
+        headers.set("access-control-allow-origin", "*");
+
         return new Response(object.body, {
             headers,
             status

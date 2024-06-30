@@ -8,11 +8,7 @@ export default defineConfig({
         tailwindcss()
     ],
     build: {
-        rollupOptions: {
-            output: {
-                sourcemap: true
-            }
-        },
+        sourcemap: true,
         target: "esnext"
     }
 })

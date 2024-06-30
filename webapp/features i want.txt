@@ -1,6 +1,5 @@
 order of priority
 
-cool effects on the thing with AudioContext
-file uploading interface
 audio.volume [0,1]
 audio.playbackRate
+file uploading interface

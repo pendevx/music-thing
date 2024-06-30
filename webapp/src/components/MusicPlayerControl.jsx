@@ -81,7 +81,7 @@ function MusicPlayerControl({ onplay }, ref) {
             <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" />
 
             <div className="w-full h-16 flex overflow-hidden items-center gap-2 text-white pl-4 pr-4 border-t-[1px] border-gray-900 border-solid bg-zinc-900">
-                <p className="basis-60 border-r-[1px] border-slate-600 border-dotted h-full flex items-center">{musicContext.songName()}</p>
+                <p className="w-60 overflow-hidden border-r-[1px] border-slate-600 border-dotted h-full flex items-center">{musicContext.songName()}</p>
 
                 <div className="hover:bg-gray-800 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={handlePlayPause}>
                     {musicContext.isPlaying ?

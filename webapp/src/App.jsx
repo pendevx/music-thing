@@ -36,6 +36,8 @@ export default function App() {
         }
 
         const totalWidth = canvas.current.width;
+        let len;
+        let barWidth;
 
         function raf() {
             requestAnimationFrame(() => {
@@ -46,8 +48,10 @@ export default function App() {
                 const freqData = audioCtx.getFreqs();
                 ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
 
-                const len = freqData.length / 2.5;
-                const barWidth = totalWidth / len;
+                if (len == null && barWidth == null) {
+                    len = freqData.length / 2.5;
+                    barWidth = totalWidth / len;
+                }
 
                 for (let i = 0; i < len; i++) {
                     ctx.fillRect(barWidth * i, 0, barWidth - 2, freqData[i] / 255 * (canvas.current.height - 20));
@@ -90,7 +94,7 @@ export default function App() {
                 <div className="bg-black fixed left-0 right-0 bottom-0 pt-4">
                     <div className="relative">
                         <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
-                        <div className="absolute inset-0 opacity-50 mix-blend-multiply bg-rainbow" />
+                        <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
                     </div>
                     <MusicPlayerControl ref={audioRef} onplay={onplay} />
                 </div>

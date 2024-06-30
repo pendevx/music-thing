@@ -4,7 +4,7 @@ export class AudioAnalyzer {
         this.audioCtx = new AudioContext();
         this.input = this.audioCtx.createMediaElementSource(this.audio);
         this.analyzer = this.audioCtx.createAnalyser();
-        this.analyzer.fftSize = 512;
+        this.analyzer.fftSize = 1024;
         this.analyzer.smoothingTimeConstant = 0.75;
         this.count = this.analyzer.frequencyBinCount;
         this.freqsArr = new Uint8Array(this.count);

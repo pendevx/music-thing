@@ -1,3 +1,5 @@
+import { MusicLoopSvg, MusicShuffleSvg } from "../icons";
+import { CircularSvg } from "./";
 import React from "react";
 import { MusicContext } from "../contexts";
 import { MusicPausedSvg } from "../icons";
@@ -11,8 +13,11 @@ function MusicPlayerControl({ onplay }, ref) {
     const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
     const [songDurationSecs, setSongDurationSecs] = React.useState(0);
-    // const audioRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
+
+    function onPlayBehaviourChange(behaviour) {
+        musicContext.setPlayBehaviour(behaviour === musicContext.playBehaviour ? null : behaviour);
+    }
 
     function timeUpdateHandler() {
         setTime(formatTime(ref?.current.currentTime));
@@ -75,25 +80,33 @@ function MusicPlayerControl({ onplay }, ref) {
         <div className="bg-black">
             <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" />
 
-            <div className="text-white pl-4 pr-4 border-t-[1px] border-gray-900 border-solid bg-zinc-900">
-                <div className="w-full h-16 flex overflow-hidden items-center gap-2">
-                    <div className="hover:bg-gray-800 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={handlePlayPause}>
-                        {musicContext.isPlaying ?
-                            <MusicPausedSvg /> :
-                            <div className="border-l-white border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]" />}
-                    </div>
+            <div className="w-full h-16 flex overflow-hidden items-center gap-2 text-white pl-4 pr-4 border-t-[1px] border-gray-900 border-solid bg-zinc-900">
+                <p className="basis-60 border-r-[1px] border-slate-600 border-dotted h-full flex items-center">{musicContext.songName()}</p>
 
-                    <div className="grow">
-                        <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />
-                    </div>
+                <div className="hover:bg-gray-800 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={handlePlayPause}>
+                    {musicContext.isPlaying ?
+                        <MusicPausedSvg /> :
+                        <div className="border-l-white border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]" />}
+                </div>
 
-                    <div>
-                        {time} / {totalDuration}
-                    </div>
+                <div className="grow">
+                    <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />
+                </div>
+
+                {time} / {totalDuration}
+
+                <div className="flex h-full items-center gap-1 ml-2">
+                    <CircularSvg className="h-[60%]" selected={musicContext.playBehaviour === "shuffle"} onClick={() => onPlayBehaviourChange("shuffle")}>
+                        <MusicShuffleSvg />
+                    </CircularSvg>
+
+                    <CircularSvg className="h-[60%]" selected={musicContext.playBehaviour === "loop"} onClick={() => onPlayBehaviourChange("loop")}>
+                        <MusicLoopSvg />
+                    </CircularSvg>
                 </div>
             </div>
         </div>
     )
 }
 
-export default React.forwardRef(MusicPlayerControl);
+export const ForwardMusicPlayerControl = React.forwardRef(MusicPlayerControl);

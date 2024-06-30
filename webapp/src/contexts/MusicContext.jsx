@@ -60,6 +60,17 @@ export default function MusicProvider({ children, musicList }) {
         setIsPlaying(false);
     }
 
+    function songName() {
+        if (currentSong.index == null) {
+            return null;
+        }
+
+        const regex = /\/([^/]+)\.mp3$/;
+        const name = regex.exec(currentSong.key)[1];
+
+        return name;
+    }
+
     return (
         <MusicContext.Provider value={{
             currentSong,
@@ -70,7 +81,8 @@ export default function MusicProvider({ children, musicList }) {
             musicList,
             selectSongAndPlay,
             play,
-            pause
+            pause,
+            songName
         }}>
             {children}
         </MusicContext.Provider>

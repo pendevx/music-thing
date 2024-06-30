@@ -1,7 +1,7 @@
 export class AudioAnalyzer {
     constructor(audio) {
         this.audio = audio;
-        this.audioCtx = new window.AudioContext();
+        this.audioCtx = new AudioContext();
         this.input = this.audioCtx.createMediaElementSource(this.audio);
         this.analyzer = this.audioCtx.createAnalyser();
         this.analyzer.fftSize = 512;

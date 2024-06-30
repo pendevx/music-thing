@@ -11,9 +11,6 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
     _sliderPos = sliderPos;
     _setSliderPos = setSliderPos;
 
-    React.useEffect(function() {
-    }, [currentTime]);
-
     function onMouseDown(e) {
         const sliderRect = sliderRef.current.getBoundingClientRect();
 

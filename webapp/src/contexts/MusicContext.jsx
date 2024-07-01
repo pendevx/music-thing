@@ -6,7 +6,8 @@ export const MusicContext = React.createContext();
 export default function MusicProvider({ children, musicList }) {
     const [currentSong, setCurrentSong] = React.useState({ 
         key: null,
-        index: null
+        index: null,
+        etag: null
     });
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
@@ -38,8 +39,9 @@ export default function MusicProvider({ children, musicList }) {
         }
 
         const key = musicList[index].key;
+        const etag = musicList[index].etag;
 
-        setCurrentSong({ key, index });
+        setCurrentSong({ key, index, etag });
         setIsPlaying(true);
     }
 

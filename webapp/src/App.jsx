@@ -78,17 +78,21 @@ export default function App() {
     }, []);
 
     return (
-        <div className="font-sans overflow-hidden" onKeyDown={onKeyDown} tabIndex={0}>
-            <div className="mb-4" />
-            <div className="mb-40">
+        <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
+            {/* <div className="absolute bg-[linear-gradient(to_bottom,#000F,#0000)] h-20 w-full top-0 z-10" /> */}
+            <div className="overflow-auto mt-8 relative">
 
                 <div className="grid grid-cols-[1fr,2fr,1fr] pl-4 pr-4 items-start">
-                    <div className={`text-white rounded-xl w-full ml-auto mr-auto sticky top-4 transition-transform duration-1000 
+                    <div className="border-r-[1px] border-gray-900 border-solid pr-4">
+                        <div className={`text-white w-full ml-auto mr-auto sticky top-4 transition-transform duration-1000 overflow-hidden
                         ${showSongList ? "" : "-translate-x-[96%]"}`}>
-                        <div className="">
-                            {musicContext.musicList.map((x, i) =>
-                                <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
-                            )}
+
+                            <ul>
+                                {musicContext.musicList.map((x, i) =>
+                                    <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
+                                )}
+                            </ul>
+
                         </div>
                     </div>
 
@@ -97,16 +101,15 @@ export default function App() {
                     {/* <div className="bg-[#363636] text-white rounded-xl w-full mr-auto p-4 sticky top-4">directories placeholder</div> */}
                 </div>
 
-                <div className="bg-black fixed left-0 right-0 bottom-0 pt-4">
-                    <div className="relative">
-                        <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
-                        <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
-                    </div>
-                    <MusicPlayerControl ref={audioRef} onplay={onplay} />
-                </div>
             </div>
 
-            <div className="bg-black h-4 fixed top-0 left-0 w-full z-10" />
+            <div className="bg-black pt-4">
+                <div className="relative">
+                    <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
+                    <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
+                </div>
+                <MusicPlayerControl ref={audioRef} onplay={onplay} />
+            </div>
         </div>
     )
 }

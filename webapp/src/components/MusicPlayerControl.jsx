@@ -1,5 +1,4 @@
-import { MusicLoopSvg, MusicShuffleSvg } from "../icons";
-import { CircularSvg } from "./";
+import { LoopShuffleControl } from "./";
 import React from "react";
 import { MusicContext } from "../contexts";
 import { MusicPausedSvg } from "../icons";
@@ -14,10 +13,6 @@ function MusicPlayerControl({ onplay }, ref) {
     const [audioTime, setAudioTime] = React.useState(0);
     const [songDurationSecs, setSongDurationSecs] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
-
-    function onPlayBehaviourChange(behaviour) {
-        musicContext.setPlayBehaviour(behaviour === musicContext.playBehaviour ? null : behaviour);
-    }
 
     function timeUpdateHandler() {
         setTime(formatTime(ref?.current.currentTime));
@@ -46,25 +41,29 @@ function MusicPlayerControl({ onplay }, ref) {
             if (!musicContext.currentSong.key) return;
 
             const songUrl = import.meta.env.VITE_FILE_URL + musicContext.currentSong.key;
+
             ref.current.pause();
             ref.current.src = songUrl;
+        
+            ref.current.load();
+            await ref.current.play();
 
-            try {
-                ref.current.load();
-                await ref.current.play();
+            if (isNaN(ref.current.duration)) {
+                setTime("--:--");
+            } else {
+                setTotalDuration(formatTime(ref?.current.duration));
+                setSongDurationSecs(ref?.current.duration);
 
-                if (isNaN(ref.current.duration)) {
-                    setTime("--:--");
-                } else {
-                    setTotalDuration(formatTime(ref?.current.duration));
-                    setSongDurationSecs(ref?.current.duration);
-
-                    musicContext.play();
-                }
-            } catch (e) {
-                console.error(e);
-                musicContext.pause();
+                musicContext.play();
             }
+
+            // possible error: Unhandled Promise Rejection: AbortError: The play() request was interrupted by a call to pause().
+            // https://developer.chrome.com/blog/play-request-was-interrupted
+
+            // we are able to swallow the error as:
+            // the any previous unfulfilled play requests should be exited anyways, and
+            // the pause current or load new song request should be ran.
+            // we only want the latest play request to be executed and fulfilled.
         })();
     }, [musicContext.currentSong]);
 
@@ -97,15 +96,7 @@ function MusicPlayerControl({ onplay }, ref) {
 
                 {time} / {totalDuration}
 
-                <div className="flex h-full items-center gap-1 ml-2">
-                    <CircularSvg className="h-[60%]" selected={musicContext.playBehaviour === "shuffle"} onClick={() => onPlayBehaviourChange("shuffle")}>
-                        <MusicShuffleSvg />
-                    </CircularSvg>
-
-                    <CircularSvg className="h-[60%]" selected={musicContext.playBehaviour === "loop"} onClick={() => onPlayBehaviourChange("loop")}>
-                        <MusicLoopSvg />
-                    </CircularSvg>
-                </div>
+                <LoopShuffleControl />
             </div>
         </div>
     )

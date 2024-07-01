@@ -6,6 +6,7 @@ let audioCtx;
 let ctx;
 
 export default function App() {
+    const [showSongList, setShowSongList] = React.useState(true);
     const audioRef = React.useRef(null);
     const canvas = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
@@ -15,7 +16,7 @@ export default function App() {
     }
 
     function onKeyDown(e) {
-        
+
         switch (e.key) {
             case " ": {
                 e.preventDefault();
@@ -44,7 +45,7 @@ export default function App() {
                 if (!musicContext.isPlaying) {
                     return;
                 }
-                
+
                 const freqData = audioCtx.getFreqs();
                 ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
 
@@ -64,7 +65,7 @@ export default function App() {
         raf();
     }
 
-    React.useEffect(function() {
+    React.useEffect(function () {
         ctx = canvas.current.getContext("2d");
         const dpr = window.devicePixelRatio || 1;
 
@@ -77,18 +78,23 @@ export default function App() {
     }, []);
 
     return (
-        <div className="font-sans" onKeyDown={onKeyDown} tabIndex={0}>
+        <div className="font-sans overflow-hidden" onKeyDown={onKeyDown} tabIndex={0}>
+            <div className="mb-4" />
             <div className="mb-40">
-                <div className="bg-black h-4 sticky top-0 z-10"></div>
 
-                <div className="grid grid-cols-[2fr,1fr] pl-4 pr-4 items-start">
-                    <div className="bg-[#363636] text-white rounded-xl overflow-hidden w-[80%] ml-auto mr-auto sticky top-4">
-                        {musicContext.musicList.map((x,i) => 
-                            <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} /> 
-                        )}
+                <div className="grid grid-cols-[1fr,2fr,1fr] pl-4 pr-4 items-start">
+                    <div className={`text-white rounded-xl w-full ml-auto mr-auto sticky top-4 transition-transform duration-1000 
+                        ${showSongList ? "" : "-translate-x-[96%]"}`}>
+                        <div className="">
+                            {musicContext.musicList.map((x, i) =>
+                                <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
+                            )}
+                        </div>
                     </div>
 
-                    <div className="bg-[#363636] text-white rounded-xl w-full mr-auto p-4 sticky top-4">directories placeholder</div>
+                    <div></div>
+
+                    {/* <div className="bg-[#363636] text-white rounded-xl w-full mr-auto p-4 sticky top-4">directories placeholder</div> */}
                 </div>
 
                 <div className="bg-black fixed left-0 right-0 bottom-0 pt-4">
@@ -99,6 +105,8 @@ export default function App() {
                     <MusicPlayerControl ref={audioRef} onplay={onplay} />
                 </div>
             </div>
+
+            <div className="bg-black h-4 fixed top-0 left-0 w-full z-10" />
         </div>
     )
 }

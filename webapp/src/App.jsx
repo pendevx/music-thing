@@ -84,7 +84,7 @@ export default function App() {
                 <div className="grid grid-cols-[2fr,1fr] pl-4 pr-4 items-start">
                     <div className="bg-[#363636] text-white rounded-xl overflow-hidden w-[80%] ml-auto mr-auto sticky top-4">
                         {musicContext.musicList.map((x,i) => 
-                            <MusicItem key={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3/gi.exec(x.key)?.groups?.filename} /> 
+                            <MusicItem key={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} /> 
                         )}
                     </div>
 

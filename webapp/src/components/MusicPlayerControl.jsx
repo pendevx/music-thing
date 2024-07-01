@@ -69,16 +69,18 @@ function MusicPlayerControl({ onplay }, ref) {
     }, [musicContext.currentSong]);
 
     React.useEffect(function () {
+
         if (musicContext.isPlaying) {
             ref?.current.play();
         } else {
             ref?.current.pause();
         }
+
     }, [musicContext.isPlaying])
 
     return (
         <div className="bg-black">
-            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" />
+            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
 
             <div className="w-full h-16 flex overflow-hidden items-center gap-2 text-white pl-4 pr-4 border-t-[1px] border-gray-900 border-solid bg-zinc-900">
                 <p className="w-60 overflow-hidden border-r-[1px] border-slate-600 border-dotted h-full flex items-center">{musicContext.songName()}</p>

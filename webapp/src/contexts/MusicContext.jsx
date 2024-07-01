@@ -12,12 +12,14 @@ export default function MusicProvider({ children, musicList }) {
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
 
     function next() {
+        if (playBehaviour === "loop") {
+            return;
+        }
+
         let nextIndex;
 
         if (currentSong.index == null) {
             nextIndex = 0;
-        } else if (playBehaviour === "loop") {
-            nextIndex = currentSong.index;
         } else if (playBehaviour === "shuffle") {
             nextIndex = Math.floor(Math.random() * musicList.length);
         } else if (playBehaviour == null) {

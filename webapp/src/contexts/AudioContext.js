@@ -1,15 +1,16 @@
 export class AudioAnalyzer {
     constructor(audio) {
-        this.audio = audio;
-        this.audioCtx = new AudioContext();
-        this.input = this.audioCtx.createMediaElementSource(this.audio);
-        this.analyzer = this.audioCtx.createAnalyser();
+        const audioCtx = new AudioContext();
+        const input = audioCtx.createMediaElementSource(audio);
+        
+        this.analyzer = audioCtx.createAnalyser();
         this.analyzer.fftSize = 1024;
         this.analyzer.smoothingTimeConstant = 0.75;
-        this.count = this.analyzer.frequencyBinCount;
-        this.freqsArr = new Uint8Array(this.count);
 
-        this.input.connect(this.analyzer).connect(this.audioCtx.destination);
+        const count = this.analyzer.frequencyBinCount;
+        this.freqsArr = new Uint8Array(count);
+
+        input.connect(this.analyzer).connect(audioCtx.destination);
     }
 
     getFreqs() {

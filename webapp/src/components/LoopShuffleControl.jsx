@@ -39,7 +39,7 @@ export default function LoopShuffleControl() {
                 <MusicShuffleSvg />
             </CircularSvg>
 
-            <CircularSvg className={`${height} ${musicContext.isPlaying ? "animate-spin" : "animation-pause"}`} onClick={() => onPlayBehaviourChange(null)}>
+            <CircularSvg className={`${height} ${musicContext.isPlaying ? "" : "animation-paused"} animate-spin`} onClick={() => onPlayBehaviourChange(null)}>
                 <MusicIconSvg />
             </CircularSvg>
 

@@ -3,7 +3,7 @@ import { MusicPlayerControl } from "./MusicPlayerControl";
 import CircularSvg from "./CircularSvg";
 import MusicProgressBar from "./MusicProgressBar";
 import LoopShuffleControl from "./LoopShuffleControl";
-import { FrequencyGraph } from "./FrequencyGraph";
+import FrequencyGraph from "./FrequencyGraph";
 
 export {
     CircularSvg,

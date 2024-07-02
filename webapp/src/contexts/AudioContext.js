@@ -1,8 +1,10 @@
-export class AudioAnalyzer {
+import singleton from "../utils/singleton";
+
+class _AudioAnalyzer {
     constructor(audio) {
         const audioCtx = new AudioContext();
         const input = audioCtx.createMediaElementSource(audio);
-        
+
         this.analyzer = audioCtx.createAnalyser();
         this.analyzer.fftSize = 1024;
         this.analyzer.smoothingTimeConstant = 0.75;
@@ -19,3 +21,5 @@ export class AudioAnalyzer {
         return this.freqsArr;
     }
 }
+
+export const AudioAnalyzer = singleton(_AudioAnalyzer);

@@ -1,34 +1,41 @@
 import React from 'react';
-import { MusicContext } from '../contexts';
+import { MusicContext, AudioAnalyzer } from '../contexts';
 
-function _FrequencyGraph({ audioCtx }, ref) {
+function FrequencyGraph({ audioRef }) {
     const [canvasCtx, setCanvasCtx] = React.useState(null);
+    const [audioCtx, setAudioCtx] = React.useState(null);
+    const canvas = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
-        const ctx = ref.current.getContext("2d");
+        const ctx = canvas.current.getContext("2d");
         const dpr = window.devicePixelRatio || 1;
 
         ctx.scale(dpr, dpr);
-        const rect = ref.current.getBoundingClientRect();
-        ref.current.width = rect.width * dpr;
-        ref.current.height = rect.height * dpr;
+        const rect = canvas.current.getBoundingClientRect();
+        canvas.current.width = rect.width * dpr;
+        canvas.current.height = rect.height * dpr;
 
         ctx.fillStyle = "white";
 
         setCanvasCtx(ctx);
     }, []);
 
-    // audioCtx is null when uninitialized, will be populated when a song has started playing
-    React.useEffect(function () {
+    React.useEffect(function() {
+        if (musicContext.isPlaying) {
+            setAudioCtx(new AudioAnalyzer(audioRef.current));
+        }
+    }, [musicContext.isPlaying])
+
+    React.useEffect(function() {
         if (!musicContext.isPlaying) {
             return;
         }
 
         let len;
         let barWidth;
-        const totalWidth = ref.current.width;
-        const totalHeight = ref.current.height;
+        const totalWidth = canvas.current.width;
+        const totalHeight = canvas.current.height;
 
         function raf() {
             requestAnimationFrame(() => {
@@ -57,10 +64,10 @@ function _FrequencyGraph({ audioCtx }, ref) {
 
     return (
         <div className="relative">
-            <canvas className="w-full h-14 block bg-black -scale-y-100" ref={ref} />
+            <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
             <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
         </div>
     )
 }
 
-export const FrequencyGraph = React.forwardRef(_FrequencyGraph);
+export default FrequencyGraph;

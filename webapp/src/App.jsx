@@ -1,12 +1,10 @@
-import { MusicPlayerControl, MusicItem } from "./components";
+import { MusicPlayerControl, MusicItem, FrequencyGraph } from "./components";
 import React from "react";
 import { MusicContext, AudioAnalyzer } from "./contexts";
 
-let audioCtx;
-let ctx;
-
 export default function App() {
     const [showSongList, setShowSongList] = React.useState(true);
+    const [audioCtx, setAudioCtx] = React.useState(null);
     const audioRef = React.useRef(null);
     const canvas = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
@@ -33,81 +31,28 @@ export default function App() {
 
     function onplay() {
         if (audioCtx == null) {
-            audioCtx = new AudioAnalyzer(audioRef.current);
+            setAudioCtx(new AudioAnalyzer(audioRef.current));
         }
-
-        const totalWidth = canvas.current.width;
-        let len;
-        let barWidth;
-
-        function raf() {
-            requestAnimationFrame(() => {
-                if (!musicContext.isPlaying) {
-                    return;
-                }
-
-                const freqData = audioCtx.getFreqs();
-                ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
-
-                if (len == null && barWidth == null) {
-                    len = freqData.length / 2.5;
-                    barWidth = totalWidth / len;
-                }
-
-                for (let i = 0; i < len; i++) {
-                    ctx.fillRect(barWidth * i, 0, barWidth - 2, freqData[i] / 255 * (canvas.current.height - 20));
-                }
-
-                raf();
-            });
-        }
-
-        raf();
     }
-
-    React.useEffect(function () {
-        ctx = canvas.current.getContext("2d");
-        const dpr = window.devicePixelRatio || 1;
-
-        ctx.scale(dpr, dpr);
-        const rect = canvas.current.getBoundingClientRect();
-        canvas.current.width = rect.width * dpr;
-        canvas.current.height = rect.height * dpr;
-
-        ctx.fillStyle = "white";
-    }, []);
 
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
-            {/* <div className="absolute bg-[linear-gradient(to_bottom,#000F,#0000)] h-20 w-full top-0 z-10" /> */}
             <div className="overflow-auto mt-8 relative">
-
                 <div className="grid grid-cols-[1fr,2fr,1fr] pl-4 pr-4 items-start">
-                    <div className="border-r-[1px] border-gray-900 border-solid pr-4">
-                        <div className={`text-white w-full ml-auto mr-auto sticky top-4 transition-transform duration-1000 overflow-hidden
-                        ${showSongList ? "" : "-translate-x-[96%]"}`}>
-
+                    <div className="border-r-[1px] border-gray-900 border-solid pr-4 pl-1">
+                        <div className={`transition-transform duration-1000 ${showSongList ? "" : "-translate-x-[96%]"}`}>
                             <ul>
                                 {musicContext.musicList.map((x, i) =>
                                     <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
                                 )}
                             </ul>
-
                         </div>
                     </div>
-
-                    <div></div>
-
-                    {/* <div className="bg-[#363636] text-white rounded-xl w-full mr-auto p-4 sticky top-4">directories placeholder</div> */}
                 </div>
-
             </div>
 
-            <div className="bg-black pt-4">
-                <div className="relative">
-                    <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
-                    <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
-                </div>
+            <div>
+                <FrequencyGraph ref={canvas} audioCtx={audioCtx} />
                 <MusicPlayerControl ref={audioRef} onplay={onplay} />
             </div>
         </div>

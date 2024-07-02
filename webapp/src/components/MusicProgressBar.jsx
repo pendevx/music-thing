@@ -46,8 +46,9 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
     return (
         <div className="w-full block relative h-3" ref={sliderRef} onMouseDown={onMouseDown}>
             <div className={`${commonStyles} h-1 bg-gray-400 left-0 w-full`} />
-            <div className={`${commonStyles} h-1 bg-black left-0`} style={{ width: `${(sliderPos != null ? sliderPos / songDurationSecs : currentTime / songDurationSecs) * 100}%` }}>
-                <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} h-3 bg-black right-0 w-1 hover:w-3 hover:rounded-[50%] translate-x-1/2 duration-200`} />
+            <div className={`${commonStyles} h-1 bg-[#cea127] left-0`} 
+                style={{ width: `${(sliderPos != null ? sliderPos / songDurationSecs : currentTime / songDurationSecs) * 100}%` }}>
+                <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} h-3 bg-inherit right-0 w-1 hover:w-3 hover:rounded-[50%] translate-x-1/2 duration-200`} />
             </div>
         </div>
     )

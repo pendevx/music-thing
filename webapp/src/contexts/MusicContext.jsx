@@ -13,10 +13,6 @@ export default function MusicProvider({ children, musicList }) {
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
 
     function next() {
-        if (playBehaviour === "loop") {
-            return;
-        }
-
         let nextIndex;
 
         if (currentSong.index == null) {
@@ -25,7 +21,7 @@ export default function MusicProvider({ children, musicList }) {
             nextIndex = Math.floor(Math.random() * musicList.length);
         } else if (playBehaviour == null) {
             nextIndex = (currentSong.index + 1) % musicList.length;
-        } else {
+        } else if (playBehaviour === "loop") {
             // should never enter this path
             throw new Error("Invalid playBehaviour or developer is just bad");
         }

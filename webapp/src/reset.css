@@ -58,3 +58,11 @@ a, a:link, a:hover, a:active, a:visited {
     border: none;
     background: transparent;
 }
+button {
+    font: inherit;
+    outline: none;
+    border: none;
+    line-height: 1;
+    width: 100%;
+    text-align: left;
+}

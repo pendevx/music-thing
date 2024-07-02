@@ -7,7 +7,7 @@ import { MusicProgressBar } from "./";
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
 const formatTime = seconds => `${twoSpacePadding(Math.floor(seconds / 60))}:${twoSpacePadding(Math.floor(seconds % 60))}`;
 
-function MusicPlayerControl({ onplay }, ref) {
+function _MusicPlayerControl({ onplay }, ref) {
     const [time, setTime] = React.useState("--:--");
     const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
@@ -102,4 +102,4 @@ function MusicPlayerControl({ onplay }, ref) {
     )
 }
 
-export const ForwardMusicPlayerControl = React.forwardRef(MusicPlayerControl);
+export const MusicPlayerControl = React.forwardRef(_MusicPlayerControl);

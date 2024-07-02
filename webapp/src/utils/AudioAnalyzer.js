@@ -1,4 +1,4 @@
-import singleton from "../utils/singleton";
+import singleton from "./singleton";
 
 class _AudioAnalyzer {
     constructor(audio) {
@@ -22,4 +22,4 @@ class _AudioAnalyzer {
     }
 }
 
-export const AudioAnalyzer = singleton(_AudioAnalyzer);
+export default singleton(_AudioAnalyzer);

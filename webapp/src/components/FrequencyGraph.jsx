@@ -1,5 +1,6 @@
 import React from 'react';
-import { MusicContext, AudioAnalyzer } from '../contexts';
+import { MusicContext } from '../contexts';
+import { AudioAnalyzer } from '../utils/';
 
 function FrequencyGraph({ audioRef }) {
     const [canvasCtx, setCanvasCtx] = React.useState(null);

@@ -28,7 +28,7 @@ export default function App() {
 
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
-            <div className="overflow-hidden mt-8 relative">
+            <div className="overflow-hidden mt-4 relative">
                 <div className="flex pl-4 pr-4 relative max-h-full gap-3">
                     <Scrollable className="grow basis-1">
                         <div className="transition-transform duration-1000">

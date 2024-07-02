@@ -21,9 +21,13 @@ export default {
             }
         },
         screens: {
-            "mobile": "640px",
-            "tablet": "768px",
-            "laptop": "1024px",
+            // "mobile": { max: "640px" },
+            // "tablet": { min: "641px", max: "768px" },
+            // "laptop": { min: "769px", max: "1024px" },
+            // "desktop": { min: "1280px" }
+            "mobile": "0px",
+            "tablet": "641px",
+            "laptop": "769px",
             "desktop": "1280px"
         }
     }

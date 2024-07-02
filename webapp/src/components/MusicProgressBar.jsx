@@ -5,7 +5,6 @@ const commonStyles = "absolute mt-auto mb-auto top-0 bottom-0";
 let _sliderPos, _setSliderPos;
 
 export default function MusicProgressBar({ songDurationSecs, currentTime = 0, onFastForward }) {
-    
     const [sliderPos, setSliderPos] = React.useState(null);
     const sliderRef = React.useRef(null);
 

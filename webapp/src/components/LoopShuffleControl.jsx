@@ -30,7 +30,7 @@ export default function LoopShuffleControl() {
     }
 
     return (
-        <div className="flex h-full items-center ml-2 relative z-10">
+        <div className="hidden laptop:flex h-full items-center ml-2 relative z-10">
             <i className={`w-full ${height} absolute bg-[#585858] rounded-[1.5rem] -z-10`} />
             <i className={`absolute left-0 right-0 ${height} rounded-[50%] aspect-square bg-[#cea127] -z-10 transition-all duration-200 ml-auto mr-auto
                 ${playBehaviourStyles(musicContext.playBehaviour)} `}/>

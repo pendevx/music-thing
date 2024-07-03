@@ -15,7 +15,7 @@ export default function createScrollable() {
             function updateScrollbarHeight() {
                 setScrollbarHeight(containerRef.current.clientHeight * containerRef.current.clientHeight / contentRef.current.scrollHeight);
             }
-            
+
             if (containerRef.current.scrollHeight >= containerRef.current.clientHeight && getComputedStyle(containerRef.current, "::-webkit-scrollbar").display === "none") {
                 setShowCustomScrollbar(true);
                 updateScrollbarHeight();
@@ -67,7 +67,7 @@ export default function createScrollable() {
                 nextScrollPercentage = currentDistancePercentage;
                 nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
             }
-            
+
             if (nextScrollTop < 0) {
                 nextScrollPercentage = 0;
             } else if (nextScrollTop > bottomHeight) {
@@ -87,7 +87,7 @@ export default function createScrollable() {
         }
 
         return (
-            <div className={`${className} relative flex gap-2`} ref={ref}>
+            <div ref={ref} className={`${className} relative gap-2 grow flex`}>
                 <div ref={containerRef} className="grow overflow-auto" onScroll={onScroll}>
                     <div ref={contentRef}>
                         {children}
@@ -95,13 +95,10 @@ export default function createScrollable() {
                 </div>
 
                 {showCustomScrollbar && showScroller &&
-                    <span className="relative h-full min-w-2">
+                    <span className="sticky top-0 h-full min-w-2">
                         <i className="absolute inset-0 ml-auto mr-auto bg-[#333] w-[1px]" />
                         <i className={`bg-[#666] hover:bg-[#aaa] transition-colors duration-100 w-full block rounded-xl absolute z-10 ${scrolling ? "bg-[#aaa]" : ""}`}
-                            style={{ 
-                                height: scrollbarHeight || 0, 
-                                top: scrollbarTop()
-                            }}
+                            style={{ height: scrollbarHeight || 0, top: scrollbarTop() }}
                             onMouseDown={onMouseDown} />
                     </span>
                 }

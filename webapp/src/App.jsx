@@ -8,9 +8,15 @@ const Lyrics = createScrollable();
 
 export default function App() {
     const [showSonglist, setShowSonglist] = React.useState(localStorageRepository.get("showSonglist") ?? true);
+    const [songlistWidth, setSonglistWidth] = React.useState(1500);
     const audioRef = React.useRef(null);
-    const lyricsRef = React.useRef(null);
+    const bodyRef = React.useRef(null);
+    const songlistRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
+
+    React.useEffect(function() {
+        setSonglistWidth(songlistRef.current.clientWidth);
+    }, []);
 
     function onSongSelect(index) {
         musicContext.selectSongAndPlay(index);
@@ -33,14 +39,15 @@ export default function App() {
     }
 
     function showSonglistHandler() {
+        console.log("clicked")
         setShowSonglist(!showSonglist);
     }
 
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="overflow-hidden mt-4">
-                <div className="flex pl-4 pr-4 relative max-h-full gap-1 overflow-x-hidden">
-                    <Songlist className="grow basis-1">
+                <div ref={bodyRef} className="flex pl-4 pr-4 relative max-h-full justify-end" style={{ width: `calc(100vw + ${songlistWidth}px)`, right: songlistWidth }}>
+                    <Songlist ref={songlistRef} className="desktop:w-1/5 grow-0">
                         <div className="transition-transform duration-1000">
                             <ul>
                                 {musicContext.musicList.map((x, i) =>
@@ -50,7 +57,7 @@ export default function App() {
                         </div>
                     </Songlist>
 
-                    <Lyrics ref={lyricsRef} className="mobile:hidden tablet:flex grow tablet:grow-[2] desktop:grow-[3] basis-1 text-white text-center relative" showScroller={false}>
+                    <Lyrics className={`hidden tablet:flex desktop:w-3/5 text-white text-center grow-0 transition-all duration-1000 ${showSonglist ? "desktop:w-4/5" : ""}`} showScroller={false}>
                         <p>Lorem ipsum dolor sit amet.</p>
                         <p>Doloremque veritatis mollitia quaerat nemo.</p>
                         <p>Dicta, autem modi. Praesentium, quasi.</p>
@@ -152,7 +159,7 @@ export default function App() {
                         <p>Aliquid exercitationem voluptas obcaecati unde.</p>
                         <p>Perferendis adipisci magni soluta similique!</p>
 
-                        <div className="absolute left-0 top-0 bottom-0 mt-auto mb-auto w-8 h-10 bg-[#0f0f0f] flex justify-center items-center" 
+                        <div className="absolute top-0 bottom-0 my-auto w-8 h-10 bg-[#0f0f0f] flex justify-center items-center"
                             onClick={showSonglistHandler}
                         >
                             <i className="border-l-[#a8a8a8] border-transparent border-solid border-[1em] w-0 h-0 translate-x-1/4" />

@@ -18,14 +18,11 @@ export default function App() {
     React.useEffect(function() {
         setSonglistWidth(songlistRef.current.clientWidth);
         const onResize = debounce(() => {
-            setSonglistWidth(songlistRef.current.clientWidth);
-        }, 1000);
+            setSonglistWidth(songlistRef.current?.clientWidth || 0);
+            window.removeEventListener("resize", onResize);
+        }, 500);
 
         window.addEventListener("resize", onResize);
-
-        return function() {
-            window.removeEventListener("resize", onResize);
-        }
     }, [songlistWidth]);
 
     function onSongSelect(index) {

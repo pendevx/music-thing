@@ -1,12 +1,15 @@
 import { MusicPlayerControl, MusicItem, FrequencyGraph, createScrollable } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts";
+import localStorageRepository from "./repositories/LocalStorageRepository";
 
 const Songlist = createScrollable();
 const Lyrics = createScrollable();
 
 export default function App() {
+    const [showSonglist, setShowSonglist] = React.useState(localStorageRepository.get("showSonglist") ?? true);
     const audioRef = React.useRef(null);
+    const lyricsRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
     function onSongSelect(index) {
@@ -29,11 +32,15 @@ export default function App() {
         }
     }
 
+    function showSonglistHandler() {
+        setShowSonglist(!showSonglist);
+    }
+
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
-            <div className="overflow-hidden mt-4 relative">
-                <div className="flex pl-4 pr-4 relative max-h-full gap-3">
-                    <Songlist className="grow basis-1 overflow-x-hidden">
+            <div className="overflow-hidden mt-4">
+                <div className="flex pl-4 pr-4 relative max-h-full gap-1 overflow-x-hidden">
+                    <Songlist className="grow basis-1">
                         <div className="transition-transform duration-1000">
                             <ul>
                                 {musicContext.musicList.map((x, i) =>
@@ -43,7 +50,7 @@ export default function App() {
                         </div>
                     </Songlist>
 
-                    <Lyrics className="mobile:hidden tablet:flex grow tablet:grow-[2] desktop:grow-[3] basis-1 text-white text-center" showScroller={false}>
+                    <Lyrics ref={lyricsRef} className="mobile:hidden tablet:flex grow tablet:grow-[2] desktop:grow-[3] basis-1 text-white text-center relative" showScroller={false}>
                         <p>Lorem ipsum dolor sit amet.</p>
                         <p>Doloremque veritatis mollitia quaerat nemo.</p>
                         <p>Dicta, autem modi. Praesentium, quasi.</p>
@@ -144,6 +151,12 @@ export default function App() {
                         <p>Ut numquam maxime suscipit at!</p>
                         <p>Aliquid exercitationem voluptas obcaecati unde.</p>
                         <p>Perferendis adipisci magni soluta similique!</p>
+
+                        <div className="absolute left-0 top-0 bottom-0 mt-auto mb-auto w-8 h-10 bg-[#0f0f0f] flex justify-center items-center" 
+                            onClick={showSonglistHandler}
+                        >
+                            <i className="border-l-[#a8a8a8] border-transparent border-solid border-[1em] w-0 h-0 translate-x-1/4" />
+                        </div>
                     </Lyrics>
                 </div>
             </div>

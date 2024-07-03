@@ -3,7 +3,7 @@ import React from "react";
 export default function createScrollable() {
     let mousedownY = 0;
 
-    return function Scrollable({ className, children, showScroller = true }) {
+    return React.forwardRef(function Scrollable({ className, children, showScroller = true }, ref) {
         const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
         const [scrollbarHeight, setScrollbarHeight] = React.useState(0);
         const [scrolling, setScrolling] = React.useState(false);
@@ -87,7 +87,7 @@ export default function createScrollable() {
         }
 
         return (
-            <div className={`${className} relative flex gap-2`}>
+            <div className={`${className} relative flex gap-2`} ref={ref}>
                 <div ref={containerRef} className="grow overflow-auto" onScroll={onScroll}>
                     <div ref={contentRef}>
                         {children}
@@ -107,5 +107,5 @@ export default function createScrollable() {
                 }
             </div>
         )
-    }
+    });
 }

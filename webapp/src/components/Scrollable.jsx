@@ -69,9 +69,9 @@ export default function createScrollable() {
             }
             
             if (nextScrollTop < 0) {
-                nextScrollTop = 0;
+                nextScrollPercentage = 0;
             } else if (nextScrollTop > bottomHeight) {
-                nextScrollTop = bottomHeight;
+                nextScrollPercentage = 1;
             }
 
             setScrollPercentage(nextScrollPercentage);

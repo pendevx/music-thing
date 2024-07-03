@@ -33,9 +33,9 @@ export default function App() {
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="overflow-hidden mt-4 relative">
                 <div className="flex pl-4 pr-4 relative max-h-full gap-3">
-                    <Songlist className="grow basis-1">
+                    <Songlist className="grow basis-1 overflow-x-hidden">
                         <div className="transition-transform duration-1000">
-                            <ul className="">
+                            <ul>
                                 {musicContext.musicList.map((x, i) =>
                                     <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
                                 )}

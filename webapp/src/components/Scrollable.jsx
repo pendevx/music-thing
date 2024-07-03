@@ -67,6 +67,12 @@ export default function createScrollable() {
                 nextScrollPercentage = currentDistancePercentage;
                 nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
             }
+            
+            if (nextScrollTop < 0) {
+                nextScrollTop = 0;
+            } else if (nextScrollTop > bottomHeight) {
+                nextScrollTop = bottomHeight;
+            }
 
             setScrollPercentage(nextScrollPercentage);
             containerRef.current.scrollTop = nextScrollTop;

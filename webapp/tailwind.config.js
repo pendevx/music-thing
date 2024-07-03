@@ -21,10 +21,6 @@ export default {
             }
         },
         screens: {
-            // "mobile": { max: "640px" },
-            // "tablet": { min: "641px", max: "768px" },
-            // "laptop": { min: "769px", max: "1024px" },
-            // "desktop": { min: "1280px" }
             "mobile": "0px",
             "tablet": "641px",
             "laptop": "769px",

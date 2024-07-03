@@ -1,12 +1,11 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React from "react";
 
-export default function Scrollable({ className, children }) {
+export default function createScrollable() {
     let mousedownY;
     let _setScrollbarTop;
     let _setScrolling;
 
-    return (function () {
+    return function _Scrollable({ className, children }) {
         const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
         const [scrollbarHeight, setScrollbarHeight] = React.useState(0);
         const [scrollbarTop, setScrollbarTop] = React.useState(0);
@@ -100,6 +99,5 @@ export default function Scrollable({ className, children }) {
                 }
             </div>
         )
-    })();
+    }
 }
- 

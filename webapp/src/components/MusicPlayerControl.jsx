@@ -2,10 +2,12 @@ import { LoopShuffleControl } from "./";
 import React from "react";
 import { MusicContext } from "../contexts";
 import { MusicPausedSvg } from "../icons";
-import { MusicProgressBar } from "./";
+import { createMusicProgressBar } from "./";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
 const formatTime = seconds => `${twoSpacePadding(Math.floor(seconds / 60))}:${twoSpacePadding(Math.floor(seconds % 60))}`;
+
+const MusicProgressBar = createMusicProgressBar();
 
 function _MusicPlayerControl({ onplay }, ref) {
     const [time, setTime] = React.useState("--:--");

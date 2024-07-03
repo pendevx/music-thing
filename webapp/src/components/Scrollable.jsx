@@ -68,7 +68,6 @@ export default function createScrollable() {
                 nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
             }
 
-            console.log(nextScrollbarTop)
             _setScrollbarTop(nextScrollbarTop);
             containerRef.current.scrollTop = nextScrollTop;
         }
@@ -93,7 +92,7 @@ export default function createScrollable() {
                     <span className="relative h-full min-w-2">
                         <i className="absolute inset-0 ml-auto mr-auto bg-[#333] w-[1px]" />
                         <i className={`bg-[#666] hover:bg-[#aaa] transition-colors duration-100 w-full block rounded-xl absolute z-10 ${scrolling ? "bg-[#aaa]" : ""}`}
-                            style={{ height: scrollbarHeight, top: scrollbarTop }}
+                            style={{ height: scrollbarHeight || 0, top: scrollbarTop }}
                             onMouseDown={onMouseDown} />
                     </span>
                 }

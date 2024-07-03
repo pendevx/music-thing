@@ -1,11 +1,10 @@
-import { LoopShuffleControl } from "./";
+import { LoopShuffleControl, createMusicProgressBar } from "./";
 import React from "react";
 import { MusicContext } from "../contexts";
 import { MusicPausedSvg } from "../icons";
-import { createMusicProgressBar } from "./";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
-const formatTime = seconds => `${twoSpacePadding(Math.floor(seconds / 60))}:${twoSpacePadding(Math.floor(seconds % 60))}`;
+const formatTime = seconds => twoSpacePadding(seconds / 60) + ":" + twoSpacePadding(seconds % 60);
 
 const MusicProgressBar = createMusicProgressBar();
 
@@ -84,15 +83,17 @@ function _MusicPlayerControl({ onplay }, ref) {
             <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
 
             <div className="w-full h-16 flex overflow-hidden items-center gap-2 text-white pl-4 pr-4 border-t-[1px] border-gray-900 border-solid bg-zinc-900">
-                <p className="basis-40 desktop:basis-60 overflow-hidden border-r-[1px] border-slate-600 border-dotted h-full flex items-center">{musicContext.songName()}</p>
+                <p className="basis-40 desktop:basis-60 overflow-hidden border-r-[1px] border-slate-600 border-dotted h-full flex items-center text-nowrap overflow-ellipsis">{musicContext.songName()}</p>
 
-                <div className="hover:bg-gray-800 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" onClick={handlePlayPause}>
+                <div className="hover:bg-gray-800 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" 
+                    onClick={handlePlayPause}
+                >
                     {musicContext.isPlaying ?
                         <MusicPausedSvg /> :
                         <div className="border-l-white border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]" />}
                 </div>
 
-                <div className="grow">
+                <div className="grow mobile:hidden tablet:block">
                     <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />
                 </div>
 

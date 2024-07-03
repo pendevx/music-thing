@@ -66,7 +66,7 @@ function FrequencyGraph({ audioRef }) {
     return (
         <div className="relative">
             <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
-            <div className="absolute inset-0 bg-[linear-gradient(to_top,#6666,#0003)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_top,#6666,#0000)]" />
             <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
         </div>
     )

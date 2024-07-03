@@ -43,7 +43,7 @@ export default function App() {
                         </div>
                     </Songlist>
 
-                    <Lyrics className="mobile:hidden tablet:flex grow tablet:grow-[2] desktop:grow-[3] basis-1 text-white text-center">
+                    <Lyrics className="mobile:hidden tablet:flex grow tablet:grow-[2] desktop:grow-[3] basis-1 text-white text-center" showScroller={false}>
                         <p>Lorem ipsum dolor sit amet.</p>
                         <p>Doloremque veritatis mollitia quaerat nemo.</p>
                         <p>Dicta, autem modi. Praesentium, quasi.</p>

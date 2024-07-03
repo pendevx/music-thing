@@ -35,7 +35,6 @@ export default function createMusicProgressBar() {
         }
 
         function onMouseUp() {
-            console.log(_sliderPos);
             onFastForward(_sliderPos);
             _setSliderPos(null);
 

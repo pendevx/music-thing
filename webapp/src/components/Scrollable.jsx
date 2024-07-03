@@ -3,7 +3,7 @@ import React from "react";
 export default function createScrollable() {
     let mousedownY = 0;
 
-    return function Scrollable({ className, children }) {
+    return function Scrollable({ className, children, showScroller = true }) {
         const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
         const [scrollbarHeight, setScrollbarHeight] = React.useState(0);
         const [scrolling, setScrolling] = React.useState(false);
@@ -94,7 +94,7 @@ export default function createScrollable() {
                     </div>
                 </div>
 
-                {showCustomScrollbar &&
+                {showCustomScrollbar && showScroller &&
                     <span className="relative h-full min-w-2">
                         <i className="absolute inset-0 ml-auto mr-auto bg-[#333] w-[1px]" />
                         <i className={`bg-[#666] hover:bg-[#aaa] transition-colors duration-100 w-full block rounded-xl absolute z-10 ${scrolling ? "bg-[#aaa]" : ""}`}

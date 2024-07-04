@@ -7,6 +7,109 @@ import { debounce } from "./utils";
 const Songlist = createScrollable();
 const Lyrics = createScrollable();
 
+const lyrics = [
+    "Lorem ipsum dolor sit amet.",
+    "Doloremque veritatis mollitia quaerat nemo.",
+    "Dicta, autem modi. Praesentium, quasi.",
+    "Enim impedit beatae numquam quisquam!",
+    "Optio odio velit nam eaque.",
+    "Corrupti soluta illo officia consectetur!",
+    "Nostrum pariatur vel cupiditate natus!",
+    "Assumenda cumque natus blanditiis sapiente.",
+    "Eligendi eos sed tempore aut?",
+    "Incidunt et esse enim eius.",
+    "Magni expedita dignissimos ipsum voluptatibus?",
+    "Ullam nihil eaque quis aliquam.",
+    "Molestiae mollitia repellat voluptates quaerat.",
+    "Asperiores voluptatibus repellat alias at!",
+    "Vitae quia magnam ullam nemo.",
+    "Ipsam hic nulla iure dignissimos.",
+    "Rerum ad itaque ratione consectetur?",
+    "Commodi minima ab nisi quis.",
+    "Ex repellendus asperiores dignissimos rem.",
+    "Consequuntur ad ipsum et mollitia.",
+    "Odit dicta nesciunt quasi facere!",
+    "Obcaecati aut eum sequi repellat!",
+    "Fugiat autem dicta quasi ex.",
+    "Dignissimos facere voluptate doloremque delectus.",
+    "Consequuntur aspernatur quia ea vero.",
+    "Officiis blanditiis laborum quo culpa?",
+    "Voluptas vitae sit repellat esse.",
+    "Nihil ab quibusdam delectus quod!",
+    "Quibusdam ab commodi recusandae sed.",
+    "Repellendus magnam libero vitae vel!",
+    "Voluptas maxime iure mollitia nesciunt.",
+    "Sunt ipsum error eveniet sapiente.",
+    "Minima in rerum aliquid excepturi!",
+    "Et quis ea vitae veritatis?",
+    "Reiciendis adipisci ea atque minus?",
+    "Voluptates laudantium nostrum nulla quidem?",
+    "Eum consequuntur iste voluptatibus animi.",
+    "Ut ipsa laboriosam impedit iure?",
+    "Officia in consequuntur reiciendis laudantium.",
+    "Mollitia accusantium commodi harum eius.",
+    "Corrupti velit in ullam assumenda?",
+    "Dicta voluptates itaque placeat aut!",
+    "Odit a eaque placeat! Veniam.",
+    "Porro praesentium ratione recusandae quia.",
+    "Esse ea asperiores totam fugit?",
+    "Iure earum quas iusto necessitatibus?",
+    "Aspernatur voluptate doloribus unde ad!",
+    "Ipsa ad provident sint esse.",
+    "Suscipit cupiditate at earum repudiandae?",
+    "Molestias laboriosam ratione dolores nulla?",
+    "Temporibus molestias quibusdam dolorem est.",
+    "Accusamus a cumque quos labore?",
+    "Voluptate dolore est ullam quam.",
+    "Sunt temporibus dolorem ipsum illum.",
+    "Voluptatibus velit inventore dolores eius.",
+    "Adipisci, officia amet. Nobis, ipsa!",
+    "Ab nam eveniet asperiores repellat.",
+    "Odit accusamus quam explicabo molestiae!",
+    "Molestiae eos ipsam temporibus sapiente.",
+    "Neque laboriosam autem dolorem similique.",
+    "Quisquam impedit molestias ullam temporibus.",
+    "Repellendus porro exercitationem cupiditate adipisci?",
+    "Laborum temporibus quaerat magni dolorem.",
+    "Consectetur odio voluptatem cupiditate expedita!",
+    "Unde veniam accusamus sit eaque?",
+    "Tempora rem praesentium suscipit nemo!",
+    "Ducimus, accusantium! Sequi, tempore doloribus?",
+    "Quam, minima molestias? Repudiandae, blanditiis.",
+    "Corrupti distinctio perspiciatis ex optio?",
+    "Nobis vero sapiente ea facilis.",
+    "Nihil quas incidunt architecto? Fuga.",
+    "Molestias atque impedit recusandae sunt!",
+    "Rerum dignissimos dolores illo consequuntur!",
+    "Blanditiis explicabo voluptatibus consequuntur nam!",
+    "Eius, nemo blanditiis. Doloremque, quaerat.",
+    "Voluptatibus sit dicta maiores mollitia!",
+    "Ratione reprehenderit laudantium optio asperiores.",
+    "Provident accusamus eveniet perspiciatis ipsam.",
+    "Inventore incidunt laudantium qui eos!",
+    "Officiis repellat ullam eos sit!",
+    "Distinctio dolores excepturi facere animi?",
+    "Minus eos amet quo aliquid!",
+    "Sequi ut ex consectetur unde!",
+    "Distinctio expedita inventore nobis officiis!",
+    "Dignissimos, accusamus dicta! Possimus, repudiandae.",
+    "Ad non consequatur natus corporis.",
+    "Sed vero ut molestias eligendi.",
+    "Delectus mollitia error inventore voluptatem.",
+    "Illo vitae quaerat id eos!",
+    "Tempore ipsa ad quia reprehenderit.",
+    "Eveniet aliquam voluptas tenetur quos!",
+    "Placeat eos asperiores culpa debitis!",
+    "Delectus culpa placeat ab cum.",
+    "Accusantium commodi ex a rem.",
+    "Laudantium et minus vel distinctio?",
+    "Error iure molestiae hic ab.",
+    "Obcaecati distinctio pariatur esse ad!",
+    "Ut numquam maxime suscipit at!",
+    "Aliquid exercitationem voluptas obcaecati unde.",
+    "Perferendis adipisci magni soluta similique!"
+]
+
 export default function App() {
     const [showSonglist, setShowSonglist] = React.useState(true);
     const [songlistWidth, setSonglistWidth] = React.useState(0);
@@ -15,7 +118,7 @@ export default function App() {
     const songlistRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
-    React.useEffect(function() {
+    React.useEffect(function () {
         setSonglistWidth(songlistRef.current.clientWidth);
         const onResize = debounce(() => {
             setSonglistWidth(songlistRef.current?.clientWidth || 0);
@@ -45,11 +148,15 @@ export default function App() {
         }
     }
 
+    const matches = matchMedia("(max-width: 768px)").matches;
+
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="overflow-hidden mt-4">
-                <div ref={bodyRef} className="flex relative max-h-full justify-end" style={{ width: `calc(100vw + ${songlistWidth}px)`, right: songlistWidth }}>
-                    <Songlist ref={songlistRef} className="hidden laptop:flex laptop:w-1/4 desktop:w-1/5 grow-0 pl-4">
+                <div ref={bodyRef} className=" laptop:flex relative max-h-full justify-end" style={{ width: matches ? "" : `calc(100vw + ${songlistWidth}px)`, right: matches ? 0 : songlistWidth }}>
+                    <Songlist ref={songlistRef} className={`absolute z-10 bg-black inset-0 laptop:relative -translate-x-full laptop:translate-x-0 laptop:flex laptop:w-1/4 desktop:w-1/5 laptop:grow-0 pl-4 transition-all duration-1000
+                        ${showSonglist ? "translate-x-0" : ""}`}
+                    >
                         <div className="transition-transform duration-1000">
                             <ul>
                                 {musicContext.musicList.map((x, i) =>
@@ -60,108 +167,11 @@ export default function App() {
                     </Songlist>
 
                     <Lyrics className={`laptop:flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center grow-0 transition-all duration-1000 pr-4
-                        ${showSonglist ? "laptop:w-3/4 desktop:w-4/5" : ""}`} showScroller={false}
+                        ${showSonglist ? "translate-x-0 laptop:w-3/4 desktop:w-4/5" : ""}`}
                     >
-                        <p>Lorem ipsum dolor sit amet.</p>
-                        <p>Doloremque veritatis mollitia quaerat nemo.</p>
-                        <p>Dicta, autem modi. Praesentium, quasi.</p>
-                        <p>Enim impedit beatae numquam quisquam!</p>
-                        <p>Optio odio velit nam eaque.</p>
-                        <p>Corrupti soluta illo officia consectetur!</p>
-                        <p>Nostrum pariatur vel cupiditate natus!</p>
-                        <p>Assumenda cumque natus blanditiis sapiente.</p>
-                        <p>Eligendi eos sed tempore aut?</p>
-                        <p>Incidunt et esse enim eius.</p>
-                        <p>Magni expedita dignissimos ipsum voluptatibus?</p>
-                        <p>Ullam nihil eaque quis aliquam.</p>
-                        <p>Molestiae mollitia repellat voluptates quaerat.</p>
-                        <p>Asperiores voluptatibus repellat alias at!</p>
-                        <p>Vitae quia magnam ullam nemo.</p>
-                        <p>Ipsam hic nulla iure dignissimos.</p>
-                        <p>Rerum ad itaque ratione consectetur?</p>
-                        <p>Commodi minima ab nisi quis.</p>
-                        <p>Ex repellendus asperiores dignissimos rem.</p>
-                        <p>Consequuntur ad ipsum et mollitia.</p>
-                        <p>Odit dicta nesciunt quasi facere!</p>
-                        <p>Obcaecati aut eum sequi repellat!</p>
-                        <p>Fugiat autem dicta quasi ex.</p>
-                        <p>Dignissimos facere voluptate doloremque delectus.</p>
-                        <p>Consequuntur aspernatur quia ea vero.</p>
-                        <p>Officiis blanditiis laborum quo culpa?</p>
-                        <p>Voluptas vitae sit repellat esse.</p>
-                        <p>Nihil ab quibusdam delectus quod!</p>
-                        <p>Quibusdam ab commodi recusandae sed.</p>
-                        <p>Repellendus magnam libero vitae vel!</p>
-                        <p>Voluptas maxime iure mollitia nesciunt.</p>
-                        <p>Sunt ipsum error eveniet sapiente.</p>
-                        <p>Minima in rerum aliquid excepturi!</p>
-                        <p>Et quis ea vitae veritatis?</p>
-                        <p>Reiciendis adipisci ea atque minus?</p>
-                        <p>Voluptates laudantium nostrum nulla quidem?</p>
-                        <p>Eum consequuntur iste voluptatibus animi.</p>
-                        <p>Ut ipsa laboriosam impedit iure?</p>
-                        <p>Officia in consequuntur reiciendis laudantium.</p>
-                        <p>Mollitia accusantium commodi harum eius.</p>
-                        <p>Corrupti velit in ullam assumenda?</p>
-                        <p>Dicta voluptates itaque placeat aut!</p>
-                        <p>Odit a eaque placeat! Veniam.</p>
-                        <p>Porro praesentium ratione recusandae quia.</p>
-                        <p>Esse ea asperiores totam fugit?</p>
-                        <p>Iure earum quas iusto necessitatibus?</p>
-                        <p>Aspernatur voluptate doloribus unde ad!</p>
-                        <p>Ipsa ad provident sint esse.</p>
-                        <p>Suscipit cupiditate at earum repudiandae?</p>
-                        <p>Molestias laboriosam ratione dolores nulla?</p>
-                        <p>Temporibus molestias quibusdam dolorem est.</p>
-                        <p>Accusamus a cumque quos labore?</p>
-                        <p>Voluptate dolore est ullam quam.</p>
-                        <p>Sunt temporibus dolorem ipsum illum.</p>
-                        <p>Voluptatibus velit inventore dolores eius.</p>
-                        <p>Adipisci, officia amet. Nobis, ipsa!</p>
-                        <p>Ab nam eveniet asperiores repellat.</p>
-                        <p>Odit accusamus quam explicabo molestiae!</p>
-                        <p>Molestiae eos ipsam temporibus sapiente.</p>
-                        <p>Neque laboriosam autem dolorem similique.</p>
-                        <p>Quisquam impedit molestias ullam temporibus.</p>
-                        <p>Repellendus porro exercitationem cupiditate adipisci?</p>
-                        <p>Laborum temporibus quaerat magni dolorem.</p>
-                        <p>Consectetur odio voluptatem cupiditate expedita!</p>
-                        <p>Unde veniam accusamus sit eaque?</p>
-                        <p>Tempora rem praesentium suscipit nemo!</p>
-                        <p>Ducimus, accusantium! Sequi, tempore doloribus?</p>
-                        <p>Quam, minima molestias? Repudiandae, blanditiis.</p>
-                        <p>Corrupti distinctio perspiciatis ex optio?</p>
-                        <p>Nobis vero sapiente ea facilis.</p>
-                        <p>Nihil quas incidunt architecto? Fuga.</p>
-                        <p>Molestias atque impedit recusandae sunt!</p>
-                        <p>Rerum dignissimos dolores illo consequuntur!</p>
-                        <p>Blanditiis explicabo voluptatibus consequuntur nam!</p>
-                        <p>Eius, nemo blanditiis. Doloremque, quaerat.</p>
-                        <p>Voluptatibus sit dicta maiores mollitia!</p>
-                        <p>Ratione reprehenderit laudantium optio asperiores.</p>
-                        <p>Provident accusamus eveniet perspiciatis ipsam.</p>
-                        <p>Inventore incidunt laudantium qui eos!</p>
-                        <p>Officiis repellat ullam eos sit!</p>
-                        <p>Distinctio dolores excepturi facere animi?</p>
-                        <p>Minus eos amet quo aliquid!</p>
-                        <p>Sequi ut ex consectetur unde!</p>
-                        <p>Distinctio expedita inventore nobis officiis!</p>
-                        <p>Dignissimos, accusamus dicta! Possimus, repudiandae.</p>
-                        <p>Ad non consequatur natus corporis.</p>
-                        <p>Sed vero ut molestias eligendi.</p>
-                        <p>Delectus mollitia error inventore voluptatem.</p>
-                        <p>Illo vitae quaerat id eos!</p>
-                        <p>Tempore ipsa ad quia reprehenderit.</p>
-                        <p>Eveniet aliquam voluptas tenetur quos!</p>
-                        <p>Placeat eos asperiores culpa debitis!</p>
-                        <p>Delectus culpa placeat ab cum.</p>
-                        <p>Accusantium commodi ex a rem.</p>
-                        <p>Laudantium et minus vel distinctio?</p>
-                        <p>Error iure molestiae hic ab.</p>
-                        <p>Obcaecati distinctio pariatur esse ad!</p>
-                        <p>Ut numquam maxime suscipit at!</p>
-                        <p>Aliquid exercitationem voluptas obcaecati unde.</p>
-                        <p>Perferendis adipisci magni soluta similique!</p>
+                        <div className="">
+                            {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}
+                        </div>
 
                         <div className="hidden laptop:flex absolute top-0 bottom-0 my-auto w-8 h-10 bg-[#0f0f0f] justify-center items-center"
                             onClick={() => setShowSonglist(!showSonglist)}
@@ -169,6 +179,12 @@ export default function App() {
                             <i className="border-l-[#a8a8a8] border-transparent border-solid border-[1em] w-0 h-0 translate-x-1/4" />
                         </div>
                     </Lyrics>
+
+                    <div className="flex laptop:hidden absolute z-20 top-2 right-4 my-auto w-8 h-10 bg-[#0f0f0f] justify-center items-center rotate-180"
+                        onClick={() => setShowSonglist(!showSonglist)}
+                    >
+                        <i className="border-l-[#a8a8a8] border-transparent border-solid border-[1em] w-0 h-0 translate-x-1/4" />
+                    </div>
                 </div>
             </div>
 

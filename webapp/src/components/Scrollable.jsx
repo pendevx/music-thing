@@ -87,7 +87,7 @@ export default function createScrollable() {
         }
 
         return (
-            <div ref={ref} className={`${className} relative gap-2 grow flex`}>
+            <div ref={ref} className={`${className} gap-2 grow flex`}>
                 <div ref={containerRef} className="grow overflow-auto" onScroll={onScroll}>
                     <div ref={contentRef}>
                         {children}

@@ -1,5 +1,16 @@
-order of priority
+# order of priority
+
+research audio no controls on mobile notification centre thingy
+
+research audio next/previous (hardware media key handling thing)
+
+random number generator
+	-> fast forward, previous
+
+start some lyrics
 
 audio.volume [0,1]
+
 audio.playbackRate
+
 file uploading interface

@@ -153,8 +153,8 @@ export default function App() {
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="overflow-hidden mt-4">
-                <div ref={bodyRef} className=" laptop:flex relative max-h-full justify-end" style={{ width: matches ? "" : `calc(100vw + ${songlistWidth}px)`, right: matches ? 0 : songlistWidth }}>
-                    <Songlist ref={songlistRef} className={`absolute z-10 bg-black inset-0 laptop:relative -translate-x-full laptop:translate-x-0 laptop:flex laptop:w-1/4 desktop:w-1/5 laptop:grow-0 pl-4 transition-all duration-1000
+                <div ref={bodyRef} className="flex relative max-h-full justify-end" style={{ width: matches ? "" : `calc(100vw + ${songlistWidth}px)`, right: matches ? 0 : songlistWidth }}>
+                    <Songlist ref={songlistRef} className={`absolute z-10 bg-black inset-0 laptop:relative -translate-x-full laptop:translate-x-0 laptop:flex laptop:w-1/4 desktop:w-1/5 laptop:grow-0 laptop:pr-0 px-4 transition-all duration-1000
                         ${showSonglist ? "translate-x-0" : ""}`}
                     >
                         <div className="transition-transform duration-1000">
@@ -166,10 +166,10 @@ export default function App() {
                         </div>
                     </Songlist>
 
-                    <Lyrics className={`laptop:flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center grow-0 transition-all duration-1000 pr-4
-                        ${showSonglist ? "translate-x-0 laptop:w-3/4 desktop:w-4/5" : ""}`}
+                    <Lyrics className={`laptop:flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center grow laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4
+                        ${showSonglist ? "laptop:w-3/4 desktop:w-4/5" : ""}`}
                     >
-                        <div className="">
+                        <div className="max-h-full">
                             {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}
                         </div>
 

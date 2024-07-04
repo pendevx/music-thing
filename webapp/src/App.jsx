@@ -1,7 +1,6 @@
 import { MusicPlayerControl, MusicItem, FrequencyGraph, createScrollable } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts";
-// import localStorageRepository from "./repositories/LocalStorageRepository";
 import { debounce } from "./utils";
 
 const Songlist = createScrollable();
@@ -167,7 +166,7 @@ export default function App() {
                     </Songlist>
 
                     <Lyrics className={`laptop:flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center grow laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4
-                        ${showSonglist ? "laptop:w-3/4 desktop:w-4/5" : ""}`}
+                        ${showSonglist ? "" : "laptop:w-3/4 desktop:w-4/5"}`}
                     >
                         <div className="max-h-full">
                             {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}

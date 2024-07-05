@@ -152,21 +152,19 @@ export default function App() {
                         </div>
                     </Songlist>
 
-                    <Lyrics className={`flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4
+                    <Lyrics className={`flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4 relative
                         ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`} showScroller={false}
                     >
-                        <div className="">
-                            {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}
-                        </div>
+                        {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}
 
-                        <div className="hidden laptop:flex absolute top-0 bottom-0 my-auto w-8 h-8 bg-[#0f0f0f] justify-center items-center"
+                        <div className="hidden laptop:flex absolute top-0 bottom-0 left-1 my-auto w-8 h-8 bg-[#0f0f0f] justify-center items-center"
                             onClick={() => setShowSonglist(!showSonglist)}
                         >
                             <SongList />
                         </div>
                     </Lyrics>
 
-                    <div className="flex laptop:hidden absolute z-20 top-2 right-4 my-auto w-8 h-8 bg-[#0f0f0f] justify-center items-center"
+                    <div className={`flex laptop:hidden fixed z-20 my-auto w-12 h-12 bg-[#0f0f0f] justify-center items-center transition-all duration-1000 ${showSonglist ? "top-8 right-8" : "top-2 right-2"}`}
                         onClick={() => setShowSonglist(!showSonglist)}
                     >
                         <SongList />

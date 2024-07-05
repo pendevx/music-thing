@@ -1,7 +1,7 @@
 import { MusicPlayerControl, MusicItem, FrequencyGraph, createScrollable } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts";
-import { debounce } from "./utils";
+import { SongList } from "./icons";
 
 const Songlist = createScrollable();
 const Lyrics = createScrollable();
@@ -111,21 +111,10 @@ const lyrics = [
 
 export default function App() {
     const [showSonglist, setShowSonglist] = React.useState(true);
-    const [songlistWidth, setSonglistWidth] = React.useState(0);
     const audioRef = React.useRef(null);
     const bodyRef = React.useRef(null);
     const songlistRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
-
-    React.useEffect(function () {
-        setSonglistWidth(songlistRef.current.clientWidth);
-        const onResize = debounce(() => {
-            setSonglistWidth(songlistRef.current?.clientWidth || 0);
-            window.removeEventListener("resize", onResize);
-        }, 500);
-
-        window.addEventListener("resize", onResize);
-    }, [songlistWidth]);
 
     function onSongSelect(index) {
         musicContext.selectSongAndPlay(index);
@@ -147,14 +136,12 @@ export default function App() {
         }
     }
 
-    const matches = matchMedia("(max-width: 768px)").matches;
-
     return (
         <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="overflow-hidden mt-4">
-                <div ref={bodyRef} className="flex relative max-h-full justify-end" style={{ width: matches ? "" : `calc(100vw + ${songlistWidth}px)`, right: matches ? 0 : songlistWidth }}>
+                <div ref={bodyRef} className="flex relative max-h-full justify-end w-full laptop:w-[133.33333%] desktop:w-[125%] r-0 laptop:right-[33.33333%] desktop:right-[25%]">
                     <Songlist ref={songlistRef} className={`absolute z-10 bg-black inset-0 laptop:relative -translate-x-full laptop:translate-x-0 laptop:flex laptop:w-1/4 desktop:w-1/5 laptop:grow-0 laptop:pr-0 px-4 transition-all duration-1000
-                        ${showSonglist ? "translate-x-0" : ""}`}
+                        ${showSonglist && "translate-x-0"}`}
                     >
                         <div className="transition-transform duration-1000">
                             <ul>
@@ -165,24 +152,24 @@ export default function App() {
                         </div>
                     </Songlist>
 
-                    <Lyrics className={`laptop:flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center grow laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4
-                        ${showSonglist ? "" : "laptop:w-3/4 desktop:w-4/5"}`}
+                    <Lyrics className={`flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4
+                        ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`} showScroller={false}
                     >
-                        <div className="max-h-full">
+                        <div className="">
                             {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}
                         </div>
 
-                        <div className="hidden laptop:flex absolute top-0 bottom-0 my-auto w-8 h-10 bg-[#0f0f0f] justify-center items-center"
+                        <div className="hidden laptop:flex absolute top-0 bottom-0 my-auto w-8 h-8 bg-[#0f0f0f] justify-center items-center"
                             onClick={() => setShowSonglist(!showSonglist)}
                         >
-                            <i className="border-l-[#a8a8a8] border-transparent border-solid border-[1em] w-0 h-0 translate-x-1/4" />
+                            <SongList />
                         </div>
                     </Lyrics>
 
-                    <div className="flex laptop:hidden absolute z-20 top-2 right-4 my-auto w-8 h-10 bg-[#0f0f0f] justify-center items-center rotate-180"
+                    <div className="flex laptop:hidden absolute z-20 top-2 right-4 my-auto w-8 h-8 bg-[#0f0f0f] justify-center items-center"
                         onClick={() => setShowSonglist(!showSonglist)}
                     >
-                        <i className="border-l-[#a8a8a8] border-transparent border-solid border-[1em] w-0 h-0 translate-x-1/4" />
+                        <SongList />
                     </div>
                 </div>
             </div>

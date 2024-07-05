@@ -1,16 +1,15 @@
 # order of priority
 
-research audio no controls on mobile notification centre thingy
-
-research audio next/previous (hardware media key handling thing)
+audio.volume [0,1]
+audio.playbackRate
 
 random number generator
 	-> fast forward, previous
+    
+Media Session API
+    research audio no controls on mobile notification centre thingy
+    research audio next/previous (hardware media key handling thing)
 
 start some lyrics
-
-audio.volume [0,1]
-
-audio.playbackRate
 
 file uploading interface

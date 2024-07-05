@@ -13,7 +13,7 @@ export default function createScrollable() {
 
         React.useEffect(function () {
             function updateScrollbarHeight() {
-                setScrollbarHeight(containerRef.current.clientHeight * containerRef.current.clientHeight / contentRef.current.scrollHeight);
+                setScrollbarHeight((containerRef.current.clientHeight * containerRef.current.clientHeight) / contentRef.current.scrollHeight);
             }
 
             if (containerRef.current.scrollHeight >= containerRef.current.clientHeight && getComputedStyle(containerRef.current, "::-webkit-scrollbar").display === "none") {
@@ -28,11 +28,11 @@ export default function createScrollable() {
 
             return function () {
                 window.removeEventListener("resize", updateScrollbarHeight);
-            }
+            };
         }, []);
 
         function scrollbarTop() {
-            return (scrollPercentage * (containerRef.current?.clientHeight - scrollbarHeight)) || 0;
+            return scrollPercentage * (containerRef.current?.clientHeight - scrollbarHeight) || 0;
         }
 
         function onScroll() {
@@ -40,13 +40,48 @@ export default function createScrollable() {
             setScrollPercentage(currentDistancePercentage);
         }
 
-        function onMouseDown(e) {
-            mousedownY = e.clientY - containerRef.current.getBoundingClientRect().top - scrollbarTop();
+        function onMouseDown(e, type) {
+            if (type === "touch") {
+                mousedownY = e.touches[0].clientY - containerRef.current.getBoundingClientRect().top - scrollbarTop();
+                document.body.addEventListener("touchmove", onTouchMove);
+                document.body.addEventListener("touchup", onTouchEnd);
+                document.body.addEventListener("touchcancel", onTouchEnd);
+            } else {
+                mousedownY = e.clientY - containerRef.current.getBoundingClientRect().top - scrollbarTop();
+                document.body.addEventListener("mousemove", onMouseMove);
+                document.body.addEventListener("mouseup", onMouseUp);
+                document.body.addEventListener("mouseleave", onMouseUp);
+            }
             setScrolling(true);
+        }
 
-            document.body.addEventListener("mousemove", onMouseMove);
-            document.body.addEventListener("mouseup", onMouseUp);
-            document.body.addEventListener("mouseleave", onMouseUp);
+        function onTouchMove(e) {
+            const bottomHeight = containerRef.current.scrollHeight - containerRef.current.clientHeight;
+            const totalDistance = containerRef.current.clientHeight - scrollbarHeight;
+            let nextScrollPercentage;
+            let nextScrollTop;
+
+            if (containerRef.current.scrollTop <= 0 && e.touches[0].clientY <= 0) {
+                nextScrollPercentage = 0;
+                nextScrollTop = 0;
+            } else if (containerRef.current.scrollTop >= bottomHeight && e.touches[0].clientY >= 0) {
+                nextScrollPercentage = 1;
+                nextScrollTop = bottomHeight;
+            } else {
+                const distanceFromOrigin = e.touches[0].clientY - containerRef.current.getBoundingClientRect().top - mousedownY;
+                const currentDistancePercentage = distanceFromOrigin / totalDistance;
+                nextScrollPercentage = currentDistancePercentage;
+                nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
+            }
+
+            if (nextScrollTop < 0) {
+                nextScrollPercentage = 0;
+            } else if (nextScrollTop > bottomHeight) {
+                nextScrollPercentage = 1;
+            }
+
+            setScrollPercentage(nextScrollPercentage);
+            containerRef.current.scrollTop = nextScrollTop;
         }
 
         function onMouseMove(e) {
@@ -78,6 +113,14 @@ export default function createScrollable() {
             containerRef.current.scrollTop = nextScrollTop;
         }
 
+        function onTouchEnd() {
+            setScrolling(false);
+
+            document.body.removeEventListener("touchmove", onTouchMove);
+            document.body.removeEventListener("touchup", onTouchEnd);
+            document.body.removeEventListener("touchcancel", onTouchEnd);
+        }
+
         function onMouseUp() {
             setScrolling(false);
 
@@ -87,22 +130,26 @@ export default function createScrollable() {
         }
 
         return (
-            <div ref={ref} className={`${className} gap-2 grow flex`}>
+            <div ref={ref} className={`${className} flex grow gap-2`}>
                 <div ref={containerRef} className="grow overflow-auto" onScroll={onScroll}>
-                    <div ref={contentRef}>
-                        {children}
-                    </div>
+                    <div ref={contentRef}>{children}</div>
                 </div>
 
-                {showCustomScrollbar && showScroller &&
+                {showCustomScrollbar && showScroller && (
                     <span className="sticky top-0 h-full min-w-2">
-                        <i className="absolute inset-0 ml-auto mr-auto bg-[#333] w-[1px]" />
-                        <i className={`bg-[#666] hover:bg-[#aaa] transition-colors duration-100 w-full block rounded-xl absolute z-10 ${scrolling ? "bg-[#aaa]" : ""}`}
-                            style={{ height: scrollbarHeight || 0, top: scrollbarTop() }}
-                            onMouseDown={onMouseDown} />
+                        <i className="absolute inset-0 ml-auto mr-auto w-[1px] bg-[#333]" />
+                        <i
+                            className={`absolute z-10 block w-full rounded-xl bg-[#666] transition-colors duration-100 hover:bg-[#aaa] ${scrolling ? "bg-[#aaa]" : ""}`}
+                            style={{
+                                height: scrollbarHeight || 0,
+                                top: scrollbarTop(),
+                            }}
+                            onMouseDown={(e) => onMouseDown(e, "mouse")}
+                            onTouchStart={(e) => onMouseDown(e, "touch")}
+                        />
                     </span>
-                }
+                )}
             </div>
-        )
+        );
     });
 }

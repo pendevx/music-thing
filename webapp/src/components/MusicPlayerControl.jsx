@@ -80,25 +80,37 @@ function _MusicPlayerControl({ onplay }, ref) {
 
     return (
         <div className="bg-black">
-            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
+            <audio
+                ref={ref}
+                onTimeUpdate={timeUpdateHandler}
+                onEnded={musicEndHandler}
+                onPlay={onplay}
+                crossOrigin="anonymous"
+                loop={musicContext.playBehaviour === "loop"}
+            />
 
-            <div className="w-full h-16 flex overflow-hidden items-center gap-2 text-white pl-4 pr-4 border-t-[1px] border-gray-900 border-solid bg-zinc-900">
-                <p className="basis-40 desktop:basis-60 overflow-hidden border-r-[1px] border-slate-600 border-dotted h-full flex items-center text-nowrap overflow-ellipsis">{musicContext.songName()}</p>
-
-                <div className="hover:bg-gray-800 h-[60%] aspect-square flex justify-center items-center rounded-[50%] cursor-pointer transition-color duration-300" 
+            <div className="flex h-16 w-full items-center gap-2 overflow-hidden border-t-[1px] border-solid border-gray-900 bg-zinc-900 pl-4 pr-4 text-white">
+                <p className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 desktop:basis-60">
+                    {musicContext.songName()}
+                </p>
+                <div
+                    className="transition-color flex aspect-square h-[60%] cursor-pointer items-center justify-center rounded-[50%] duration-300 hover:bg-gray-800"
                     onClick={handlePlayPause}
                 >
-                    {musicContext.isPlaying ?
-                        <MusicPausedSvg /> :
-                        <div className="border-l-white border-solid w-0 border-transparent border-[0.7em] translate-x-[30%]" />}
+                    {musicContext.isPlaying ? (
+                        <MusicPausedSvg />
+                    ) : (
+                        <div className="w-0 translate-x-[30%] border-[0.7em] border-solid border-transparent border-l-white" />
+                    )}
                 </div>
-
                 <div className="grow mobile:hidden tablet:block">
-                    <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />
+                    <MusicProgressBar
+                        songDurationSecs={songDurationSecs}
+                        currentTime={audioTime}
+                        onFastForward={fastforwardHandler}
+                    />
                 </div>
-
                 {time} / {totalDuration}
-
                 <LoopShuffleControl />
             </div>
         </div>

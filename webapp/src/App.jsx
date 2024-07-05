@@ -1,10 +1,15 @@
-import { MusicPlayerControl, MusicItem, FrequencyGraph, createScrollable } from "./components";
-import React from "react";
-import { MusicContext } from "./contexts";
-import { SongList } from "./icons";
+import {
+    MusicPlayerControl,
+    MusicItem,
+    FrequencyGraph,
+    createScrollable,
+} from "./components"
+import React from "react"
+import { MusicContext } from "./contexts"
+import { SongList } from "./icons"
 
-const Songlist = createScrollable();
-const Lyrics = createScrollable();
+const Songlist = createScrollable()
+const Lyrics = createScrollable()
 
 const lyrics = [
     "Lorem ipsum dolor sit amet.",
@@ -106,65 +111,91 @@ const lyrics = [
     "Obcaecati distinctio pariatur esse ad!",
     "Ut numquam maxime suscipit at!",
     "Aliquid exercitationem voluptas obcaecati unde.",
-    "Perferendis adipisci magni soluta similique!"
+    "Perferendis adipisci magni soluta similique!",
 ]
 
 export default function App() {
-    const [showSonglist, setShowSonglist] = React.useState(true);
-    const audioRef = React.useRef(null);
-    const bodyRef = React.useRef(null);
-    const songlistRef = React.useRef(null);
-    const musicContext = React.useContext(MusicContext);
+    const [showSonglist, setShowSonglist] = React.useState(true)
+    const audioRef = React.useRef(null)
+    const bodyRef = React.useRef(null)
+    const songlistRef = React.useRef(null)
+    const musicContext = React.useContext(MusicContext)
 
     function onSongSelect(index) {
-        musicContext.selectSongAndPlay(index);
+        musicContext.selectSongAndPlay(index)
     }
 
     function onKeyDown(e) {
-
         switch (e.key) {
             case " ": {
-                e.preventDefault();
+                e.preventDefault()
 
                 if (musicContext.currentSong.key == null) {
-                    musicContext.next();
+                    musicContext.next()
                 } else {
-                    musicContext.isPlaying ? musicContext.pause() : musicContext.play();
+                    musicContext.isPlaying
+                        ? musicContext.pause()
+                        : musicContext.play()
                 }
-                break;
+                break
             }
         }
     }
 
     return (
-        <div className="font-sans h-full flex flex-col fixed inset-0 justify-between" onKeyDown={onKeyDown} tabIndex={0}>
-            <div className="overflow-hidden mt-4">
-                <div ref={bodyRef} className="flex relative max-h-full justify-end w-full laptop:w-[133.33333%] desktop:w-[125%] r-0 laptop:right-[33.33333%] desktop:right-[25%]">
-                    <Songlist ref={songlistRef} className={`absolute z-10 bg-black inset-0 laptop:relative -translate-x-full laptop:translate-x-0 laptop:flex laptop:w-1/4 desktop:w-1/5 laptop:grow-0 laptop:pr-0 px-4 transition-all duration-1000
-                        ${showSonglist && "translate-x-0"}`}
+        <div
+            className="fixed inset-0 flex h-full flex-col justify-between font-sans"
+            onKeyDown={onKeyDown}
+            tabIndex={0}
+        >
+            <div className="mt-4 overflow-hidden">
+                <div
+                    ref={bodyRef}
+                    className="r-0 relative flex max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]"
+                >
+                    <Songlist
+                        ref={songlistRef}
+                        className={`absolute inset-0 z-10 -translate-x-full bg-black px-4 transition-all duration-1000 laptop:relative laptop:flex laptop:w-1/4 laptop:grow-0 laptop:translate-x-0 laptop:pr-0 desktop:w-1/5 ${showSonglist && "translate-x-0"}`}
                     >
                         <div className="transition-transform duration-1000">
                             <ul>
-                                {musicContext.musicList.map((x, i) =>
-                                    <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
-                                )}
+                                {musicContext.musicList.map((x, i) => (
+                                    <MusicItem
+                                        key={x.etag}
+                                        id={x.etag}
+                                        onClick={onSongSelect}
+                                        index={i}
+                                        name={
+                                            /\/(?<filename>.*)\.mp3$/gi.exec(
+                                                x.key
+                                            )?.groups?.filename
+                                        }
+                                    />
+                                ))}
                             </ul>
                         </div>
                     </Songlist>
 
-                    <Lyrics className={`flex w-full laptop:w-2/4 desktop:w-3/5 text-white text-center laptop:grow-0 transition-all duration-1000 laptop:pl-0 px-4 relative
-                        ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`} showScroller={false}
+                    <Lyrics
+                        className={`relative flex w-full px-4 text-center text-white transition-all duration-1000 laptop:w-2/4 laptop:grow-0 laptop:pl-0 desktop:w-3/5 ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`}
+                        showScroller={false}
                     >
-                        {lyrics.map((line, i) => <p key={i} className="mb-5">{line}</p>)}
+                        {lyrics.map((line, i) => (
+                            <p key={i} className="mb-5">
+                                {line}
+                            </p>
+                        ))}
 
-                        <div className="hidden laptop:flex absolute top-0 bottom-0 left-1 my-auto w-8 h-8 bg-[#0f0f0f] justify-center items-center"
+                        <div
+                            className="absolute bottom-0 left-1 top-0 my-auto hidden h-8 w-8 items-center justify-center bg-[#0f0f0f] laptop:flex"
                             onClick={() => setShowSonglist(!showSonglist)}
                         >
                             <SongList />
                         </div>
                     </Lyrics>
 
-                    <div className={`flex laptop:hidden fixed z-20 my-auto w-12 h-12 bg-[#0f0f0f] justify-center items-center transition-all duration-1000 ${showSonglist ? "top-8 right-8" : "top-2 right-2"}`}
+                    <div
+                        className={`fixed z-20 my-auto flex h-12 w-12 items-center justify-center bg-[#0f0f0f] transition-all duration-1000 laptop:hidden ${showSonglist ? "right-8 top-8" : "right-6 top-6"}`}
                         onClick={() => setShowSonglist(!showSonglist)}
                     >
                         <SongList />

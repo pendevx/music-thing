@@ -1,7 +1,27 @@
 import React from "react";
 
+function getEventYPos(e) {
+    return e.touches ? e.touches[0].clientY : e.clientY;
+}
+
+function getEvents(type) {
+    return {
+        touch: {
+            move: "touchmove",
+            end: "touchend",
+            cancel: "touchcancel",
+        },
+        mouse: {
+            move: "mousemove",
+            end: "mouseup",
+            cancel: "mouseleave",
+        },
+    }[type];
+}
+
 export default function createScrollable() {
     let mousedownY = 0;
+    let scrollType = "";
 
     return React.forwardRef(function Scrollable({ className, children, showScroller = true }, ref) {
         const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
@@ -35,44 +55,32 @@ export default function createScrollable() {
             return scrollPercentage * (containerRef.current?.clientHeight - scrollbarHeight) || 0;
         }
 
-        function onScroll() {
+        function onContainerScroll() {
             const currentDistancePercentage = containerRef.current.scrollTop / (contentRef.current.scrollHeight - containerRef.current.clientHeight);
             setScrollPercentage(currentDistancePercentage);
         }
 
-        function onMouseDown(e, type) {
-            if (type === "touch") {
-                mousedownY = e.touches[0].clientY - containerRef.current.getBoundingClientRect().top - scrollbarTop();
-                document.body.addEventListener("touchmove", onTouchMove);
-                document.body.addEventListener("touchup", onTouchEnd);
-                document.body.addEventListener("touchcancel", onTouchEnd);
-            } else {
-                mousedownY = e.clientY - containerRef.current.getBoundingClientRect().top - scrollbarTop();
-                document.body.addEventListener("mousemove", onMouseMove);
-                document.body.addEventListener("mouseup", onMouseUp);
-                document.body.addEventListener("mouseleave", onMouseUp);
-            }
+        function onScrollStart(e, type) {
+            mousedownY = getEventYPos(e) - containerRef.current.getBoundingClientRect().top - scrollbarTop();
+            scrollType = type;
+
+            const { move, end, cancel } = getEvents(scrollType);
+
+            document.body.addEventListener(move, onScrollMove);
+            document.body.addEventListener(end, onScrollEnd);
+            document.body.addEventListener(cancel, onScrollEnd);
+
             setScrolling(true);
         }
 
-        function onTouchMove(e) {
+        function onScrollMove(e) {
             const bottomHeight = containerRef.current.scrollHeight - containerRef.current.clientHeight;
             const totalDistance = containerRef.current.clientHeight - scrollbarHeight;
-            let nextScrollPercentage;
-            let nextScrollTop;
+            const distanceFromOrigin = getEventYPos(e) - containerRef.current.getBoundingClientRect().top - mousedownY;
+            const currentDistancePercentage = distanceFromOrigin / totalDistance;
+            const nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
 
-            if (containerRef.current.scrollTop <= 0 && e.touches[0].clientY <= 0) {
-                nextScrollPercentage = 0;
-                nextScrollTop = 0;
-            } else if (containerRef.current.scrollTop >= bottomHeight && e.touches[0].clientY >= 0) {
-                nextScrollPercentage = 1;
-                nextScrollTop = bottomHeight;
-            } else {
-                const distanceFromOrigin = e.touches[0].clientY - containerRef.current.getBoundingClientRect().top - mousedownY;
-                const currentDistancePercentage = distanceFromOrigin / totalDistance;
-                nextScrollPercentage = currentDistancePercentage;
-                nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
-            }
+            let nextScrollPercentage = currentDistancePercentage;
 
             if (nextScrollTop < 0) {
                 nextScrollPercentage = 0;
@@ -84,54 +92,20 @@ export default function createScrollable() {
             containerRef.current.scrollTop = nextScrollTop;
         }
 
-        function onMouseMove(e) {
-            const bottomHeight = containerRef.current.scrollHeight - containerRef.current.clientHeight;
-            const totalDistance = containerRef.current.clientHeight - scrollbarHeight;
-            let nextScrollPercentage;
-            let nextScrollTop;
+        function onScrollEnd() {
+            const { move, end, cancel } = getEvents(scrollType);
 
-            if (containerRef.current.scrollTop <= 0 && e.movementY <= 0) {
-                nextScrollPercentage = 0;
-                nextScrollTop = 0;
-            } else if (containerRef.current.scrollTop >= bottomHeight && e.movementY >= 0) {
-                nextScrollPercentage = 1;
-                nextScrollTop = bottomHeight;
-            } else {
-                const distanceFromOrigin = e.clientY - containerRef.current.getBoundingClientRect().top - mousedownY;
-                const currentDistancePercentage = distanceFromOrigin / totalDistance;
-                nextScrollPercentage = currentDistancePercentage;
-                nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
-            }
+            document.body.removeEventListener(move, onScrollMove);
+            document.body.removeEventListener(end, onScrollEnd);
+            document.body.removeEventListener(cancel, onScrollEnd);
 
-            if (nextScrollTop < 0) {
-                nextScrollPercentage = 0;
-            } else if (nextScrollTop > bottomHeight) {
-                nextScrollPercentage = 1;
-            }
-
-            setScrollPercentage(nextScrollPercentage);
-            containerRef.current.scrollTop = nextScrollTop;
-        }
-
-        function onTouchEnd() {
             setScrolling(false);
-
-            document.body.removeEventListener("touchmove", onTouchMove);
-            document.body.removeEventListener("touchup", onTouchEnd);
-            document.body.removeEventListener("touchcancel", onTouchEnd);
-        }
-
-        function onMouseUp() {
-            setScrolling(false);
-
-            document.body.removeEventListener("mousemove", onMouseMove);
-            document.body.removeEventListener("mouseup", onMouseUp);
-            document.body.removeEventListener("mouseleave", onMouseUp);
+            scrollType = "";
         }
 
         return (
             <div ref={ref} className={`${className} flex grow gap-2`}>
-                <div ref={containerRef} className="grow overflow-auto" onScroll={onScroll}>
+                <div ref={containerRef} className="grow overflow-auto" onScroll={onContainerScroll}>
                     <div ref={contentRef}>{children}</div>
                 </div>
 
@@ -144,8 +118,8 @@ export default function createScrollable() {
                                 height: scrollbarHeight || 0,
                                 top: scrollbarTop(),
                             }}
-                            onMouseDown={(e) => onMouseDown(e, "mouse")}
-                            onTouchStart={(e) => onMouseDown(e, "touch")}
+                            onMouseDown={e => onScrollStart(e, "mouse")}
+                            onTouchStart={e => onScrollStart(e, "touch")}
                         />
                     </span>
                 )}

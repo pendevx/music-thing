@@ -1,11 +1,10 @@
-import { MusicPlayerControl, MusicItem, FrequencyGraph, Lyrics } from "./components";
+import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 import { SongList } from "./icons";
-import Scrollable from "./components/Scrollable";
 
-const lyrics = `[ti]把回忆拼好给你
-[ar]王贰浪
+const lyrics = `[00:00.00]把回忆拼好给你
+[00:05.00]王贰浪
 [00:27.80]我们之间的回忆
 [00:30.55]全部都小心地收集
 [00:33.67]我总是偷偷地哭泣
@@ -91,17 +90,38 @@ const lyrics = `[ti]把回忆拼好给你
 [05:21.82]为何一切，变得如此，无法回到过去
 [05:27.80]但我仍愿意感谢你给过我爱情
 [05:30.63]每一场风景都是我们爱的证明
-[05:33.61]就算如今，天各一方，把回忆拼好给你`.split("\n");
+[05:33.61]就算如今，天各一方，把回忆拼好给你`
+    .split("\n")
+    .map(x => {
+        const regex = /\[(\d{2}):(\d{2})\.(\d{2})?\](.*)/gi;
+        const match = regex.exec(x);
+
+        return {
+            time: +match[1] * 60 + +match[2] + +match[3] / 1000,
+            words: match[4],
+        };
+    });
 
 export default function App() {
     const [showSonglist, setShowSonglist] = React.useState(true);
+    const [bodyHeight, setBodyHeight] = React.useState(0);
     const audioRef = React.useRef(null);
     const bodyRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
-    function onSongSelect(index) {
-        musicContext.selectSongAndPlay(index);
-    }
+    React.useEffect(function () {
+        function resizeHandler() {
+            setBodyHeight(bodyRef.current.clientHeight);
+        }
+
+        resizeHandler();
+
+        window.addEventListener("resize", resizeHandler);
+
+        return function () {
+            window.removeEventListener("resize", resizeHandler);
+        };
+    }, []);
 
     function onKeyDown(e) {
         switch (e.key) {
@@ -122,26 +142,8 @@ export default function App() {
         <div className="fixed inset-0 flex h-full flex-col justify-between font-sans" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="mt-4 overflow-hidden">
                 <div ref={bodyRef} className="r-0 relative flex max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">
-                    <Scrollable
-                        className={`absolute inset-0 z-10 -translate-x-full bg-black px-4 transition-all duration-1000 laptop:relative laptop:flex laptop:w-1/4 laptop:grow-0 laptop:translate-x-0 laptop:pr-0 desktop:w-1/5 ${showSonglist && "translate-x-0"}`}>
-                        <div className="transition-transform duration-1000">
-                            <ul>
-                                {musicContext.musicList.map((x, i) => (
-                                    <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
-                                ))}
-                            </ul>
-                        </div>
-                    </Scrollable>
-
-                    <Scrollable
-                        className={`relative flex w-full px-4 text-center text-white transition-all duration-1000 laptop:w-2/4 laptop:grow-0 laptop:pl-0 desktop:w-3/5 ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`}
-                        showScroller={false}>
-                        <Lyrics lyrics={lyrics} />
-
-                        <div className="absolute bottom-0 left-1 top-0 my-auto hidden h-8 w-8 items-center justify-center bg-[#0f0f0f] laptop:flex" onClick={() => setShowSonglist(!showSonglist)}>
-                            <SongList />
-                        </div>
-                    </Scrollable>
+                    <MusicList />
+                    <Lyrics lyrics={lyrics} height={bodyHeight / 2} showSonglist={showSonglist} toggleShowSonglist={() => setShowSonglist(!showSonglist)} />
 
                     <div
                         className={`fixed z-20 my-auto flex h-12 w-12 items-center justify-center bg-[#0f0f0f] transition-all duration-1000 laptop:hidden ${showSonglist ? "right-8 top-8" : "right-6 top-6"}`}

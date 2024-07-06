@@ -1,6 +1,6 @@
 import singleton from "./singleton";
 
-class _AudioAnalyzer {
+class AudioAnalyzer {
     constructor(audio) {
         const audioCtx = new AudioContext();
         const input = audioCtx.createMediaElementSource(audio);
@@ -22,4 +22,4 @@ class _AudioAnalyzer {
     }
 }
 
-export default singleton(_AudioAnalyzer);
+export default singleton(AudioAnalyzer);

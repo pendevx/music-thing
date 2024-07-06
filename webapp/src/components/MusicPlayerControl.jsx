@@ -2,6 +2,7 @@ import { LoopShuffleControl, createMusicProgressBar } from "./";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg } from "../icons";
+import messageBus from "../utils/MessageBus";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
 const formatTime = seconds => twoSpacePadding(seconds / 60) + ":" + twoSpacePadding(seconds % 60);
@@ -18,6 +19,8 @@ function MusicPlayerControl({ onplay }, ref) {
     function timeUpdateHandler() {
         setTime(formatTime(ref?.current.currentTime));
         setAudioTime(ref?.current.currentTime);
+
+        messageBus.publish("audioTimeUpdate", ref?.current.currentTime);
     }
 
     function fastforwardHandler(secs) {

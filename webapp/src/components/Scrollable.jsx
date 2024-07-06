@@ -3,7 +3,7 @@ import { getEventYPos, getEvents } from "../utils/eventUtils";
 
 export default function createScrollable() {
     let mousedownY = 0;
-    let scrollType = "";
+    // let scrollType = "";
 
     return React.forwardRef(function Scrollable({ className, children, showScroller = true }, ref) {
         const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
@@ -44,8 +44,6 @@ export default function createScrollable() {
 
         function onScrollStart(e, type) {
             mousedownY = getEventYPos(e) - containerRef.current.getBoundingClientRect().top - scrollbarTop();
-            scrollType = type;
-
             const { move, end, cancel } = getEvents(type);
 
             document.body.addEventListener(move, onScrollMove);
@@ -53,35 +51,33 @@ export default function createScrollable() {
             document.body.addEventListener(cancel, onScrollEnd);
 
             setScrolling(true);
-        }
 
-        function onScrollMove(e) {
-            const bottomHeight = containerRef.current.scrollHeight - containerRef.current.clientHeight;
-            const totalDistance = containerRef.current.clientHeight - scrollbarHeight;
-            const distanceFromOrigin = getEventYPos(e) - containerRef.current.getBoundingClientRect().top - mousedownY;
-            const currentDistancePercentage = distanceFromOrigin / totalDistance;
-            const nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
+            function onScrollMove(e) {
+                const bottomHeight = containerRef.current.scrollHeight - containerRef.current.clientHeight;
+                const totalDistance = containerRef.current.clientHeight - scrollbarHeight;
+                const distanceFromOrigin = getEventYPos(e) - containerRef.current.getBoundingClientRect().top - mousedownY;
+                const currentDistancePercentage = distanceFromOrigin / totalDistance;
+                const nextScrollTop = currentDistancePercentage * (contentRef.current.scrollHeight - containerRef.current.clientHeight);
 
-            let nextScrollPercentage = currentDistancePercentage;
+                let nextScrollPercentage = currentDistancePercentage;
 
-            if (nextScrollTop < 0) {
-                nextScrollPercentage = 0;
-            } else if (nextScrollTop > bottomHeight) {
-                nextScrollPercentage = 1;
+                if (nextScrollTop < 0) {
+                    nextScrollPercentage = 0;
+                } else if (nextScrollTop > bottomHeight) {
+                    nextScrollPercentage = 1;
+                }
+
+                setScrollPercentage(nextScrollPercentage);
+                containerRef.current.scrollTop = nextScrollTop;
             }
 
-            setScrollPercentage(nextScrollPercentage);
-            containerRef.current.scrollTop = nextScrollTop;
-        }
+            function onScrollEnd() {
+                document.body.removeEventListener(move, onScrollMove);
+                document.body.removeEventListener(end, onScrollEnd);
+                document.body.removeEventListener(cancel, onScrollEnd);
 
-        function onScrollEnd() {
-            const { move, end, cancel } = getEvents(scrollType);
-
-            document.body.removeEventListener(move, onScrollMove);
-            document.body.removeEventListener(end, onScrollEnd);
-            document.body.removeEventListener(cancel, onScrollEnd);
-
-            setScrolling(false);
+                setScrolling(false);
+            }
         }
 
         return (

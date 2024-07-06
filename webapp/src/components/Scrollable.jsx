@@ -1,7 +1,7 @@
 import React from "react";
 import { getEventYPos, getEvents } from "../utils/eventUtils";
 
-function Scrollable({ className, children, showScroller = true }, ref) {
+export default function Scrollable({ className, children, showScroller = true }) {
     const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
     const [scrollbarHeight, setScrollbarHeight] = React.useState(0);
     const [scrolling, setScrolling] = React.useState(false);
@@ -77,7 +77,7 @@ function Scrollable({ className, children, showScroller = true }, ref) {
     }
 
     return (
-        <div ref={ref} className={`${className} flex grow gap-2`}>
+        <div className={`${className} flex grow gap-2`}>
             <div ref={containerRef} className="grow overflow-auto" onScroll={onContainerScroll}>
                 <div ref={contentRef}>{children}</div>
             </div>
@@ -99,5 +99,3 @@ function Scrollable({ className, children, showScroller = true }, ref) {
         </div>
     );
 }
-
-export default React.forwardRef(Scrollable);

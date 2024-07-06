@@ -13,16 +13,16 @@ export default function createMusicProgressBar() {
         _sliderPos = sliderPos;
         _setSliderPos = setSliderPos;
 
-        function onMouseDown(e, type) {
+        function onSeekStart(e, type) {
             const sliderRect = sliderRef.current.getBoundingClientRect();
             _setSliderPos(((getEventXPos(e) - sliderRect.left) / sliderRect.width) * songDurationSecs);
             const { move, end, cancel } = getEvents(type);
 
-            document.body.addEventListener(move, onMouseMove);
-            document.body.addEventListener(end, onMouseUp);
-            document.body.addEventListener(cancel, onMouseUp);
+            document.body.addEventListener(move, onSeekMove);
+            document.body.addEventListener(end, onSeekEnd);
+            document.body.addEventListener(cancel, onSeekEnd);
 
-            function onMouseMove(e) {
+            function onSeekMove(e) {
                 const sliderRect = sliderRef.current.getBoundingClientRect();
                 const xPos = getEventXPos(e);
 
@@ -35,20 +35,20 @@ export default function createMusicProgressBar() {
                 }
             }
 
-            function onMouseUp() {
+            function onSeekEnd() {
                 onFastForward(_sliderPos);
                 _setSliderPos(null);
 
-                document.body.removeEventListener(move, onMouseMove);
-                document.body.removeEventListener(end, onMouseUp);
-                document.body.removeEventListener(cancel, onMouseUp);
+                document.body.removeEventListener(move, onSeekMove);
+                document.body.removeEventListener(end, onSeekEnd);
+                document.body.removeEventListener(cancel, onSeekEnd);
             }
         }
 
         return (
-            <div className="relative block h-3 w-full" ref={sliderRef} onMouseDown={e => onMouseDown(e, "mouse")} onTouchStart={e => onMouseDown(e, "touch")}>
+            <div className="relative block h-3 w-full" ref={sliderRef} onMouseDown={e => onSeekStart(e, "mouse")} onTouchStart={e => onSeekStart(e, "touch")}>
                 <div className={`${commonStyles} left-0 h-1 w-full bg-gray-400`} />
-                <div className={`${commonStyles} left-0 h-1 bg-[#cea127]`} style={{ width: `${(sliderPos != null ? sliderPos / songDurationSecs : currentTime / songDurationSecs) * 100}%` }}>
+                <div className={`${commonStyles} left-0 h-1 bg-[#cea127]`} style={{ width: `${((sliderPos != null ? sliderPos : currentTime) / songDurationSecs) * 100}%` }}>
                     <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} right-0 h-3 w-1 translate-x-1/2 bg-inherit duration-200 hover:w-3 hover:rounded-[50%]`} />
                 </div>
             </div>

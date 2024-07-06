@@ -1,10 +1,8 @@
-import { MusicPlayerControl, MusicItem, FrequencyGraph, createScrollable } from "./components";
+import { MusicPlayerControl, MusicItem, FrequencyGraph } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 import { SongList } from "./icons";
-
-const Songlist = createScrollable();
-const Lyrics = createScrollable();
+import Scrollable from "./components/Scrollable";
 
 const lyrics = [
     "Lorem ipsum dolor sit amet.",
@@ -113,7 +111,6 @@ export default function App() {
     const [showSonglist, setShowSonglist] = React.useState(true);
     const audioRef = React.useRef(null);
     const bodyRef = React.useRef(null);
-    const songlistRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
     function onSongSelect(index) {
@@ -139,8 +136,7 @@ export default function App() {
         <div className="fixed inset-0 flex h-full flex-col justify-between font-sans" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="mt-4 overflow-hidden">
                 <div ref={bodyRef} className="r-0 relative flex max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">
-                    <Songlist
-                        ref={songlistRef}
+                    <Scrollable
                         className={`absolute inset-0 z-10 -translate-x-full bg-black px-4 transition-all duration-1000 laptop:relative laptop:flex laptop:w-1/4 laptop:grow-0 laptop:translate-x-0 laptop:pr-0 desktop:w-1/5 ${showSonglist && "translate-x-0"}`}>
                         <div className="transition-transform duration-1000">
                             <ul>
@@ -149,9 +145,9 @@ export default function App() {
                                 ))}
                             </ul>
                         </div>
-                    </Songlist>
+                    </Scrollable>
 
-                    <Lyrics
+                    <Scrollable
                         className={`relative flex w-full px-4 text-center text-white transition-all duration-1000 laptop:w-2/4 laptop:grow-0 laptop:pl-0 desktop:w-3/5 ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`}
                         showScroller={false}>
                         {lyrics.map((line, i) => (
@@ -163,7 +159,7 @@ export default function App() {
                         <div className="absolute bottom-0 left-1 top-0 my-auto hidden h-8 w-8 items-center justify-center bg-[#0f0f0f] laptop:flex" onClick={() => setShowSonglist(!showSonglist)}>
                             <SongList />
                         </div>
-                    </Lyrics>
+                    </Scrollable>
 
                     <div
                         className={`fixed z-20 my-auto flex h-12 w-12 items-center justify-center bg-[#0f0f0f] transition-all duration-1000 laptop:hidden ${showSonglist ? "right-8 top-8" : "right-6 top-6"}`}

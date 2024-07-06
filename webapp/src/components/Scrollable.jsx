@@ -64,7 +64,7 @@ export default function createScrollable() {
             mousedownY = getEventYPos(e) - containerRef.current.getBoundingClientRect().top - scrollbarTop();
             scrollType = type;
 
-            const { move, end, cancel } = getEvents(scrollType);
+            const { move, end, cancel } = getEvents(type);
 
             document.body.addEventListener(move, onScrollMove);
             document.body.addEventListener(end, onScrollEnd);
@@ -100,7 +100,6 @@ export default function createScrollable() {
             document.body.removeEventListener(cancel, onScrollEnd);
 
             setScrolling(false);
-            scrollType = "";
         }
 
         return (

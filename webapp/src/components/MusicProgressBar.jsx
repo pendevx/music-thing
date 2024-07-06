@@ -15,7 +15,7 @@ export default function createMusicProgressBar() {
         function onMouseDown(e) {
             const sliderRect = sliderRef.current.getBoundingClientRect();
 
-            _setSliderPos((e.clientX - sliderRect.left) / sliderRect.width * songDurationSecs);
+            _setSliderPos(((e.clientX - sliderRect.left) / sliderRect.width) * songDurationSecs);
 
             document.body.addEventListener("mousemove", onMouseMove);
             document.body.addEventListener("mouseup", onMouseUp);
@@ -30,7 +30,7 @@ export default function createMusicProgressBar() {
             } else if (e.clientX > sliderRect.right) {
                 _setSliderPos(songDurationSecs);
             } else {
-                _setSliderPos((e.clientX - sliderRect.left) / sliderRect.width * songDurationSecs);
+                _setSliderPos(((e.clientX - sliderRect.left) / sliderRect.width) * songDurationSecs);
             }
         }
 
@@ -44,13 +44,12 @@ export default function createMusicProgressBar() {
         }
 
         return (
-            <div className="w-full block relative h-3" ref={sliderRef} onMouseDown={onMouseDown}>
-                <div className={`${commonStyles} h-1 bg-gray-400 left-0 w-full`} />
-                <div className={`${commonStyles} h-1 bg-[#cea127] left-0`}
-                    style={{ width: `${(sliderPos != null ? sliderPos / songDurationSecs : currentTime / songDurationSecs) * 100}%` }}>
-                    <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} h-3 bg-inherit right-0 w-1 hover:w-3 hover:rounded-[50%] translate-x-1/2 duration-200`} />
+            <div className="relative block h-3 w-full" ref={sliderRef} onMouseDown={onMouseDown}>
+                <div className={`${commonStyles} left-0 h-1 w-full bg-gray-400`} />
+                <div className={`${commonStyles} left-0 h-1 bg-[#cea127]`} style={{ width: `${(sliderPos != null ? sliderPos / songDurationSecs : currentTime / songDurationSecs) * 100}%` }}>
+                    <i className={`${commonStyles} ${sliderPos != null ? "w-3 rounded-[50%]" : ""} right-0 h-3 w-1 translate-x-1/2 bg-inherit duration-200 hover:w-3 hover:rounded-[50%]`} />
                 </div>
             </div>
-        )
-    }
+        );
+    };
 }

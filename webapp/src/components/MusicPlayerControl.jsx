@@ -8,7 +8,7 @@ const formatTime = seconds => twoSpacePadding(seconds / 60) + ":" + twoSpacePadd
 
 const MusicProgressBar = createMusicProgressBar();
 
-function _MusicPlayerControl({ onplay }, ref) {
+function MusicPlayerControl({ onplay }, ref) {
     const [time, setTime] = React.useState("--:--");
     const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
@@ -103,4 +103,4 @@ function _MusicPlayerControl({ onplay }, ref) {
     );
 }
 
-export const MusicPlayerControl = React.forwardRef(_MusicPlayerControl);
+export default React.forwardRef(MusicPlayerControl);

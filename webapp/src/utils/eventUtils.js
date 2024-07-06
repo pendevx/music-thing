@@ -7,7 +7,7 @@ export function getEventYPos(e) {
 }
 
 export function getEvents(type) {
-    return {
+    const map = {
         touch: {
             move: "touchmove",
             end: "touchend",
@@ -18,5 +18,9 @@ export function getEvents(type) {
             end: "mouseup",
             cancel: "mouseleave",
         },
-    }[type];
+    };
+
+    if (!(type in map)) throw new Error("Invalid event type");
+
+    return map[type];
 }

@@ -1,0 +1,22 @@
+export function getEventXPos(e) {
+    return e.touches?.[0].clientX || e.clientX;
+}
+
+export function getEventYPos(e) {
+    return e.touches ? e.touches[0].clientY : e.clientY;
+}
+
+export function getEvents(type) {
+    return {
+        touch: {
+            move: "touchmove",
+            end: "touchend",
+            cancel: "touchcancel",
+        },
+        mouse: {
+            move: "mousemove",
+            end: "mouseup",
+            cancel: "mouseleave",
+        },
+    }[type];
+}

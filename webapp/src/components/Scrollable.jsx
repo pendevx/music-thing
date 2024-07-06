@@ -1,23 +1,5 @@
 import React from "react";
-
-function getEventYPos(e) {
-    return e.touches ? e.touches[0].clientY : e.clientY;
-}
-
-function getEvents(type) {
-    return {
-        touch: {
-            move: "touchmove",
-            end: "touchend",
-            cancel: "touchcancel",
-        },
-        mouse: {
-            move: "mousemove",
-            end: "mouseup",
-            cancel: "mouseleave",
-        },
-    }[type];
-}
+import { getEventYPos, getEvents } from "../utils/eventUtils";
 
 export default function createScrollable() {
     let mousedownY = 0;

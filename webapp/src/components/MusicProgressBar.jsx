@@ -1,25 +1,7 @@
 import React from "react";
+import { getEventXPos, getEvents } from "../utils/eventUtils";
 
 const commonStyles = "absolute mt-auto mb-auto top-0 bottom-0";
-
-function getEventXPos(e) {
-    return e.touches?.[0].clientX || e.clientX;
-}
-
-function getEvents(type) {
-    return {
-        touch: {
-            move: "touchmove",
-            end: "touchend",
-            cancel: "touchcancel",
-        },
-        mouse: {
-            move: "mousemove",
-            end: "mouseup",
-            cancel: "mouseleave",
-        },
-    }[type];
-}
 
 export default function createMusicProgressBar() {
     let _sliderPos, _setSliderPos;

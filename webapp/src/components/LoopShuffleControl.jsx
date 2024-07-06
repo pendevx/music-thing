@@ -1,5 +1,5 @@
 import React from "react";
-import { MusicContext } from "../contexts";
+import { MusicContext } from "../contexts/MusicContext";
 import { CircularSvg } from "./";
 import { MusicShuffleSvg, MusicLoopSvg, MusicIconSvg } from "../icons";
 
@@ -30,10 +30,11 @@ export default function LoopShuffleControl() {
     }
 
     return (
-        <div className="hidden laptop:flex h-full items-center ml-2 relative z-10">
-            <i className={`w-full ${height} absolute bg-[#585858] rounded-[1.5rem] -z-10`} />
-            <i className={`absolute left-0 right-0 ${height} rounded-[50%] aspect-square bg-[#cea127] -z-10 transition-all duration-200 ml-auto mr-auto
-                ${playBehaviourStyles(musicContext.playBehaviour)} `}/>
+        <div className="relative z-10 ml-2 hidden h-full items-center laptop:flex">
+            <i className={`w-full ${height} absolute -z-10 rounded-[1.5rem] bg-[#585858]`} />
+            <i
+                className={`absolute left-0 right-0 ${height} -z-10 ml-auto mr-auto aspect-square rounded-[50%] bg-[#cea127] transition-all duration-200 ${playBehaviourStyles(musicContext.playBehaviour)} `}
+            />
 
             <CircularSvg className={height} onClick={() => onPlayBehaviourChange("shuffle")}>
                 <MusicShuffleSvg />
@@ -47,5 +48,5 @@ export default function LoopShuffleControl() {
                 <MusicLoopSvg />
             </CircularSvg>
         </div>
-    )
+    );
 }

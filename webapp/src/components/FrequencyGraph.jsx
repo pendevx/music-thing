@@ -1,6 +1,6 @@
-import React from 'react';
-import { MusicContext } from '../contexts';
-import { AudioAnalyzer } from '../utils/';
+import React from "react";
+import { MusicContext } from "../contexts/MusicContext";
+import AudioAnalyzer from "../utils/AudioAnalyzer";
 
 function FrequencyGraph({ audioRef }) {
     const [canvasCtx, setCanvasCtx] = React.useState(null);
@@ -22,54 +22,60 @@ function FrequencyGraph({ audioRef }) {
         setCanvasCtx(ctx);
     }, []);
 
-    React.useEffect(function() {
-        if (musicContext.isPlaying) {
-            setAudioCtx(new AudioAnalyzer(audioRef.current));
-        }
-    }, [musicContext.isPlaying])
+    React.useEffect(
+        function () {
+            if (musicContext.isPlaying) {
+                setAudioCtx(new AudioAnalyzer(audioRef.current));
+            }
+        },
+        [musicContext.isPlaying]
+    );
 
-    React.useEffect(function() {
-        if (!musicContext.isPlaying) {
-            return;
-        }
+    React.useEffect(
+        function () {
+            if (!musicContext.isPlaying) {
+                return;
+            }
 
-        let len;
-        let barWidth;
-        const totalWidth = canvas.current.width;
-        const totalHeight = canvas.current.height;
+            let len;
+            let barWidth;
+            const totalWidth = canvas.current.width;
+            const totalHeight = canvas.current.height;
 
-        function raf() {
-            requestAnimationFrame(() => {
-                if (!musicContext.isPlaying) {
-                    return;
-                }
-    
-                const freqData = audioCtx.getFreqs();
-                canvasCtx.clearRect(0, 0, totalWidth, totalHeight);
-    
-                if (len == null && barWidth == null) {
-                    len = freqData.length / 2.5;
-                    barWidth = totalWidth / len;
-                }
-    
-                for (let i = 0; i < len; i++) {
-                    canvasCtx.fillRect(barWidth * i, 0, barWidth - 2, freqData[i] / 255 * (totalHeight - 20));
-                }
-    
-                raf();
-            });
-        }
-    
-        raf();
-    }, [audioCtx]);
+            function raf() {
+                requestAnimationFrame(() => {
+                    if (!musicContext.isPlaying) {
+                        return;
+                    }
+
+                    const freqData = audioCtx.getFreqs();
+                    canvasCtx.clearRect(0, 0, totalWidth, totalHeight);
+
+                    if (len == null && barWidth == null) {
+                        len = freqData.length / 2.5;
+                        barWidth = totalWidth / len;
+                    }
+
+                    for (let i = 0; i < len; i++) {
+                        canvasCtx.fillRect(barWidth * i, 0, barWidth - 2, (freqData[i] / 255) * (totalHeight - 20));
+                    }
+
+                    raf();
+                });
+            }
+
+            raf();
+        },
+        [audioCtx]
+    );
 
     return (
         <div className="relative">
-            <canvas className="w-full h-14 block bg-black -scale-y-100" ref={canvas} />
+            <canvas className="block h-14 w-full -scale-y-100 bg-black" ref={canvas} />
             <div className="absolute inset-0 bg-[linear-gradient(to_top,#6666,#0000)]" />
-            <div className="absolute inset-0 opacity-80 mix-blend-multiply bg-rainbow" />
+            <div className="bg-rainbow absolute inset-0 opacity-80 mix-blend-multiply" />
         </div>
-    )
+    );
 }
 
 export default FrequencyGraph;

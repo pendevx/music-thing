@@ -1,6 +1,6 @@
 import { LoopShuffleControl, createMusicProgressBar } from "./";
 import React from "react";
-import { MusicContext } from "../contexts";
+import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg } from "../icons";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");

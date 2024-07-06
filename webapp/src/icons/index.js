@@ -1,13 +1,5 @@
-import MusicIconSvg from "./MusicIcon";
-import MusicLoopSvg from "./MusicLoop";
-import MusicShuffleSvg from "./MusicShuffle";
-import MusicPausedSvg from "./MusicPaused";
-import SongList from "./SongList";
-
-export {
-    MusicIconSvg,
-    MusicLoopSvg,
-    MusicShuffleSvg,
-    MusicPausedSvg,
-    SongList
-};
+export { default as MusicIconSvg } from "./MusicIcon";
+export { default as MusicLoopSvg } from "./MusicLoop";
+export { default as MusicShuffleSvg } from "./MusicShuffle";
+export { default as MusicPausedSvg } from "./MusicPaused";
+export { default as SongList } from "./SongList";

@@ -40,6 +40,17 @@ function MusicPlayerControl({ onplay }, ref) {
         musicContext.next();
     }
 
+    React.useEffect(function () {
+        messageBus.subscribe("lyricsPressed", function (time) {
+            ref.current.currentTime = time;
+            setAudioTime(time);
+        });
+
+        return function () {
+            messageBus.unSubscribe("lyricsPressed");
+        };
+    }, []);
+
     React.useEffect(
         function () {
             (async function () {

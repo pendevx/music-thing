@@ -9,6 +9,7 @@ export default function createMusicProgressBar() {
     return function MusicProgressBar({ songDurationSecs, currentTime = 0, onFastForward }) {
         const [sliderPos, setSliderPos] = React.useState(null);
         const sliderRef = React.useRef(null);
+        const typeRef = React.useRef("");
 
         _sliderPos = sliderPos;
         _setSliderPos = setSliderPos;
@@ -17,32 +18,34 @@ export default function createMusicProgressBar() {
             const sliderRect = sliderRef.current.getBoundingClientRect();
             _setSliderPos(((getEventXPos(e) - sliderRect.left) / sliderRect.width) * songDurationSecs);
             const { move, end, cancel } = getEvents(type);
+            typeRef.current = type;
 
             document.body.addEventListener(move, onSeekMove);
             document.body.addEventListener(end, onSeekEnd);
             document.body.addEventListener(cancel, onSeekEnd);
+        }
 
-            function onSeekMove(e) {
-                const sliderRect = sliderRef.current.getBoundingClientRect();
-                const xPos = getEventXPos(e);
+        function onSeekMove(e) {
+            const sliderRect = sliderRef.current.getBoundingClientRect();
+            const xPos = getEventXPos(e);
 
-                if (xPos < sliderRect.left) {
-                    _setSliderPos(0);
-                } else if (xPos > sliderRect.right) {
-                    _setSliderPos(songDurationSecs);
-                } else {
-                    _setSliderPos(((xPos - sliderRect.left) / sliderRect.width) * songDurationSecs);
-                }
+            if (xPos < sliderRect.left) {
+                _setSliderPos(0);
+            } else if (xPos > sliderRect.right) {
+                _setSliderPos(songDurationSecs);
+            } else {
+                _setSliderPos(((xPos - sliderRect.left) / sliderRect.width) * songDurationSecs);
             }
+        }
 
-            function onSeekEnd() {
-                onFastForward(_sliderPos);
-                _setSliderPos(null);
+        function onSeekEnd() {
+            onFastForward(_sliderPos);
+            _setSliderPos(null);
+            const { move, end, cancel } = getEvents(typeRef.current);
 
-                document.body.removeEventListener(move, onSeekMove);
-                document.body.removeEventListener(end, onSeekEnd);
-                document.body.removeEventListener(cancel, onSeekEnd);
-            }
+            document.body.removeEventListener(move, onSeekMove);
+            document.body.removeEventListener(end, onSeekEnd);
+            document.body.removeEventListener(cancel, onSeekEnd);
         }
 
         return (

@@ -87,7 +87,7 @@ export default function Scrollable({ className, children, showScroller = true, s
 
     return (
         <div className={`${className} flex grow gap-2`}>
-            <div ref={containerRef} className="grow overflow-auto" onScroll={onContainerScroll}>
+            <div ref={containerRef} className={`grow overflow-auto ${scrollTop && "scroll-smooth"}`} onScroll={onContainerScroll}>
                 <div ref={contentRef}>{children}</div>
             </div>
 

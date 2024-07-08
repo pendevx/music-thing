@@ -3,9 +3,9 @@ import { MusicContext } from "../contexts/MusicContext";
 import AudioAnalyzer from "../utils/AudioAnalyzer";
 
 function FrequencyGraph({ audioRef }) {
-    const [canvasCtx, setCanvasCtx] = React.useState(null);
-    const [audioCtx, setAudioCtx] = React.useState(null);
+    const audioCtx = React.useRef(null);
     const canvas = React.useRef(null);
+    const canvasCtx = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
@@ -19,23 +19,16 @@ function FrequencyGraph({ audioRef }) {
 
         ctx.fillStyle = "white";
 
-        setCanvasCtx(ctx);
+        canvasCtx.current = ctx;
     }, []);
-
-    React.useEffect(
-        function () {
-            if (musicContext.isPlaying) {
-                setAudioCtx(new AudioAnalyzer(audioRef.current));
-            }
-        },
-        [musicContext.isPlaying]
-    );
 
     React.useEffect(
         function () {
             if (!musicContext.isPlaying) {
                 return;
             }
+
+            audioCtx.current = new AudioAnalyzer(audioRef.current);
 
             let len;
             let barWidth;
@@ -48,8 +41,8 @@ function FrequencyGraph({ audioRef }) {
                         return;
                     }
 
-                    const freqData = audioCtx.getFreqs();
-                    canvasCtx.clearRect(0, 0, totalWidth, totalHeight);
+                    const freqData = audioCtx.current.getFreqs();
+                    canvasCtx.current.clearRect(0, 0, totalWidth, totalHeight);
 
                     if (len == null && barWidth == null) {
                         len = freqData.length / 2.5;
@@ -57,7 +50,7 @@ function FrequencyGraph({ audioRef }) {
                     }
 
                     for (let i = 0; i < len; i++) {
-                        canvasCtx.fillRect(barWidth * i, 0, barWidth - 2, (freqData[i] / 255) * (totalHeight - 20));
+                        canvasCtx.current.fillRect(barWidth * i, 0, barWidth - 2, (freqData[i] / 255) * (totalHeight - 20));
                     }
 
                     raf();
@@ -66,7 +59,7 @@ function FrequencyGraph({ audioRef }) {
 
             raf();
         },
-        [audioCtx]
+        [musicContext.isPlaying]
     );
 
     return (

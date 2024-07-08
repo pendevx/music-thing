@@ -1,7 +1,7 @@
 import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
-import { SongList } from "./icons";
+import { ToggleSonglist } from "./icons";
 
 export default function App() {
     const [showSonglist, setShowSonglist] = React.useState(true);
@@ -11,6 +11,9 @@ export default function App() {
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
+        const belowLaptop = matchMedia("(max-width: 768px)").matches;
+        if (belowLaptop) setShowSonglist(false);
+
         const resizeHandler = () => setBodyHeight(bodyRef.current.clientHeight);
         resizeHandler();
 
@@ -36,18 +39,16 @@ export default function App() {
         }
     }
 
+    const toggleShowSonglist = () => setShowSonglist(!showSonglist);
+
     return (
         <div className="fixed inset-0 flex h-full flex-col justify-between font-sans" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="mt-4 overflow-hidden">
                 <div ref={bodyRef} className="r-0 relative flex max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">
                     <MusicList showSonglist={showSonglist} />
-                    <Lyrics height={bodyHeight / 2} showSonglist={showSonglist} toggleShowSonglist={() => setShowSonglist(!showSonglist)} />
+                    <Lyrics height={bodyHeight / 2} showSonglist={showSonglist} toggleShowSonglist={toggleShowSonglist} />
 
-                    <div
-                        className={`fixed z-20 my-auto flex h-12 w-12 items-center justify-center bg-[#0f0f0f] transition-all duration-1000 laptop:hidden ${showSonglist ? "right-8 top-8" : "right-6 top-6"}`}
-                        onClick={() => setShowSonglist(!showSonglist)}>
-                        <SongList />
-                    </div>
+                    <ToggleSonglist onClick={toggleShowSonglist} className={`fixed z-20 my-auto laptop:hidden ${showSonglist ? "right-8 top-8" : "right-6 top-6"}`} />
                 </div>
             </div>
 

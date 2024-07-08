@@ -1,7 +1,7 @@
 import React from "react";
 import messageBus from "../utils/MessageBus";
 import Scrollable from "./Scrollable";
-import { SongList } from "../icons/";
+import { ToggleSonglist } from "../icons/";
 
 const lyrics = `[00:02.00]把回忆拼好给你
 [00:04.00]王贰浪
@@ -142,9 +142,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             className={`relative flex w-full px-4 text-center text-white transition-all duration-1000 laptop:w-2/4 laptop:grow-0 laptop:pl-0 desktop:w-3/5 ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`}
             showScroller={false}
             scrollTop={scrollTop}>
-            <div className="absolute bottom-0 left-1 top-0 my-auto hidden h-8 w-8 items-center justify-center bg-[#0f0f0f] laptop:flex" onClick={toggleShowSonglist}>
-                <SongList />
-            </div>
+            <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
 
             <div style={{ height }} />
             <div ref={lyricsListRef}>

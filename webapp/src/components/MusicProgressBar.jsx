@@ -6,7 +6,6 @@ const commonStyles = "absolute mt-auto mb-auto top-0 bottom-0";
 export default function MusicProgressBar({ songDurationSecs, currentTime = 0, onFastForward }) {
     const [seek, setSeek] = React.useState({ isSeeking: null, pos: null });
     const sliderRef = React.useRef(null);
-    const typeRef = React.useRef("");
 
     if (seek.isSeeking === false) {
         onFastForward(seek.pos);
@@ -19,7 +18,6 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
 
     function onSeekStart(e, type) {
         const { move, end, cancel } = getEvents(type);
-        typeRef.current = type;
         const sliderRect = sliderRef.current.getBoundingClientRect();
 
         document.body.addEventListener(move, onSeekMove);

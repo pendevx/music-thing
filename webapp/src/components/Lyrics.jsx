@@ -10,6 +10,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const [scrollTop, setScrollTop] = React.useState(0);
     const lineHeight = React.useRef(null);
     const lyricsListRef = React.useRef(null);
+    const timerRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(
@@ -17,6 +18,10 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             lineHeight.current = lyricsListRef.current.scrollHeight / lyrics.length;
 
             function handler(msg) {
+                if (timerRef.current != null) {
+                    return;
+                }
+
                 const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
                 if (highlightedIndex === -2) {
                     setIndex(lyrics.length - 1);
@@ -43,6 +48,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             }
 
             setLyrics([]);
+
             (async function () {
                 const { key } = musicContext.currentSong;
                 if (key.endsWith(".mp3")) {
@@ -82,13 +88,23 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         messageBus.publish("lyricsPressed", lyrics[i].time);
     }
 
+    function handleScroll() {
+        clearTimeout(timerRef.current);
+        setScrollTop(null);
+
+        timerRef.current = setTimeout(() => {
+            console.log("continue");
+            timerRef.current = null;
+        }, 1500);
+    }
+
     return (
         <Scrollable
             className={`relative flex w-full px-4 text-center text-white transition-all duration-1000 laptop:w-2/4 laptop:grow-0 laptop:pl-0 desktop:w-3/5 ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`}
             showScroller={false}
-            scrollTop={scrollTop}>
+            scrollTop={scrollTop}
+            onScroll={handleScroll}>
             <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
-
             <div style={{ height }} />
             <div ref={lyricsListRef}>
                 {lyrics.map(({ words }, i) => (

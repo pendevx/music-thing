@@ -1,7 +1,7 @@
 import React from "react";
 import { getEventYPos, getEvents } from "../utils/eventUtils";
 
-export default function Scrollable({ className, children, showScroller = true, scrollTop }) {
+export default function Scrollable({ className, children, showScroller = true, scrollTop, onScroll }) {
     const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
     const [scrollbarHeight, setScrollbarHeight] = React.useState(0);
     const [scrolling, setScrolling] = React.useState(false);
@@ -45,6 +45,7 @@ export default function Scrollable({ className, children, showScroller = true, s
     function onContainerScroll() {
         const currentDistancePercentage = containerRef.current.scrollTop / (contentRef.current.scrollHeight - containerRef.current.clientHeight);
         setScrollPercentage(currentDistancePercentage);
+        onScroll();
     }
 
     function onScrollStart(e, type) {
@@ -74,6 +75,8 @@ export default function Scrollable({ className, children, showScroller = true, s
 
             setScrollPercentage(nextScrollPercentage);
             containerRef.current.scrollTop = nextScrollTop;
+
+            onScroll();
         }
 
         function onScrollEnd() {
@@ -87,7 +90,7 @@ export default function Scrollable({ className, children, showScroller = true, s
 
     return (
         <div className={`${className} flex grow gap-2`}>
-            <div ref={containerRef} className={`grow overflow-auto ${scrollTop && "scroll-smooth"}`} onScroll={onContainerScroll}>
+            <div ref={containerRef} className={`grow overflow-auto ${scrollTop && "scroll-smooth"}`} onWheel={onContainerScroll} onTouchMove={onScroll}>
                 <div ref={contentRef}>{children}</div>
             </div>
 

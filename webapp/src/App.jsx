@@ -40,7 +40,7 @@ export default function App() {
         <div className="fixed inset-0 flex h-full flex-col justify-between font-sans" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="mt-4 overflow-hidden">
                 <div ref={bodyRef} className="r-0 relative flex max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">
-                    <MusicList />
+                    <MusicList showSonglist={showSonglist} />
                     <Lyrics height={bodyHeight / 2} showSonglist={showSonglist} toggleShowSonglist={() => setShowSonglist(!showSonglist)} />
 
                     <div

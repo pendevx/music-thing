@@ -1,10 +1,8 @@
-import { LoopShuffleControl } from "./";
+import { LoopShuffleControl, MusicProgressBar } from "./";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg } from "../icons";
 import messageBus from "../utils/MessageBus";
-
-import MusicProgressBar from "./MusicProgressBar";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
 const formatTime = seconds => twoSpacePadding(seconds / 60) + ":" + twoSpacePadding(seconds % 60);

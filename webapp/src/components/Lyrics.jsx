@@ -12,29 +12,36 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const lyricsListRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
-    React.useEffect(function () {
-        lineHeight.current = lyricsListRef.current.scrollHeight / lyrics.length;
+    React.useEffect(
+        function () {
+            lineHeight.current = lyricsListRef.current.scrollHeight / lyrics.length;
 
-        function handler(msg) {
-            const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
-            if (highlightedIndex === -2) {
-                setIndex(lyrics.length - 1);
-                setScrollTop(lyrics.length * lineHeight.current);
-            } else {
-                setIndex(highlightedIndex);
-                setScrollTop(highlightedIndex * lineHeight.current);
+            function handler(msg) {
+                const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
+                if (highlightedIndex === -2) {
+                    setIndex(lyrics.length - 1);
+                    setScrollTop(lyrics.length * lineHeight.current);
+                } else {
+                    setIndex(highlightedIndex);
+                    setScrollTop(highlightedIndex * lineHeight.current);
+                }
             }
-        }
 
-        messageBus.subscribe("audioTimeUpdate", handler);
+            messageBus.subscribe("audioTimeUpdate", handler);
 
-        return function () {
-            messageBus.unSubscribe("audioTimeUpdate", handler);
-        };
-    }, []);
+            return function () {
+                messageBus.unSubscribe("audioTimeUpdate", handler);
+            };
+        },
+        [lyrics]
+    );
 
     React.useEffect(
         function () {
+            if (musicContext.currentSong.key == null) {
+                return;
+            }
+
             setLyrics([]);
             (async function () {
                 const { key } = musicContext.currentSong;
@@ -42,6 +49,10 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                     const lyricsUrl = key.replace(".mp3", ".lrc");
                     try {
                         const data = await fetch(import.meta.env.VITE_FILE_URL + lyricsUrl);
+                        if (!data.ok) {
+                            throw new Error();
+                        }
+
                         const text = await data.text();
 
                         const lyrics = text.split("\n").map(x => {

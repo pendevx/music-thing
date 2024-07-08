@@ -12,4 +12,6 @@ Media Session API
 
 start some lyrics
 
-file uploading interface
+song + lrc uploading interface
+
+theme customization per- user/device

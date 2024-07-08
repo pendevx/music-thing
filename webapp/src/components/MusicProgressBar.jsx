@@ -7,14 +7,19 @@ export default function MusicProgressBar({ songDurationSecs, currentTime = 0, on
     const [seek, setSeek] = React.useState({ isSeeking: null, pos: null });
     const sliderRef = React.useRef(null);
 
-    if (seek.isSeeking === false) {
-        onFastForward(seek.pos);
+    React.useEffect(
+        function () {
+            if (seek.isSeeking === false) {
+                onFastForward(seek.pos);
 
-        setSeek({
-            isSeeking: null,
-            pos: null,
-        });
-    }
+                setSeek({
+                    isSeeking: null,
+                    pos: null,
+                });
+            }
+        },
+        [seek]
+    );
 
     function onSeekStart(e, type) {
         const { move, end, cancel } = getEvents(type);

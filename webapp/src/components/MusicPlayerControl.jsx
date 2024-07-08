@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { LoopShuffleControl, MusicProgressBar } from "./";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";

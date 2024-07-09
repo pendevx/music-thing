@@ -38,6 +38,8 @@ export default function Scrollable({ className, children, showScroller = true, s
         [scrollTop]
     );
 
+    function setScrollTop(y) {}
+
     function scrollbarTop() {
         return scrollPercentage * (containerRef.current?.clientHeight - scrollbarHeight) || 0;
     }
@@ -45,7 +47,7 @@ export default function Scrollable({ className, children, showScroller = true, s
     function onContainerScroll() {
         const currentDistancePercentage = containerRef.current.scrollTop / (contentRef.current.scrollHeight - containerRef.current.clientHeight);
         setScrollPercentage(currentDistancePercentage);
-        onScroll();
+        // onScroll && onScroll();
     }
 
     function onScrollStart(e, type) {
@@ -76,7 +78,7 @@ export default function Scrollable({ className, children, showScroller = true, s
             setScrollPercentage(nextScrollPercentage);
             containerRef.current.scrollTop = nextScrollTop;
 
-            onScroll();
+            onScroll && onScroll();
         }
 
         function onScrollEnd() {
@@ -90,7 +92,7 @@ export default function Scrollable({ className, children, showScroller = true, s
 
     return (
         <div className={`${className} flex grow gap-2`}>
-            <div ref={containerRef} className={`grow overflow-auto ${scrollTop && "scroll-smooth"}`} onWheel={onContainerScroll} onTouchMove={onScroll}>
+            <div ref={containerRef} className={`grow overflow-auto ${scrollTop && "scroll-smooth"}`} onScroll={onContainerScroll} onTouchMove={() => onScroll && onScroll()}>
                 <div ref={contentRef}>{children}</div>
             </div>
 

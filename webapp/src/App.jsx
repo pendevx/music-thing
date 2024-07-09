@@ -4,7 +4,7 @@ import { MusicContext } from "./contexts/MusicContext";
 import { ToggleSonglist } from "./icons";
 
 export default function App() {
-    const [showSonglist, setShowSonglist] = React.useState(false);
+    const [showSonglist, setShowSonglist] = React.useState(true);
     const [bodyHeight, setBodyHeight] = React.useState(0);
     const audioRef = React.useRef(null);
     const bodyRef = React.useRef(null);

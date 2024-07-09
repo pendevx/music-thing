@@ -16,7 +16,7 @@ export default function MusicList({ showSonglist }) {
             <div className="transition-transform duration-1000">
                 <ul>
                     {musicContext.musicList.map((x, i) => (
-                        <MusicItem key={x.etag} id={x.etag} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
+                        <MusicItem key={x.key} id={x.key} onClick={onSongSelect} index={i} name={/\/(?<filename>.*)\.mp3$/gi.exec(x.key)?.groups?.filename} />
                     ))}
                 </ul>
             </div>

@@ -4,7 +4,7 @@ import { MusicContext } from "../contexts/MusicContext";
 export default function MusicItem({ name, onClick, index, id }) {
     const ref = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
-    const amIPlaying = musicContext.currentSong.etag === id;
+    const amIPlaying = musicContext.currentSong.key === id;
 
     function handleClick(e) {
         onClick(index);

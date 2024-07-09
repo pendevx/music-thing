@@ -4,10 +4,9 @@ import localStorageRepository, { keys } from "../repositories/LocalStorageReposi
 export const MusicContext = React.createContext();
 
 export default function MusicProvider({ children, musicList }) {
-    const [currentSong, setCurrentSong] = React.useState({ 
+    const [currentSong, setCurrentSong] = React.useState({
         key: null,
         index: null,
-        etag: null
     });
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
@@ -35,9 +34,8 @@ export default function MusicProvider({ children, musicList }) {
         }
 
         const key = musicList[index].key;
-        const etag = musicList[index].etag;
 
-        setCurrentSong({ key, index, etag });
+        setCurrentSong({ key, index });
         setIsPlaying(true);
     }
 
@@ -72,19 +70,20 @@ export default function MusicProvider({ children, musicList }) {
     }
 
     return (
-        <MusicContext.Provider value={{
-            currentSong,
-            isPlaying,
-            playBehaviour,
-            setPlayBehaviour,
-            next,
-            musicList,
-            selectSongAndPlay,
-            play,
-            pause,
-            songName
-        }}>
+        <MusicContext.Provider
+            value={{
+                currentSong,
+                isPlaying,
+                playBehaviour,
+                setPlayBehaviour,
+                next,
+                musicList,
+                selectSongAndPlay,
+                play,
+                pause,
+                songName,
+            }}>
             {children}
         </MusicContext.Provider>
-    )
+    );
 }

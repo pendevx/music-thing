@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 
 namespace backend.Controllers;
 
@@ -11,7 +10,7 @@ public class MusicController : ControllerBase
     private readonly string _assetsDirectory = Path.Combine(Environment.CurrentDirectory, "assets");
 
     [HttpGet]
-    [Route("{key}")]
+    [Route("download/{key}")]
     public IActionResult GetFile(string key)
     {
         try
@@ -32,15 +31,12 @@ public class MusicController : ControllerBase
     }
 
     [HttpGet]
+    [Route("list")]
     public IActionResult ListAudioFiles()
     {
         var regex = new Regex(@".*\\(.*)\.mp3");
-
-        var files = Directory.GetFiles(_assetsDirectory, "*.mp3", SearchOption.AllDirectories).Select(f =>
-        {
-            var fileName = regex.Matches(f)?[0].Groups[1].Value ?? null;
-            return fileName;
-        });
+        var files = Directory.GetFiles(_assetsDirectory, "*.mp3", SearchOption.AllDirectories)
+            .Select(f => regex.Matches(f)[0].Groups[1].Value);
 
         return new JsonResult(files);
     }

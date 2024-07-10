@@ -1,4 +1,5 @@
-using System.Text.RegularExpressions;
+using System.Web;
+using backend.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -7,36 +8,26 @@ namespace backend.Controllers;
 [Route("music")]
 public class MusicController : ControllerBase
 {
-    private readonly string _assetsDirectory = Path.Combine(Environment.CurrentDirectory, "assets");
-
     [HttpGet]
     [Route("download/{key}")]
     public IActionResult GetFile(string key)
     {
-        try
-        {
-            var path = Path.Combine(_assetsDirectory, $"{key}.mp3");
-            var stream = new FileStream(path, new FileStreamOptions());
+        key = HttpUtility.UrlDecode(key.Replace('/', '\\'));
+        var path = Path.Combine(DirectoryConstants.Assets, $"{key}.mp3");
+        var stream = new FileStream(path, new FileStreamOptions());
 
-            return new FileStreamResult(stream, "audio/mp3")
-            {
-                EnableRangeProcessing = true
-            };
-        }
-        catch (Exception e)
+        return new FileStreamResult(stream, "audio/mp3")
         {
-            Console.WriteLine(e);
-            return NotFound();
-        }
+            EnableRangeProcessing = true
+        };
     }
 
     [HttpGet]
     [Route("list")]
     public IActionResult ListAudioFiles()
     {
-        var regex = new Regex(@".*\\(.*)\.mp3");
-        var files = Directory.GetFiles(_assetsDirectory, "*.mp3", SearchOption.AllDirectories)
-            .Select(f => regex.Matches(f)[0].Groups[1].Value);
+        var files = Directory.GetFiles(DirectoryConstants.Assets, "*.mp3", SearchOption.AllDirectories)
+            .Select(f => f.Substring(DirectoryConstants.Assets.Length + 1).Replace('\\', '/'));
 
         return new JsonResult(files);
     }

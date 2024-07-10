@@ -18,11 +18,8 @@ public class GlobalExceptionHandler
         catch (FileNotFoundException e)
         {
             // log e
-            await context.Response.WriteAsJsonAsync(new
-            {
-                 StatusCode = 404,
-                 Message = $"Invalid key ${e.FileName}: The file ${e.FileName} was not found."
-            });
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync("The file does not exist.");
         }
     }
 }

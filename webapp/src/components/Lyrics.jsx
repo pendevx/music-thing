@@ -38,11 +38,12 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
 
             function handler(msg) {
                 const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
+                const nextIndex = highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex;
 
-                setIndex(highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex);
+                setIndex(nextIndex);
 
-                if (timerRef.current == null) {
-                    setScrollTop(highlightedIndex * lineHeight.current);
+                if (!timerRef.current) {
+                    setScrollTop(nextIndex * lineHeight.current);
                 }
             }
 
@@ -110,7 +111,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             <div style={{ height }} />
             <div ref={lyricsListRef}>
                 {lyrics.map(({ words }, i) => (
-                    <p key={i} className={`mb-6 overflow-hidden transition-all duration-300 ${index === i ? "mt-4 text-2xl font-medium text-white" : "text-gray-500"}`} onClick={() => updateIndex(i)}>
+                    <p key={i} className={`mb-6 overflow-hidden transition-all duration-300 ${index === i ? "text-2xl font-medium text-white" : "text-gray-500"}`} onClick={() => updateIndex(i)}>
                         {words}
                     </p>
                 ))}

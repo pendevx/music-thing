@@ -10,12 +10,7 @@ export default function Scrollable({ className, children, showScroller = true, s
     const containerRef = React.useRef(null);
     const contentRef = React.useRef(null);
     const preventEvent = React.useRef(false);
-    const scrollEnd = React.useCallback(
-        debounce(() => {
-            preventEvent.current = false;
-        }, 50),
-        []
-    );
+    const scrollEnd = React.useMemo(() => debounce(() => (preventEvent.current = false), 50), []);
 
     React.useEffect(
         function () {

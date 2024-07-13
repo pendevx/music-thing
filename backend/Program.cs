@@ -18,12 +18,12 @@ public class Program
         {
             options.AddPolicy("AllOrigins", policy =>
             {
-                policy.WithOrigins("*");
+                policy.AllowAnyOrigin();
             });
 
             options.AddPolicy("DevelopmentLocalhost", policy =>
             {
-                policy.WithOrigins("*");
+                policy.AllowAnyOrigin();
             });
         });
 

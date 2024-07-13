@@ -1,5 +1,6 @@
 import React from "react";
 import { getEventYPos, getEvents } from "../utils/eventUtils";
+import debounce from "../utils/debounce";
 
 export default function Scrollable({ className, children, showScroller = true, scrollTop, onScroll, smooth = false }) {
     const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
@@ -9,6 +10,13 @@ export default function Scrollable({ className, children, showScroller = true, s
     const containerRef = React.useRef(null);
     const contentRef = React.useRef(null);
     const preventEvent = React.useRef(false);
+    const scrollEnd = React.useCallback(
+        debounce(() => {
+            console.log("set to false");
+            preventEvent.current = false;
+        }, 50),
+        []
+    );
 
     React.useEffect(
         function () {
@@ -58,6 +66,8 @@ export default function Scrollable({ className, children, showScroller = true, s
         if (!preventEvent.current) {
             onScroll && onScroll();
         }
+
+        scrollEnd();
     }
 
     function onScrollStart(e, type) {
@@ -88,6 +98,8 @@ export default function Scrollable({ className, children, showScroller = true, s
             setScrollPercentage(nextScrollPercentage);
             containerRef.current.scrollTop = nextScrollTop;
             preventEvent.current = false;
+
+            scrollEnd();
         }
 
         function onScrollEnd() {
@@ -96,16 +108,13 @@ export default function Scrollable({ className, children, showScroller = true, s
             document.body.removeEventListener(cancel, onScrollEnd);
 
             setScrolling(false);
+            scrollEnd();
         }
-    }
-
-    function transitionEnd() {
-        preventEvent.current = false;
     }
 
     return (
         <div className={`${className} flex grow gap-2`}>
-            <div ref={containerRef} className={`grow overflow-auto ${smooth && "scroll-smooth"}`} onScroll={onContainerScroll} onTransitionEnd={transitionEnd}>
+            <div ref={containerRef} className={`grow overflow-auto ${smooth && "scroll-smooth"}`} onScroll={onContainerScroll}>
                 <div ref={contentRef}>{children}</div>
             </div>
 

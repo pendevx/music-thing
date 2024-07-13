@@ -13,7 +13,7 @@ function processLyrics(raw) {
             };
         }
 
-        const regex = /\[(\d{2}):(\d{2})\.(\d{2})?\](.*)/gi;
+        const regex = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/gi;
         const match = regex.exec(x);
 
         return {
@@ -41,6 +41,8 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                 const nextIndex = highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex;
 
                 setIndex(nextIndex);
+
+                console.log(timerRef.current);
 
                 if (!timerRef.current) {
                     setScrollTop(nextIndex * lineHeight.current);

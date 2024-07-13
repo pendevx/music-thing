@@ -12,7 +12,6 @@ export default function Scrollable({ className, children, showScroller = true, s
     const preventEvent = React.useRef(false);
     const scrollEnd = React.useCallback(
         debounce(() => {
-            console.log("set to false");
             preventEvent.current = false;
         }, 50),
         []

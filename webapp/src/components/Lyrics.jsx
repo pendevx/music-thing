@@ -4,6 +4,25 @@ import Scrollable from "./Scrollable";
 import { ToggleSonglist } from "../icons/";
 import { MusicContext } from "../contexts/MusicContext";
 
+function processLyrics(raw) {
+    return raw.split("\n").map(x => {
+        if (x.trim() === "") {
+            return {
+                time: -1,
+                words: "",
+            };
+        }
+
+        const regex = /\[(\d{2}):(\d{2})\.(\d{2})?\](.*)/gi;
+        const match = regex.exec(x);
+
+        return {
+            time: +match[1] * 60 + +match[2] + +match[3] / 1000,
+            words: match[4],
+        };
+    });
+}
+
 export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const [lyrics, setLyrics] = React.useState([]);
     const [index, setIndex] = React.useState(0);
@@ -18,16 +37,11 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             lineHeight.current = lyricsListRef.current.scrollHeight / lyrics.length;
 
             function handler(msg) {
-                if (timerRef.current != null) {
-                    return;
-                }
-
                 const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
-                if (highlightedIndex === -2) {
-                    setIndex(lyrics.length - 1);
-                    setScrollTop(lyrics.length * lineHeight.current);
-                } else {
-                    setIndex(highlightedIndex);
+
+                setIndex(highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex);
+
+                if (timerRef.current == null) {
                     setScrollTop(highlightedIndex * lineHeight.current);
                 }
             }
@@ -43,38 +57,25 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
 
     React.useEffect(
         function () {
-            if (musicContext.currentSong.key == null) {
+            const { key } = musicContext.currentSong;
+            setLyrics([]);
+
+            if (key == null) {
                 return;
             }
 
-            setLyrics([]);
-
             (async function () {
-                const { key } = musicContext.currentSong;
-                if (key.endsWith(".mp3")) {
-                    const lyricsUrl = key.replace(".mp3", ".lrc");
-                    try {
-                        const data = await fetch(import.meta.env.VITE_FILE_URL + lyricsUrl);
-                        if (!data.ok) {
-                            throw new Error();
-                        }
-
-                        const text = await data.text();
-
-                        const lyrics = text.split("\n").map(x => {
-                            const regex = /\[(\d{2}):(\d{2})\.(\d{2})?\](.*)/gi;
-                            const match = regex.exec(x);
-
-                            return {
-                                time: +match[1] * 60 + +match[2] + +match[3] / 1000,
-                                words: match[4],
-                            };
-                        });
-
-                        setLyrics(lyrics);
-                    } catch {
-                        console.log("log: no lyrics were found");
+                try {
+                    const res = await fetch(import.meta.env.VITE_LYRICS_URL + encodeURIComponent(key));
+                    if (!res.ok) {
+                        throw new Error();
                     }
+
+                    const text = await res.text();
+                    const lyrics = processLyrics(text);
+                    setLyrics(lyrics);
+                } catch {
+                    console.log("log: no lyrics were found");
                 }
             })();
         },
@@ -93,7 +94,6 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         setScrollTop(null);
 
         timerRef.current = setTimeout(() => {
-            console.log("continue");
             timerRef.current = null;
         }, 1500);
     }
@@ -103,8 +103,10 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             className={`relative flex w-full px-4 text-center text-white transition-all duration-1000 laptop:w-2/4 laptop:grow-0 laptop:pl-0 desktop:w-3/5 ${!showSonglist && "laptop:w-3/4 desktop:w-4/5"}`}
             showScroller={false}
             scrollTop={scrollTop}
-            onScroll={handleScroll}>
+            onScroll={handleScroll}
+            smooth={true}>
             <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
+
             <div style={{ height }} />
             <div ref={lyricsListRef}>
                 {lyrics.map(({ words }, i) => (

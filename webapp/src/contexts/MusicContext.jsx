@@ -33,7 +33,7 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid song key or index");
         }
 
-        const key = musicList[index].key;
+        const key = musicList[index];
 
         setCurrentSong({ key, index });
         setIsPlaying(true);
@@ -63,7 +63,7 @@ export default function MusicProvider({ children, musicList }) {
             return null;
         }
 
-        const regex = /\/([^/]+)\.mp3$/;
+        const regex = /\/([^/]+)$/;
         const name = regex.exec(currentSong.key)[1];
 
         return name;

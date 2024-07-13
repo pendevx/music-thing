@@ -55,7 +55,7 @@ function MusicPlayerControl({ onplay }, ref) {
             (async function () {
                 if (!musicContext.currentSong.key) return;
 
-                const songUrl = import.meta.env.VITE_FILE_URL + musicContext.currentSong.key;
+                const songUrl = import.meta.env.VITE_MUSIC_URL + encodeURIComponent(musicContext.currentSong.key);
 
                 ref.current.pause();
                 ref.current.src = songUrl;

@@ -1,44 +1,51 @@
 import React from "react";
 import { getEventYPos, getEvents } from "../utils/eventUtils";
 
-export default function Scrollable({ className, children, showScroller = true, scrollTop, onScroll }) {
+export default function Scrollable({ className, children, showScroller = true, scrollTop, onScroll, smooth = false }) {
     const [showCustomScrollbar, setShowCustomScrollbar] = React.useState(true);
     const [scrollbarHeight, setScrollbarHeight] = React.useState(0);
     const [scrolling, setScrolling] = React.useState(false);
     const [scrollPercentage, setScrollPercentage] = React.useState(0);
     const containerRef = React.useRef(null);
     const contentRef = React.useRef(null);
+    const preventEvent = React.useRef(false);
 
-    React.useEffect(function () {
-        function updateScrollbarHeight() {
-            setScrollbarHeight((containerRef.current.clientHeight * containerRef.current.clientHeight) / contentRef.current.scrollHeight);
-        }
+    React.useEffect(
+        function () {
+            function updateScrollbarHeight() {
+                setScrollbarHeight((containerRef.current.clientHeight * containerRef.current.clientHeight) / contentRef.current.scrollHeight);
+            }
 
-        if (containerRef.current.scrollHeight >= containerRef.current.clientHeight && getComputedStyle(containerRef.current, "::-webkit-scrollbar").display === "none") {
-            setShowCustomScrollbar(true);
-            updateScrollbarHeight();
-        } else {
-            setShowCustomScrollbar(false);
-            return;
-        }
+            if (containerRef.current.scrollHeight > containerRef.current.clientHeight && getComputedStyle(containerRef.current, "::-webkit-scrollbar").display === "none") {
+                setShowCustomScrollbar(true);
+                updateScrollbarHeight();
+            } else {
+                setShowCustomScrollbar(false);
+                return;
+            }
 
-        window.addEventListener("resize", updateScrollbarHeight);
+            window.addEventListener("resize", updateScrollbarHeight);
 
-        return function () {
-            window.removeEventListener("resize", updateScrollbarHeight);
-        };
-    }, []);
+            return function () {
+                window.removeEventListener("resize", updateScrollbarHeight);
+            };
+        },
+        [showScroller]
+    );
+
+    function setScrollTop(next) {
+        containerRef.current.scrollTop = next;
+        preventEvent.current = true;
+    }
 
     React.useEffect(
         function () {
             if (scrollTop != null) {
-                containerRef.current.scrollTop = scrollTop;
+                setScrollTop(scrollTop);
             }
         },
         [scrollTop]
     );
-
-    function setScrollTop(y) {}
 
     function scrollbarTop() {
         return scrollPercentage * (containerRef.current?.clientHeight - scrollbarHeight) || 0;
@@ -47,7 +54,10 @@ export default function Scrollable({ className, children, showScroller = true, s
     function onContainerScroll() {
         const currentDistancePercentage = containerRef.current.scrollTop / (contentRef.current.scrollHeight - containerRef.current.clientHeight);
         setScrollPercentage(currentDistancePercentage);
-        // onScroll && onScroll();
+
+        if (!preventEvent.current) {
+            onScroll && onScroll();
+        }
     }
 
     function onScrollStart(e, type) {
@@ -77,8 +87,7 @@ export default function Scrollable({ className, children, showScroller = true, s
 
             setScrollPercentage(nextScrollPercentage);
             containerRef.current.scrollTop = nextScrollTop;
-
-            onScroll && onScroll();
+            preventEvent.current = false;
         }
 
         function onScrollEnd() {
@@ -90,9 +99,13 @@ export default function Scrollable({ className, children, showScroller = true, s
         }
     }
 
+    function transitionEnd() {
+        preventEvent.current = false;
+    }
+
     return (
         <div className={`${className} flex grow gap-2`}>
-            <div ref={containerRef} className={`grow overflow-auto ${scrollTop && "scroll-smooth"}`} onScroll={onContainerScroll} onTouchMove={() => onScroll && onScroll()}>
+            <div ref={containerRef} className={`grow overflow-auto ${smooth && "scroll-smooth"}`} onScroll={onContainerScroll} onTransitionEnd={transitionEnd}>
                 <div ref={contentRef}>{children}</div>
             </div>
 

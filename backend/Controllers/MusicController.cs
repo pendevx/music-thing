@@ -27,7 +27,7 @@ public class MusicController : ControllerBase
     public IActionResult ListAudioFiles()
     {
         var files = Directory.GetFiles(DirectoryConstants.Assets, "*.mp3", SearchOption.AllDirectories)
-            .Select(f => f.Substring(DirectoryConstants.Assets.Length + 1).Replace('\\', '/'));
+            .Select(f => f.Substring(DirectoryConstants.Assets.Length + 1).Replace('\\', '/').Replace(".mp3", ""));
 
         return new JsonResult(files);
     }

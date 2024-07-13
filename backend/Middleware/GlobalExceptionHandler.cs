@@ -21,5 +21,9 @@ public class GlobalExceptionHandler
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync("The file does not exist.");
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }

@@ -16,8 +16,6 @@ export default function MusicProvider({ children, musicList }) {
         index: null,
     });
 
-    console.log(shuffleInfo.current);
-
     React.useEffect(function () {
         const lastSongIndex = localStorageRepository.get(keys.LAST_SONG_INDEX) || 0;
 

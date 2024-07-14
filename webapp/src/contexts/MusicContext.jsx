@@ -4,58 +4,72 @@ import createPRNG from "../utils/pseudo-rng";
 
 export const MusicContext = React.createContext();
 
+const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
+
 export default function MusicProvider({ children, musicList }) {
-    const [currentSong, setCurrentSong] = React.useState({
-        key: null,
-        index: null,
-    });
+    const [currentSong, setCurrentSong] = React.useState({ key: "" });
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
-    const shuffleState = React.useRef({
+    const shuffleInfo = React.useRef({
         seed: null,
         playOrder: null,
-        // currentIndex: -1,
+        index: null,
     });
 
+    console.log(shuffleInfo.current);
+
     React.useEffect(function () {
-        if (!playBehaviour === "shuffle") {
-            return;
+        const lastSongIndex = localStorageRepository.get(keys.LAST_SONG_INDEX) || 0;
+
+        if (playBehaviour === "shuffle") {
+            const seed = localStorageRepository.get(keys.SEED) || randomSeed();
+
+            shuffleInfo.current = {
+                ...shuffleInfo.current,
+                index: lastSongIndex,
+            };
+
+            shuffleSongs(seed);
         }
 
-        const seed = localStorageRepository.get(keys.SEED);
-        shuffleSongs(seed);
+        setCurrentSong({ key: shuffleInfo.current.playOrder[lastSongIndex] });
     }, []);
 
     function shuffleSongs(seed) {
         const prng = createPRNG(seed);
-
         const newPlayOrder = [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
-        shuffleState.current = {
+
+        shuffleInfo.current = {
+            ...shuffleInfo.current,
             seed,
             playOrder: newPlayOrder,
-            // currentIndex: newPlayOrder.findIndex(x => x === currentSong.key),
         };
 
         localStorageRepository.set(keys.SEED, seed);
-
-        console.log(shuffleState.current);
     }
 
     function next() {
-        const nextKey = currentSong.index == null ? shuffleState.current.playOrder[0] : shuffleState.current.playOrder[currentSong.index + 1];
-
-        selectSongAndPlay(nextKey);
+        selectSongByIndex((shuffleInfo.current.index + 1) % shuffleInfo.current.playOrder.length);
     }
 
-    function selectSongAndPlay(key) {
-        const index = shuffleState.current.playOrder.findIndex(x => x === key);
+    function selectSongByKey(key) {
+        const index = shuffleInfo.current.playOrder.findIndex(x => x === key);
 
         if (index === -1) {
-            throw new Error("Invalid song key or index");
+            throw new Error("Invalid song key");
         }
 
-        setCurrentSong({ key, index });
+        shuffleInfo.current.index = index;
+        setCurrentSong({ key });
         setIsPlaying(true);
+        localStorageRepository.set(keys.LAST_SONG_INDEX, index);
+    }
+
+    function selectSongByIndex(index) {
+        const key = shuffleInfo.current.playOrder[index];
+
+        setCurrentSong({ key });
+        localStorageRepository.set(keys.LAST_SONG_INDEX, index);
     }
 
     function setPlayBehaviour(behaviour) {
@@ -66,23 +80,15 @@ export default function MusicProvider({ children, musicList }) {
         }
 
         if (behaviour === "shuffle") {
-            shuffleSongs(Math.floor(Math.random() * 2 ** 16));
+            shuffleSongs(randomSeed());
         }
 
         localStorageRepository.set(keys.PLAY_BEHAVIOUR, behaviour);
         _setPlayBehaviour(behaviour);
     }
 
-    function play() {
-        setIsPlaying(true);
-    }
-
-    function pause() {
-        setIsPlaying(false);
-    }
-
     function songName() {
-        if (currentSong.index == null) {
+        if (shuffleInfo.current.index == null) {
             return null;
         }
 
@@ -91,6 +97,9 @@ export default function MusicProvider({ children, musicList }) {
 
         return name;
     }
+
+    const play = () => setIsPlaying(true);
+    const pause = () => setIsPlaying(false);
 
     return (
         <MusicContext.Provider
@@ -101,7 +110,8 @@ export default function MusicProvider({ children, musicList }) {
                 setPlayBehaviour,
                 next,
                 musicList,
-                selectSongAndPlay,
+                selectSongByKey,
+                selectSongByIndex,
                 play,
                 pause,
                 songName,

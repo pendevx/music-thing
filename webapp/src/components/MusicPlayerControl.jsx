@@ -61,14 +61,14 @@ function MusicPlayerControl({ onplay }, ref) {
                 ref.current.src = songUrl;
 
                 ref.current.load();
+
                 await ref.current.play();
+                setTotalDuration(formatTime(ref?.current.duration));
+                setSongDurationSecs(ref?.current.duration);
 
                 if (isNaN(ref.current.duration)) {
                     setTime("--:--");
                 } else {
-                    setTotalDuration(formatTime(ref?.current.duration));
-                    setSongDurationSecs(ref?.current.duration);
-
                     musicContext.play();
                 }
 
@@ -87,7 +87,10 @@ function MusicPlayerControl({ onplay }, ref) {
     React.useEffect(
         function () {
             if (musicContext.isPlaying) {
-                ref?.current.play();
+                ref?.current.play().then(() => {
+                    setTotalDuration(formatTime(ref?.current.duration));
+                    setSongDurationSecs(ref?.current.duration);
+                });
             } else {
                 ref?.current.pause();
             }

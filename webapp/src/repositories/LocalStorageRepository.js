@@ -20,6 +20,7 @@ class LocalStorageRepository {
 export const keys = {
     PLAY_BEHAVIOUR: "playBehaviour",
     SEED: "seed",
+    LAST_SONG_INDEX: "lastSongIndex",
 };
 
 export default new LocalStorageRepository();

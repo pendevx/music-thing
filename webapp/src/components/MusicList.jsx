@@ -7,7 +7,7 @@ export default function MusicList({ showSonglist }) {
     const musicContext = React.useContext(MusicContext);
 
     function onSongSelect(key) {
-        musicContext.selectSongAndPlay(key);
+        musicContext.selectSongByKey(key);
     }
 
     return (

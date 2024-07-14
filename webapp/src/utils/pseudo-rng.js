@@ -7,7 +7,7 @@
  * @param {number} M  `0 < M`
  * @yields {number} A pseudo-random number in the range `[0, MOD)`
  */
-export default function* createPRNG(seed = 12345, A = 1103515245, C = 12345, MOD = 2 ** 31) {
+export default function* createPRNG(seed = 0, A = 1103515245, C = 12345, MOD = 2 ** 31) {
     while (true) {
         seed = (A * seed + C) % MOD;
         yield seed;

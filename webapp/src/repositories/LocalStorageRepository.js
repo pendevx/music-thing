@@ -3,8 +3,7 @@ class LocalStorageRepository {
         try {
             let value = localStorage.getItem(key);
 
-            if (value === "null")
-                value = null;
+            if (value === "null") value = null;
 
             return value;
         } catch (e) {
@@ -19,7 +18,8 @@ class LocalStorageRepository {
 }
 
 export const keys = {
-    PLAY_BEHAVIOUR: "playBehaviour"
-}
+    PLAY_BEHAVIOUR: "playBehaviour",
+    SEED: "seed",
+};
 
 export default new LocalStorageRepository();

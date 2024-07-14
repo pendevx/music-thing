@@ -6,3 +6,4 @@ export { default as LoopShuffleControl } from "./LoopShuffleControl";
 export { default as FrequencyGraph } from "./FrequencyGraph";
 export { default as Lyrics } from "./Lyrics";
 export { default as MusicList } from "./MusicList";
+export { default as Scrollable } from "./Scrollable";

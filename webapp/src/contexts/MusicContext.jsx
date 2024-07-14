@@ -1,5 +1,6 @@
 import React from "react";
 import localStorageRepository, { keys } from "../repositories/LocalStorageRepository";
+import createPRNG from "../utils/pseudo-rng";
 
 export const MusicContext = React.createContext();
 
@@ -10,6 +11,12 @@ export default function MusicProvider({ children, musicList }) {
     });
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
+    const shuffleState = React.useRef({
+        seed: localStorageRepository.get(keys.SEED),
+        playOrder: [],
+        currentIndex: -1,
+    });
+    const prng = React.useRef(createPRNG());
 
     function next() {
         let nextIndex;

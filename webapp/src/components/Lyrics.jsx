@@ -1,6 +1,6 @@
 import React from "react";
 import messageBus from "../utils/MessageBus";
-import Scrollable from "./Scrollable";
+import { Scrollable } from "./";
 import { ToggleSonglist } from "../icons/";
 import { MusicContext } from "../contexts/MusicContext";
 
@@ -8,7 +8,7 @@ function processLyrics(raw) {
     return raw.split("\n").map(x => {
         if (x.trim() === "") {
             return {
-                time: -1,
+                time: Infinity,
                 words: "",
             };
         }
@@ -41,8 +41,6 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                 const nextIndex = highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex;
 
                 setIndex(nextIndex);
-
-                console.log(timerRef.current);
 
                 if (!timerRef.current) {
                     setScrollTop(nextIndex * lineHeight.current);
@@ -110,11 +108,14 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             smooth={true}>
             <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
 
-            <div style={{ height }} />
+            <div style={{ height: height - lineHeight.current / 2 }} />
             <div ref={lyricsListRef}>
                 {lyrics.map(({ words }, i) => (
-                    <p key={i} className={`mb-6 overflow-hidden transition-all duration-300 ${index === i ? "text-2xl font-medium text-white" : "text-gray-500"}`} onClick={() => updateIndex(i)}>
-                        {words}
+                    <p
+                        key={i}
+                        className={`mb-6 overflow-hidden whitespace-pre transition-all duration-300 ${index === i ? "text-2xl font-medium text-white" : "text-gray-500"}`}
+                        onClick={() => updateIndex(i)}>
+                        {" " + words + " "}
                     </p>
                 ))}
             </div>

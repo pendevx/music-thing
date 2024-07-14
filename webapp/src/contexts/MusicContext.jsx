@@ -12,35 +12,47 @@ export default function MusicProvider({ children, musicList }) {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
     const shuffleState = React.useRef({
-        seed: localStorageRepository.get(keys.SEED),
-        playOrder: [],
-        currentIndex: -1,
+        seed: null,
+        playOrder: null,
+        // currentIndex: -1,
     });
-    const prng = React.useRef(createPRNG());
 
-    function next() {
-        let nextIndex;
-
-        if (currentSong.index == null) {
-            nextIndex = 0;
-        } else if (playBehaviour === "shuffle") {
-            nextIndex = Math.floor(Math.random() * musicList.length);
-        } else if (playBehaviour == null) {
-            nextIndex = (currentSong.index + 1) % musicList.length;
-        } else if (playBehaviour === "loop") {
-            // should never enter this path
-            throw new Error("Invalid playBehaviour or developer is just bad");
+    React.useEffect(function () {
+        if (!playBehaviour === "shuffle") {
+            return;
         }
 
-        selectSongAndPlay(nextIndex);
+        const seed = localStorageRepository.get(keys.SEED);
+        shuffleSongs(seed);
+    }, []);
+
+    function shuffleSongs(seed) {
+        const prng = createPRNG(seed);
+
+        const newPlayOrder = [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
+        shuffleState.current = {
+            seed,
+            playOrder: newPlayOrder,
+            // currentIndex: newPlayOrder.findIndex(x => x === currentSong.key),
+        };
+
+        localStorageRepository.set(keys.SEED, seed);
+
+        console.log(shuffleState.current);
     }
 
-    function selectSongAndPlay(index) {
-        if (index < 0 || index >= musicList.length) {
+    function next() {
+        const nextKey = currentSong.index == null ? shuffleState.current.playOrder[0] : shuffleState.current.playOrder[currentSong.index + 1];
+
+        selectSongAndPlay(nextKey);
+    }
+
+    function selectSongAndPlay(key) {
+        const index = shuffleState.current.playOrder.findIndex(x => x === key);
+
+        if (index === -1) {
             throw new Error("Invalid song key or index");
         }
-
-        const key = musicList[index];
 
         setCurrentSong({ key, index });
         setIsPlaying(true);
@@ -51,6 +63,10 @@ export default function MusicProvider({ children, musicList }) {
 
         if (!allowed.includes(behaviour)) {
             throw new Error("Invalid playBehaviour");
+        }
+
+        if (behaviour === "shuffle") {
+            shuffleSongs(Math.floor(Math.random() * 2 ** 16));
         }
 
         localStorageRepository.set(keys.PLAY_BEHAVIOUR, behaviour);

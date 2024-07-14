@@ -1,13 +1,13 @@
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 
-export default function MusicItem({ fileKey, onClick, index }) {
+export default function MusicItem({ fileKey, onClick }) {
     const ref = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
     const amIPlaying = musicContext.currentSong.key === fileKey;
 
     function handleClick(e) {
-        onClick(index);
+        onClick(fileKey);
         e.currentTarget.blur();
     }
 

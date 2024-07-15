@@ -15,20 +15,23 @@ export default function MusicProvider({ children, musicList }) {
         playOrder: null,
         init: false,
     });
+    const init = React.useRef(false);
 
-    const currentSongIndex = () => localStorageRepository.get(keys.LAST_SONG_INDEX);
+    const currentSongIndex = () => +localStorageRepository.get(keys.LAST_SONG_INDEX);
 
     React.useEffect(function () {
-        const lastSongIndex = currentSongIndex() || 0;
+        const lastSongIndex = currentSongIndex();
 
         if (playBehaviour === "shuffle") {
             const seed = localStorageRepository.get(keys.SEED) || randomSeed();
             shuffleSongs(seed);
+        } else {
+            shuffleInfo.current.playOrder = [...musicList];
         }
 
-        shuffleInfo.current.init = true;
+        init.current = true;
 
-        setCurrentSong({ key: shuffleInfo.current.playOrder[lastSongIndex] });
+        setCurrentSong({ key: lastSongIndex ? shuffleInfo.current.playOrder[lastSongIndex] : "" });
     }, []);
 
     function shuffleSongs(seed) {
@@ -44,8 +47,14 @@ export default function MusicProvider({ children, musicList }) {
         localStorageRepository.set(keys.SEED, seed);
     }
 
+    function previous() {
+        const index = (currentSongIndex() - 1 + shuffleInfo.current.playOrder.length) % shuffleInfo.current.playOrder.length;
+        selectSongByIndex(index);
+    }
+
     function next() {
-        selectSongByIndex((+currentSongIndex() + 1) % shuffleInfo.current.playOrder.length);
+        const index = (currentSongIndex() + 1) % shuffleInfo.current.playOrder.length;
+        selectSongByIndex(index);
     }
 
     function selectSongByKey(key) {
@@ -55,14 +64,20 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid song key");
         }
 
-        setCurrentSong({ key });
-        setIsPlaying(true);
-        localStorageRepository.set(keys.LAST_SONG_INDEX, index);
+        selectSong(key, index);
     }
 
     function selectSongByIndex(index) {
         const key = shuffleInfo.current.playOrder[index];
 
+        if (index < 0 || index >= shuffleInfo.current.playOrder.length) {
+            throw new Error("Invalid song index");
+        }
+
+        selectSong(key, index);
+    }
+
+    function selectSong(key, index) {
         setCurrentSong({ key });
         localStorageRepository.set(keys.LAST_SONG_INDEX, index);
     }
@@ -83,7 +98,7 @@ export default function MusicProvider({ children, musicList }) {
     }
 
     function songName() {
-        if (!shuffleInfo.current.init) {
+        if (!init.current || !currentSong.key) {
             return null;
         }
 
@@ -103,6 +118,7 @@ export default function MusicProvider({ children, musicList }) {
                 isPlaying,
                 playBehaviour,
                 setPlayBehaviour,
+                previous,
                 next,
                 musicList,
                 selectSongByKey,

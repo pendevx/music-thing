@@ -2,7 +2,7 @@
 import { LoopShuffleControl, MusicProgressBar } from "./";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
-import { MusicPausedSvg } from "../icons";
+import { MusicPausedSvg, ChangeTrack } from "../icons";
 import messageBus from "../utils/MessageBus";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
@@ -106,8 +106,12 @@ function MusicPlayerControl({ onplay }, ref) {
                 <p className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 desktop:basis-60">
                     {musicContext.songName()}
                 </p>
-                <div className="transition-color flex aspect-square h-[60%] cursor-pointer items-center justify-center rounded-[50%] duration-300 hover:bg-gray-800" onClick={handlePlayPause}>
-                    {musicContext.isPlaying ? <MusicPausedSvg /> : <div className="w-0 translate-x-[30%] border-[0.7em] border-solid border-transparent border-l-white" />}
+                <div className="ml-1 mr-2 grid grid-cols-3 gap-2">
+                    <ChangeTrack className="rotate-180" onClick={() => musicContext.previous()} />
+                    <div className="transition-color flex w-8 cursor-pointer items-center justify-center rounded-[50%] duration-300 hover:bg-gray-800" onClick={handlePlayPause}>
+                        {musicContext.isPlaying ? <MusicPausedSvg /> : <div className="w-0 translate-x-[30%] border-[0.7em] border-solid border-transparent border-l-white" />}
+                    </div>
+                    <ChangeTrack onClick={() => musicContext.next()} />
                 </div>
                 <div className="hidden grow tablet:block">
                     <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />

@@ -41,27 +41,15 @@ function MusicPlayerControl({ onplay }, ref) {
             setAudioTime(time);
         });
 
-        const prevTrack = () => musicContext.previous();
-        const nextTrack = () => musicContext.next();
-        const play = () => musicContext.play();
-        const pause = () => musicContext.pause();
-
         if (navigator.mediaSession) {
-            navigator.mediaSession.setActionHandler("previoustrack", prevTrack);
-            navigator.mediaSession.setActionHandler("nexttrack", nextTrack);
-            navigator.mediaSession.setActionHandler("play", play);
-            navigator.mediaSession.setActionHandler("pause", pause);
+            navigator.mediaSession.setActionHandler("previoustrack", () => musicContext.previous());
+            navigator.mediaSession.setActionHandler("nexttrack", () => musicContext.next());
+            navigator.mediaSession.setActionHandler("play", () => musicContext.play());
+            navigator.mediaSession.setActionHandler("pause", () => musicContext.pause());
         }
 
         return function () {
             messageBus.unSubscribe("lyricsPressed");
-
-            if (navigator.mediaSession) {
-                navigator.mediaSession.setActionHandler("previoustrack", null);
-                navigator.mediaSession.setActionHandler("nexttrack", null);
-                navigator.mediaSession.setActionHandler("play", null);
-                navigator.mediaSession.setActionHandler("pause", null);
-            }
         };
     }, []);
 

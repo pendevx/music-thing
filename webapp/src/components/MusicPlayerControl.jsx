@@ -55,6 +55,8 @@ function MusicPlayerControl({ onplay }, ref) {
 
     React.useEffect(
         function () {
+            document.title = musicContext.songName() || "pendevx music";
+
             (async function () {
                 if (!musicContext.currentSong.key) return;
 

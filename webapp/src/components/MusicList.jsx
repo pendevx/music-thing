@@ -3,10 +3,11 @@ import { MusicContext } from "../contexts/MusicContext";
 import Scrollable from "./Scrollable";
 import { MusicItem } from "./";
 
-export default function MusicList({ showSonglist }) {
+export default function MusicList({ showSonglist, onSongSelected }) {
     const musicContext = React.useContext(MusicContext);
 
     function onSongSelect(key) {
+        onSongSelected();
         musicContext.selectSongByKey(key);
     }
 

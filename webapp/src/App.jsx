@@ -36,13 +36,21 @@ export default function App() {
         }
     }
 
+    function onSongSelected() {
+        const isBelowLaptop = window.matchMedia("(max-width: 768px)").matches;
+
+        if (isBelowLaptop) {
+            setShowSonglist(false);
+        }
+    }
+
     const toggleShowSonglist = () => setShowSonglist(!showSonglist);
 
     return (
         <div className="fixed inset-0 flex h-full flex-col justify-between font-sans" onKeyDown={onKeyDown} tabIndex={0}>
             <div className="mt-4 h-full overflow-hidden">
                 <div ref={bodyRef} className="r-0 relative flex h-full max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">
-                    <MusicList showSonglist={showSonglist} />
+                    <MusicList showSonglist={showSonglist} onSongSelected={onSongSelected} />
                     <Lyrics height={bodyHeight / 2} showSonglist={showSonglist} toggleShowSonglist={toggleShowSonglist} />
 
                     <ToggleSonglist onClick={toggleShowSonglist} className={`fixed z-20 my-auto laptop:hidden ${showSonglist ? "right-8 top-8" : "right-6 top-6"}`} />

@@ -35,10 +35,6 @@ function MusicPlayerControl({ onplay }, ref) {
         }
     }
 
-    function musicEndHandler() {
-        musicContext.next();
-    }
-
     React.useEffect(function () {
         messageBus.subscribe("lyricsPressed", function (time) {
             ref.current.currentTime = time;
@@ -100,7 +96,7 @@ function MusicPlayerControl({ onplay }, ref) {
 
     return (
         <div className="bg-black">
-            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicEndHandler} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
+            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={() => musicContext.next()} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
 
             <div className="flex h-16 w-full items-center gap-2 overflow-hidden border-t-[1px] border-solid border-gray-900 bg-zinc-900 pl-4 pr-4 text-white">
                 <p className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 desktop:basis-60">

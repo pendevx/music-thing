@@ -13,22 +13,20 @@ export default function MusicProvider({ children, musicList }) {
     const shuffleInfo = React.useRef({
         seed: null,
         playOrder: null,
-        index: null,
+        init: false,
     });
 
+    const currentSongIndex = () => localStorageRepository.get(keys.LAST_SONG_INDEX);
+
     React.useEffect(function () {
-        const lastSongIndex = localStorageRepository.get(keys.LAST_SONG_INDEX) || 0;
+        const lastSongIndex = currentSongIndex() || 0;
 
         if (playBehaviour === "shuffle") {
             const seed = localStorageRepository.get(keys.SEED) || randomSeed();
-
-            shuffleInfo.current = {
-                ...shuffleInfo.current,
-                index: lastSongIndex,
-            };
-
             shuffleSongs(seed);
         }
+
+        shuffleInfo.current.init = true;
 
         setCurrentSong({ key: shuffleInfo.current.playOrder[lastSongIndex] });
     }, []);
@@ -47,7 +45,7 @@ export default function MusicProvider({ children, musicList }) {
     }
 
     function next() {
-        selectSongByIndex((shuffleInfo.current.index + 1) % shuffleInfo.current.playOrder.length);
+        selectSongByIndex((+currentSongIndex() + 1) % shuffleInfo.current.playOrder.length);
     }
 
     function selectSongByKey(key) {
@@ -57,7 +55,6 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid song key");
         }
 
-        shuffleInfo.current.index = index;
         setCurrentSong({ key });
         setIsPlaying(true);
         localStorageRepository.set(keys.LAST_SONG_INDEX, index);
@@ -86,7 +83,7 @@ export default function MusicProvider({ children, musicList }) {
     }
 
     function songName() {
-        if (shuffleInfo.current.index == null) {
+        if (!shuffleInfo.current.init) {
             return null;
         }
 

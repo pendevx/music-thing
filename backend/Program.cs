@@ -1,5 +1,4 @@
 using backend.Middleware;
-using Microsoft.AspNetCore.HttpLogging;
 
 namespace backend;
 

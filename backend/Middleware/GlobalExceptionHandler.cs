@@ -15,15 +15,14 @@ public class GlobalExceptionHandler
         {
             await _next(context);
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException)
         {
-            // log e
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync("The file does not exist.");
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
+            await context.Response.WriteAsync("An unhandled error occurred.");
         }
     }
 }

@@ -13,3 +13,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /backend
 COPY --from=build-env /backend/out .
 ENTRYPOINT ["dotnet", "backend.dll"]
+
+# Share Docker images without using a registry: https://stackoverflow.com/a/50827357

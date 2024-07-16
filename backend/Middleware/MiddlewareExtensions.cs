@@ -6,4 +6,9 @@ public static class MiddlewareExtensions
     {
         builder.UseMiddleware<GlobalExceptionHandler>();
     }
+
+    public static void UseLogger(this IApplicationBuilder builder)
+    {
+        builder.UseMiddleware<MusicAppLogger>();
+    }
 }

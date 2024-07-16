@@ -1,4 +1,5 @@
 using backend.Middleware;
+using Microsoft.AspNetCore.HttpLogging;
 
 namespace backend;
 
@@ -27,6 +28,11 @@ public class Program
             });
         });
 
+        builder.Services.AddLogging(logging =>
+        {
+            logging.AddSeq();
+        });
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
@@ -41,7 +47,7 @@ public class Program
         }
 
         app.UseGlobalExceptionHandler();
-        app.UseHttpsRedirection();
+        app.UseLogger();
         app.UseAuthorization();
         app.MapControllers();
         app.Run();

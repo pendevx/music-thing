@@ -3,6 +3,7 @@ import messageBus from "../utils/MessageBus";
 import { Scrollable } from "./";
 import { ToggleSonglist } from "../icons/";
 import { MusicContext } from "../contexts/MusicContext";
+import { buildLyricsUrl } from "../utils/url-builder.api";
 
 function processLyrics(raw) {
     return raw.split("\n").map(x => {
@@ -67,7 +68,8 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
 
             (async function () {
                 try {
-                    const res = await fetch(import.meta.env.VITE_LYRICS_URL + encodeURIComponent(key));
+                    const path = buildLyricsUrl(key);
+                    const res = await fetch(path);
                     if (!res.ok) {
                         throw new Error();
                     }

@@ -24,5 +24,7 @@ public class MusicAppLogger
             _logger.LogError("{Error}", e.ToString());
             throw;
         }
+
+        _logger.LogInformation("");
     }
 }

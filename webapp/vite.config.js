@@ -10,5 +10,12 @@ export default defineConfig({
     },
     server: {
         host: "0.0.0.0",
+        proxy: {
+            "/api": {
+                target: "http://localhost:5175",
+                changeOrigin: true,
+                rewrite: path => path.replace(/^\/api/, ""),
+            },
+        },
     },
 });

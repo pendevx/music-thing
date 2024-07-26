@@ -14,19 +14,6 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllOrigins", policy =>
-            {
-                policy.AllowAnyOrigin();
-            });
-
-            options.AddPolicy("DevelopmentLocalhost", policy =>
-            {
-                policy.AllowAnyOrigin();
-            });
-        });
-
         builder.Services.AddLogging(logging =>
         {
             logging.AddSeq();
@@ -38,11 +25,6 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.UseCors("DevelopmentLocalhost");
-        }
-        else
-        {
-            app.UseCors("AllOrigins");
         }
 
         app.UseGlobalExceptionHandler();

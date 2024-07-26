@@ -15,3 +15,13 @@ start some lyrics
 song + lrc uploading interface
 
 theme customization per- user/device
+
+autho + authen
+
+song modifications 
+
+lrc modifications 
+
+file structure modifications 
+
+playlists 

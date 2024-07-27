@@ -1,31 +1,23 @@
 services:
   frontend:
-    build:
-      context: ./webapp
-      dockerfile: ./webapp/Dockerfile
+    build: ./webapp
     image: music/frontend
+    container_name: music-frontend
     ports:
       - "8000:80"
     networks:
-      - front-tier
-      - back-tier
+      - music-network
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: ./backend/Dockerfile
+    build: ./backend
     image: music/backend
+    container_name: music-backend
     ports:
       - "8080:8080"
     volumes:
-      - music-files:/etc/data
+      - ./backend/assets:/backend/assets
     networks:
-      - back-tier
-
-volumes:
-  music-files:
-    external: true
+      - music-network
 
 networks:
-  front-tier: {}
-  back-tier: {}
+  music-network: {}

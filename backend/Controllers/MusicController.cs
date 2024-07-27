@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Web;
 using backend.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +13,19 @@ public class MusicController : ControllerBase
     [Route("download/{key}")]
     public IActionResult GetFile(string key)
     {
+        return Ok(key);
         key = HttpUtility.UrlDecode(key.Replace('/', '\\'));
-        var path = Path.Combine(DirectoryConstants.Assets, $"{key}.mp3");
-        var stream = new FileStream(path, new FileStreamOptions());
 
-        return new FileStreamResult(stream, "audio/mp3")
-        {
-            EnableRangeProcessing = true
-        };
+        return Ok(Environment.CurrentDirectory);
+
+        var path = Path.Combine(DirectoryConstants.Assets, $"{key}.mp3");
+
+        // var stream = new FileStream(path, new FileStreamOptions());
+        //
+        // return new FileStreamResult(stream, "audio/mp3")
+        // {
+        //     EnableRangeProcessing = true
+        // };
     }
 
     [HttpGet]

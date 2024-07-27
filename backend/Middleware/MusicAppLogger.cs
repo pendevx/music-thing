@@ -18,6 +18,9 @@ public class MusicAppLogger
             _logger.LogInformation("Request received: {HttpMethod} {HttpPath}", context.Request.Method, context.Request.Path);
             await _next(context);
             _logger.LogInformation("Response sent: {HttpResponseStatusCode} {HttpMethod} {HttpPath}", context.Response.StatusCode, context.Request.Method, context.Request.Path);
+
+            string bodyContent = await new StreamReader(context.Request.Body).ReadToEndAsync();
+            _logger.LogInformation("{Body}", bodyContent);
         }
         catch (Exception e)
         {

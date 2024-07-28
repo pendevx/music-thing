@@ -13,19 +13,15 @@ public class MusicController : ControllerBase
     [Route("download/{key}")]
     public IActionResult GetFile(string key)
     {
-        return Ok(key);
         key = HttpUtility.UrlDecode(key.Replace('/', '\\'));
-
-        return Ok(Environment.CurrentDirectory);
-
         var path = Path.Combine(DirectoryConstants.Assets, $"{key}.mp3");
 
-        // var stream = new FileStream(path, new FileStreamOptions());
-        //
-        // return new FileStreamResult(stream, "audio/mp3")
-        // {
-        //     EnableRangeProcessing = true
-        // };
+        var stream = new FileStream(path, new FileStreamOptions());
+
+        return new FileStreamResult(stream, "audio/mp3")
+        {
+            EnableRangeProcessing = true
+        };
     }
 
     [HttpGet]

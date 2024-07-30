@@ -1,5 +1,4 @@
-﻿using System.Web;
-using backend.Constants;
+﻿using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -8,14 +7,19 @@ namespace backend.Controllers;
 [Route("lyrics")]
 public class LyricsController : ControllerBase
 {
+    private readonly ILyricsService _lyricsService;
+
+    public LyricsController(ILyricsService lyricsService)
+    {
+        _lyricsService = lyricsService;
+    }
+
     [HttpGet]
     [Route("download/{key}")]
     public IActionResult GetFile(string key)
     {
-        key = HttpUtility.UrlDecode(key.Replace('/', '\\'));
-        var path = Path.Combine(DirectoryConstants.Assets, $"{key}.lrc");
-        var content = System.IO.File.ReadAllText(path);
+        var lyrics = _lyricsService.GetLyrics(key);
 
-        return Content(content);
+        return Content(lyrics);
     }
 }

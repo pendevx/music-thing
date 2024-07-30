@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
-using System.Web;
-using backend.Constants;
+using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -9,14 +7,18 @@ namespace backend.Controllers;
 [Route("music")]
 public class MusicController : ControllerBase
 {
+    private readonly IMusicService _musicService;
+
+    public MusicController(IMusicService musicService)
+    {
+        _musicService = musicService;
+    }
+
     [HttpGet]
     [Route("download/{key}")]
     public IActionResult GetFile(string key)
     {
-        key = HttpUtility.UrlDecode(key.Replace('/', '\\'));
-        var path = Path.Combine(DirectoryConstants.Assets, $"{key}.mp3");
-
-        var stream = new FileStream(path, new FileStreamOptions());
+        var stream = _musicService.GetAudioStream(key);
 
         return new FileStreamResult(stream, "audio/mp3")
         {
@@ -28,8 +30,7 @@ public class MusicController : ControllerBase
     [Route("list")]
     public IActionResult ListAudioFiles()
     {
-        var files = Directory.GetFiles(DirectoryConstants.Assets, "*.mp3", SearchOption.AllDirectories)
-            .Select(f => f.Substring(DirectoryConstants.Assets.Length + 1).Replace('\\', '/').Replace(".mp3", ""));
+        var files = _musicService.ListAudioFiles();
 
         return new JsonResult(files);
     }

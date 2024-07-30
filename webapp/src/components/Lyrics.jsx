@@ -5,25 +5,6 @@ import { ToggleSonglist } from "../icons/";
 import { MusicContext } from "../contexts/MusicContext";
 import { buildLyricsUrl } from "../utils/url-builder.api";
 
-function processLyrics(raw) {
-    return raw.split("\n").map(x => {
-        if (x.trim() === "") {
-            return {
-                time: Infinity,
-                words: "",
-            };
-        }
-
-        const regex = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/gi;
-        const match = regex.exec(x);
-
-        return {
-            time: +match[1] * 60 + +match[2] + +match[3] / 1000,
-            words: match[4],
-        };
-    });
-}
-
 export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const [lyrics, setLyrics] = React.useState([]);
     const [index, setIndex] = React.useState(0);
@@ -74,8 +55,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                         throw new Error();
                     }
 
-                    const text = await res.text();
-                    const lyrics = processLyrics(text);
+                    const lyrics = await res.json();
                     setLyrics(lyrics);
                 } catch {
                     console.log("log: no lyrics were found");

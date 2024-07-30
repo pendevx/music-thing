@@ -1,6 +1,8 @@
-﻿namespace backend.Services.Contracts;
+﻿using backend.Models.DTO;
+
+namespace backend.Services.Contracts;
 
 public interface ILyricsService
 {
-    string GetLyrics(string key);
+    IEnumerable<LyricsLine> GetLyrics(string key);
 }

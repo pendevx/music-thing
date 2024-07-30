@@ -20,6 +20,6 @@ public class LyricsController : ControllerBase
     {
         var lyrics = _lyricsService.GetLyrics(key);
 
-        return Content(lyrics);
+        return new JsonResult(lyrics);
     }
 }

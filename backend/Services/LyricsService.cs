@@ -12,12 +12,17 @@ public class LyricsService : ILyricsService
 
     private LyricsLine ProcessLyricsLine(string line)
     {
+        int ToSeconds(string mins, string secs, string ms)
+        {
+            return int.Parse(mins) * 60 + int.Parse(secs) + int.Parse(ms) / 1000;
+        }
+
         var regex = new Regex(@"\[(\d{2}):(\d{2})\.(\d{2})\](.*)", RegexOptions.IgnoreCase);
         var matches = regex.Matches(line)[0].Groups;
 
         return new LyricsLine()
         {
-            Time = int.Parse(matches[1].Value) * 60 + int.Parse(matches[2].Value) + int.Parse(matches[3].Value) / 1000,
+            Time = ToSeconds(matches[1].Value, matches[2].Value, matches[3].Value),
             Words = matches[4].Value
         };
     }

@@ -5,3 +5,4 @@ export { default as MusicPausedSvg } from "./MusicPaused";
 export { default as SongList } from "./SongList";
 export { default as ToggleSonglist } from "./ToggleSonglist";
 export { default as ChangeTrack } from "./ChangeTrack";
+export { default as MusicPlaySvg } from "./MusicPlay";

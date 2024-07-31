@@ -2,7 +2,7 @@
 import { LoopShuffleControl, MusicProgressBar } from "./";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
-import { MusicPausedSvg, ChangeTrack } from "../icons";
+import { MusicPausedSvg, ChangeTrack, MusicPlaySvg } from "../icons";
 import messageBus from "../utils/MessageBus";
 import { buildSongUrl } from "../utils/url-builder.api";
 
@@ -112,12 +112,14 @@ function MusicPlayerControl({ onplay }, ref) {
                 <p className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 desktop:basis-60">
                     {musicContext.songName()}
                 </p>
-                <div className="ml-1 mr-2 grid grid-cols-3 gap-2">
-                    <ChangeTrack className="rotate-180" onClick={() => musicContext.previous()} />
+                <div className="ml-1 mr-2 grid grid-cols-3 gap-1">
+                    <ChangeTrack className="transition-color rotate-180 cursor-pointer rounded-[50%] p-1 duration-300 hover:bg-gray-800" onClick={() => musicContext.previous()} />
+
                     <div className="transition-color flex w-8 cursor-pointer items-center justify-center rounded-[50%] duration-300 hover:bg-gray-800" onClick={handlePlayPause}>
-                        {musicContext.isPlaying ? <MusicPausedSvg /> : <div className="w-0 translate-x-[30%] border-[0.7em] border-solid border-transparent border-l-white" />}
+                        {musicContext.isPlaying ? <MusicPausedSvg /> : <MusicPlaySvg />}
                     </div>
-                    <ChangeTrack onClick={() => musicContext.next()} />
+
+                    <ChangeTrack className="transition-color cursor-pointer rounded-[50%] p-1 duration-300 hover:bg-gray-800" onClick={() => musicContext.next()} />
                 </div>
                 <div className="hidden grow tablet:block">
                     <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />

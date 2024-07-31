@@ -4,7 +4,7 @@ import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 import { MusicPausedSvg, ChangeTrack, MusicPlaySvg } from "../icons";
 import messageBus from "../utils/MessageBus";
-import { buildSongUrl } from "../utils/url-builder.api";
+import { downloadSong } from "../utils/url-builder.api";
 
 const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
 const formatTime = seconds => twoSpacePadding(seconds / 60) + ":" + twoSpacePadding(seconds % 60);
@@ -61,7 +61,7 @@ function MusicPlayerControl({ onplay }, ref) {
             (async function () {
                 if (!musicContext.currentSong.key) return;
 
-                const songUrl = buildSongUrl(musicContext.currentSong.key);
+                const songUrl = downloadSong(musicContext.currentSong.key);
 
                 ref.current.pause();
                 ref.current.src = songUrl;

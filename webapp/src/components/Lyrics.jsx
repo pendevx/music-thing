@@ -3,7 +3,7 @@ import messageBus from "../utils/MessageBus";
 import { Scrollable } from "./";
 import { ToggleSonglist } from "../icons/";
 import { MusicContext } from "../contexts/MusicContext";
-import { buildLyricsUrl } from "../utils/url-builder.api";
+import { downloadLyrics } from "../utils/url-builder.api";
 
 export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const [lyrics, setLyrics] = React.useState([]);
@@ -49,7 +49,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
 
             (async function () {
                 try {
-                    const path = buildLyricsUrl(key);
+                    const path = downloadLyrics(key);
                     const res = await fetch(path);
                     if (!res.ok) {
                         throw new Error();

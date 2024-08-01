@@ -1,4 +1,5 @@
-﻿using backend.Services.Contracts;
+﻿using backend.Attributes;
+using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -16,6 +17,7 @@ public class LyricsController : ControllerBase
 
     [HttpGet]
     [Route("download/{key}")]
+    [DecodeUrl]
     public IActionResult GetFile(string key)
     {
         var lyrics = _lyricsService.GetLyrics(key);

@@ -1,3 +1,4 @@
+using backend.Attributes;
 using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ public class MusicController : ControllerBase
 
     [HttpGet]
     [Route("download/{key}")]
+    [DecodeUrl]
     public IActionResult GetFile(string key)
     {
         var stream = _musicService.GetAudioStream(key);

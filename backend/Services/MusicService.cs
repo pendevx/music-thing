@@ -1,5 +1,4 @@
-﻿using System.Web;
-using backend.Constants;
+﻿using backend.Constants;
 using backend.Services.Contracts;
 
 namespace backend.Services;
@@ -10,7 +9,6 @@ public class MusicService : IMusicService
 
     public FileStream GetAudioStream(string key)
     {
-        key = HttpUtility.UrlDecode(key);
         key = Path.Combine(AssetsPath, $"{key}.mp3");
         return new FileStream(key, new FileStreamOptions());
     }

@@ -1,9 +1,9 @@
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
-import { MusicProgressBar, Scrollable, TrackButtons } from "./";
+import { MusicProgressBar, Scrollable } from "./";
 import messageBus from "../utils/MessageBus";
 import { formatTime } from "../utils/formats";
-import { MusicIconSvg, PlayBehaviourIcon } from "../icons";
+import { MusicIconSvg, PlayBehaviourIcon, MusicPausedSvg, MusicPlaySvg, ChangeTrack } from "../icons";
 
 export default function FullScreenOverlay({ hideFullscreen }) {
     const [totalDuration, setTotalDuration] = React.useState(0);
@@ -63,12 +63,12 @@ export default function FullScreenOverlay({ hideFullscreen }) {
 
     return (
         <Scrollable showScroller={false} className="absolute inset-0 overflow-auto py-16 text-white">
-            <div className="mx-auto flex w-2/3 flex-col items-center gap-4 laptop:w-1/2 desktop:w-1/4">
-                <h2 className="text-3xl">{musicContext.songName()}</h2>
+            <div className="midmobile:w-[70%] lgmobile:w-[60%] lglaptop:w-[35%] xllaptop:w-[30%] mx-auto flex w-4/5 flex-col items-center gap-4 tablet:w-[50%] laptop:w-[40%] desktop:w-1/4">
+                <h2 className="text-center text-3xl">{musicContext.songName()}</h2>
 
-                <h3 className="mt-[-10px] text-xl">{"Artist" ?? musicContext.artist()}</h3>
+                <h3 className="mt-[-10px] text-center text-xl">{"Artist" ?? musicContext.artist()}</h3>
 
-                <div className="aspect-square w-full rounded-2xl bg-white p-24">
+                <div className="aspect-square w-full rounded-2xl bg-white p-10 tablet:p-16 laptop:p-20 desktop:p-24">
                     {/* <img src="asdf" alt="" ref={imgRef} />
 
                         {!imgRef.current?.complete && <MusicIconSvg />} */}
@@ -82,18 +82,27 @@ export default function FullScreenOverlay({ hideFullscreen }) {
                     {formatTime(currentTime)} / {formatTime(totalDuration)}
                 </span>
 
-                <div className="mt-4 grid h-full w-full grid-cols-3 gap-36 px-2">
-                    <div className="flex cursor-pointer items-center justify-center rounded-[50%] p-2 transition-colors duration-300 hover:bg-gray-800">a</div>
-
-                    <div className="flex cursor-pointer items-center justify-center rounded-[50%] p-2 transition-colors duration-300 hover:bg-gray-800">b</div>
-
-                    <div className="flex cursor-pointer items-center justify-center rounded-[50%] p-2 transition-colors duration-300 hover:bg-gray-800" onClick={nextPlayBehaviour}>
-                        <PlayBehaviourIcon playBehaviour={musicContext.playBehaviour} className="fill-white" />
+                <div className="w-full px-2">
+                    <div className="midmobile:gap-x-20 grid grid-cols-3 grid-rows-2 gap-x-16 gap-y-5 desktop:gap-x-28">
+                        <div className="flex h-full cursor-pointer items-center justify-center rounded-[50%] transition-colors duration-300 hover:bg-gray-800">?</div>
+                        <div className="flex h-full cursor-pointer items-center justify-center rounded-[50%] transition-colors duration-300 hover:bg-gray-800">?</div>
+                        <div className="flex h-full cursor-pointer items-center justify-center rounded-[50%] transition-colors duration-300 hover:bg-gray-800" onClick={nextPlayBehaviour}>
+                            <PlayBehaviourIcon playBehaviour={musicContext.playBehaviour} className="lgmobile:p-1 h-full w-full fill-white tablet:p-2" />
+                        </div>
+                        <div
+                            className="flex h-full cursor-pointer items-center justify-center rounded-[50%] transition-colors duration-300 hover:bg-gray-800 tablet:p-2"
+                            onClick={() => musicContext.previous()}>
+                            <ChangeTrack className="rotate-180" />
+                        </div>
+                        <div className="flex h-full cursor-pointer items-center justify-center rounded-[50%] transition-colors duration-300 hover:bg-gray-800 tablet:p-2" onClick={handlePlayPause}>
+                            {musicContext.isPlaying ? <MusicPausedSvg /> : <MusicPlaySvg />}
+                        </div>
+                        <div
+                            className="flex h-full cursor-pointer items-center justify-center rounded-[50%] transition-colors duration-300 hover:bg-gray-800 tablet:p-2"
+                            onClick={() => musicContext.next()}>
+                            <ChangeTrack />
+                        </div>
                     </div>
-                </div>
-
-                <div className="w-full">
-                    <TrackButtons handlePlayPause={handlePlayPause} isPlaying={musicContext.isPlaying} next={musicContext.next} previous={musicContext.previous} className="gap-28" />
                 </div>
             </div>
 

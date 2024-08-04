@@ -1,30 +1,31 @@
 /** @type {import('tailwindcss').Config} */
 
 export default {
-    content: [
-        "./index.html",
-        "./src/**/*.{js,jsx}"
-    ],
+    content: ["./index.html", "./src/**/*.{js,jsx}"],
     corePlugins: {
         preflight: false,
     },
     theme: {
         extend: {
             keyframes: {
-                "spin": {
+                spin: {
                     "0%": { transform: "rotate(0deg)" },
-                    "100%": { transform: "rotate(360deg)" }
-                }
+                    "100%": { transform: "rotate(360deg)" },
+                },
             },
             animation: {
-                "spin": "spin 12s linear infinite"
-            }
+                spin: "spin 12s linear infinite",
+            },
         },
         screens: {
-            "mobile": "0px",
-            "tablet": "641px",
-            "laptop": "769px",
-            "desktop": "1280px"
-        }
-    }
-}
+            mobile: "0px",
+            midmobile: "321px",
+            lgmobile: "500px",
+            tablet: "641px",
+            laptop: "769px",
+            lglaptop: "1025px",
+            xllaptop: "1123px",
+            desktop: "1280px",
+        },
+    },
+};

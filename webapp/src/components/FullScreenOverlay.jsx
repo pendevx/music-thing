@@ -3,7 +3,7 @@ import { MusicContext } from "../contexts/MusicContext";
 import { MusicProgressBar, Scrollable, TrackButtons } from "./";
 import messageBus from "../utils/MessageBus";
 import { formatTime } from "../utils/formats";
-import { MusicIconSvg } from "../icons";
+import { MusicIconSvg, PlayBehaviourIcon } from "../icons";
 
 export default function FullScreenOverlay({ hideFullscreen }) {
     const [totalDuration, setTotalDuration] = React.useState(0);
@@ -41,6 +41,26 @@ export default function FullScreenOverlay({ hideFullscreen }) {
         }
     }
 
+    function nextPlayBehaviour() {
+        let nextBehaviour = "";
+
+        switch (musicContext.playBehaviour) {
+            case "loop":
+                nextBehaviour = "shuffle";
+                break;
+
+            case "shuffle":
+                nextBehaviour = null;
+                break;
+
+            default:
+                nextBehaviour = "loop";
+                break;
+        }
+
+        musicContext.setPlayBehaviour(nextBehaviour);
+    }
+
     return (
         <Scrollable showScroller={false} className="absolute inset-0 overflow-auto py-16 text-white">
             <div className="mx-auto flex w-2/3 flex-col items-center gap-4 laptop:w-1/2 desktop:w-1/4">
@@ -62,10 +82,14 @@ export default function FullScreenOverlay({ hideFullscreen }) {
                     {formatTime(currentTime)} / {formatTime(totalDuration)}
                 </span>
 
-                <div className="mt-4 grid h-full w-full grid-cols-3 gap-28">
-                    <div className="text-center">a</div>
-                    <div className="text-center">b</div>
-                    <div className="text-center">c</div>
+                <div className="mt-4 grid h-full w-full grid-cols-3 gap-36 px-2">
+                    <div className="flex cursor-pointer items-center justify-center rounded-[50%] p-2 transition-colors duration-300 hover:bg-gray-800">a</div>
+
+                    <div className="flex cursor-pointer items-center justify-center rounded-[50%] p-2 transition-colors duration-300 hover:bg-gray-800">b</div>
+
+                    <div className="flex cursor-pointer items-center justify-center rounded-[50%] p-2 transition-colors duration-300 hover:bg-gray-800" onClick={nextPlayBehaviour}>
+                        <PlayBehaviourIcon playBehaviour={musicContext.playBehaviour} className="fill-white" />
+                    </div>
                 </div>
 
                 <div className="w-full">

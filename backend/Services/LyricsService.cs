@@ -14,7 +14,7 @@ public class LyricsService : ILyricsService
         int ToSeconds(string mins, string secs, string ms)
             => int.Parse(mins) * 60 + int.Parse(secs) + int.Parse(ms) / 1000;
 
-        var regex = new Regex(@"\[(\d{2}):(\d{2})\.(\d{2})\](.*)", RegexOptions.IgnoreCase);
+        var regex = new Regex(@"\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)", RegexOptions.IgnoreCase);
         var groups = regex.Matches(line)[0].Groups;
 
         return new LyricsLine()

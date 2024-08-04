@@ -1,15 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
-import { LoopShuffleControl, MusicProgressBar } from "./";
+import { LoopShuffleControl, MusicProgressBar, TrackButtons } from "./";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
-import { MusicPausedSvg, ChangeTrack, MusicPlaySvg } from "../icons";
 import messageBus from "../utils/MessageBus";
 import { downloadSong } from "../utils/url-builder.api";
+import { formatTime } from "../utils/formats";
 
-const twoSpacePadding = val => Math.floor(val).toString().padStart(2, "0");
-const formatTime = seconds => twoSpacePadding(seconds / 60) + ":" + twoSpacePadding(seconds % 60);
-
-function MusicPlayerControl({ onplay }, ref) {
+function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     const [time, setTime] = React.useState("--:--");
     const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
@@ -37,10 +34,12 @@ function MusicPlayerControl({ onplay }, ref) {
     }
 
     React.useEffect(function () {
-        messageBus.subscribe("lyricsPressed", function (time) {
+        function timeUpdated(time) {
             ref.current.currentTime = time;
             setAudioTime(time);
-        });
+        }
+
+        messageBus.subscribe("updateSongTime", timeUpdated);
 
         if (navigator.mediaSession) {
             navigator.mediaSession.setActionHandler("previoustrack", () => musicContext.previous());
@@ -50,7 +49,7 @@ function MusicPlayerControl({ onplay }, ref) {
         }
 
         return function () {
-            messageBus.unSubscribe("lyricsPressed");
+            messageBus.unSubscribe("updateSongTime", timeUpdated);
         };
     }, []);
 
@@ -60,6 +59,14 @@ function MusicPlayerControl({ onplay }, ref) {
 
             (async function () {
                 if (!musicContext.currentSong.key) return;
+
+                // possible error: Unhandled Promise Rejection: AbortError: The play() request was interrupted by a call to pause().
+                // https://developer.chrome.com/blog/play-request-was-interrupted
+
+                // we are able to swallow the error as:
+                // the any previous unfulfilled play requests should be exited anyways, and
+                // the pause current or load new song request should be ran.
+                // we only want the latest play request to be executed and fulfilled.
 
                 const songUrl = downloadSong(musicContext.currentSong.key);
 
@@ -78,13 +85,7 @@ function MusicPlayerControl({ onplay }, ref) {
                     musicContext.play();
                 }
 
-                // possible error: Unhandled Promise Rejection: AbortError: The play() request was interrupted by a call to pause().
-                // https://developer.chrome.com/blog/play-request-was-interrupted
-
-                // we are able to swallow the error as:
-                // the any previous unfulfilled play requests should be exited anyways, and
-                // the pause current or load new song request should be ran.
-                // we only want the latest play request to be executed and fulfilled.
+                messageBus.publish("totalDurationUpdate", ref.current.duration);
             })();
         },
         [musicContext.currentSong]
@@ -109,17 +110,13 @@ function MusicPlayerControl({ onplay }, ref) {
             <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={() => musicContext.next()} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
 
             <div className="flex h-16 w-full items-center gap-2 overflow-hidden border-t-[1px] border-solid border-gray-900 bg-zinc-900 pl-4 pr-4 text-white">
-                <p className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 desktop:basis-60">
+                <p
+                    className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 hover:cursor-pointer desktop:basis-60"
+                    onClick={goFullscreen}>
                     {musicContext.songName()}
                 </p>
-                <div className="ml-1 mr-2 grid grid-cols-3 gap-1">
-                    <ChangeTrack className="transition-color rotate-180 cursor-pointer rounded-[50%] p-1 duration-300 hover:bg-gray-800" onClick={() => musicContext.previous()} />
-
-                    <div className="transition-color flex w-8 cursor-pointer items-center justify-center rounded-[50%] duration-300 hover:bg-gray-800" onClick={handlePlayPause}>
-                        {musicContext.isPlaying ? <MusicPausedSvg /> : <MusicPlaySvg />}
-                    </div>
-
-                    <ChangeTrack className="transition-color cursor-pointer rounded-[50%] p-1 duration-300 hover:bg-gray-800" onClick={() => musicContext.next()} />
+                <div className="h-8">
+                    <TrackButtons handlePlayPause={handlePlayPause} isPlaying={musicContext.isPlaying} next={musicContext.next} previous={musicContext.previous} className="ml-1 mr-2" />
                 </div>
                 <div className="hidden grow tablet:block">
                     <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />

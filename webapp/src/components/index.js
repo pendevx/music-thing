@@ -7,3 +7,5 @@ export { default as FrequencyGraph } from "./FrequencyGraph";
 export { default as Lyrics } from "./Lyrics";
 export { default as MusicList } from "./MusicList";
 export { default as Scrollable } from "./Scrollable";
+export { default as FullScreenOverlay } from "./FullScreenOverlay";
+export { default as TrackButtons } from "./TrackButtons";

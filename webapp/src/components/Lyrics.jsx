@@ -69,7 +69,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         setIndex(i);
         setScrollTop(i * lineHeight.current);
 
-        messageBus.publish("lyricsPressed", lyrics[i].time);
+        messageBus.publish("updateSongTime", lyrics[i].time);
     }
 
     function handleScroll() {
@@ -95,7 +95,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                 {lyrics.map(({ words }, i) => (
                     <p
                         key={i}
-                        className={`mb-6 overflow-hidden whitespace-pre transition-all duration-300 ${index === i ? "text-2xl font-medium text-white" : "text-gray-500"}`}
+                        className={`mb-6 overflow-hidden whitespace-pre py-[2px] transition-all duration-300 ${index === i ? "text-2xl font-medium text-white" : "text-gray-500"}`}
                         onClick={() => updateIndex(i)}>
                         {" " + words + " "}
                     </p>

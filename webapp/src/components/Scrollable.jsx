@@ -35,19 +35,10 @@ export default function Scrollable({ className, children, showScroller = true, s
         [showScroller]
     );
 
-    function setScrollTop(next) {
+    function updateScrollTop(next) {
         containerRef.current.scrollTop = next;
         preventEvent.current = true;
     }
-
-    React.useEffect(
-        function () {
-            if (scrollTop != null) {
-                setScrollTop(scrollTop);
-            }
-        },
-        [scrollTop]
-    );
 
     function scrollbarTop() {
         return scrollPercentage * (containerRef.current?.clientHeight - scrollbarHeight) || 0;
@@ -104,6 +95,10 @@ export default function Scrollable({ className, children, showScroller = true, s
             setScrolling(false);
             scrollEnd();
         }
+    }
+
+    if (scrollTop != null && containerRef.current != null) {
+        updateScrollTop(scrollTop);
     }
 
     return (

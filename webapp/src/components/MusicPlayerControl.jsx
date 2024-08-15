@@ -93,19 +93,14 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
         [musicContext.currentSong]
     );
 
-    React.useEffect(
-        function () {
-            if (musicContext.isPlaying) {
-                ref?.current.play().then(() => {
-                    setTotalDuration(formatTime(ref?.current.duration));
-                    setSongDurationSecs(ref?.current.duration);
-                });
-            } else {
-                ref?.current.pause();
-            }
-        },
-        [musicContext.isPlaying]
-    );
+    if (musicContext.isPlaying && ref.current?.paused) {
+        ref.current.play().then(() => {
+            setTotalDuration(formatTime(ref?.current.duration));
+            setSongDurationSecs(ref?.current.duration);
+        });
+    } else if (!musicContext.isPlaying && !ref.current?.paused) {
+        ref.current?.pause();
+    }
 
     return (
         <div className="bg-black">

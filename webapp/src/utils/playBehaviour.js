@@ -19,21 +19,24 @@ export function nextPlayBehaviour(currentPlayBehaviour) {
 }
 
 export function lastPlayBehaviour(currentPlayBehaviour) {
-    let lastBehaviour = "";
+    // let lastBehaviour = "";
 
-    switch (currentPlayBehaviour) {
-        case "loop":
-            lastBehaviour = null;
-            break;
+    // switch (currentPlayBehaviour) {
+    //     case "loop":
+    //         lastBehaviour = null;
+    //         break;
 
-        case "shuffle":
-            lastBehaviour = "loop";
-            break;
+    //     case "shuffle":
+    //         lastBehaviour = "loop";
+    //         break;
 
-        default:
-            lastBehaviour = "shuffle";
-            break;
-    }
+    //     default:
+    //         lastBehaviour = "shuffle";
+    //         break;
+    // }
 
-    return lastBehaviour;
+    // return lastBehaviour;
+
+    // cuz y not lol
+    return nextPlayBehaviour(nextPlayBehaviour(currentPlayBehaviour));
 }

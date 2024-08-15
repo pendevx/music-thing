@@ -13,26 +13,6 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     const [songDurationSecs, setSongDurationSecs] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
 
-    function timeUpdateHandler() {
-        setTime(formatTime(ref?.current.currentTime));
-        setAudioTime(ref?.current.currentTime);
-
-        messageBus.publish("audioTimeUpdate", ref?.current.currentTime);
-    }
-
-    function fastforwardHandler(secs) {
-        ref.current.currentTime = secs;
-        setAudioTime(secs);
-    }
-
-    function handlePlayPause() {
-        if (ref.current.paused) {
-            musicContext.play();
-        } else {
-            musicContext.pause();
-        }
-    }
-
     React.useEffect(function () {
         function timeUpdated(time) {
             ref.current.currentTime = time;
@@ -54,6 +34,26 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
             messageBus.unSubscribe("updateSongTime", timeUpdated);
         };
     }, []);
+
+    function timeUpdateHandler() {
+        setTime(formatTime(ref?.current.currentTime));
+        setAudioTime(ref?.current.currentTime);
+
+        messageBus.publish("audioTimeUpdate", ref?.current.currentTime);
+    }
+
+    function fastforwardHandler(secs) {
+        ref.current.currentTime = secs;
+        setAudioTime(secs);
+    }
+
+    function handlePlayPause() {
+        if (ref.current.paused) {
+            musicContext.play();
+        } else {
+            musicContext.pause();
+        }
+    }
 
     React.useEffect(
         function () {
@@ -94,7 +94,7 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     );
 
     if (musicContext.isPlaying && ref.current?.paused) {
-        ref.current.play().then(() => {
+        ref.current?.play().then(() => {
             setTotalDuration(formatTime(ref?.current.duration));
             setSongDurationSecs(ref?.current.duration);
         });

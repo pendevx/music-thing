@@ -2,9 +2,6 @@
 
 audio.volume [0,1]
 audio.playbackRate
-
-random number generator
-	-> fast forward, previous
     
 Media Session API
     research audio no controls on mobile notification centre thingy
@@ -25,3 +22,17 @@ lrc modifications
 file structure modifications 
 
 playlists 
+
+
+
+
+
+# What I will do
+
+Create private docker registry for my images
+
+Design DB
+
+Create DB Data insertion script
+
+Create autho+authen service in BE with perms

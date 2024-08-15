@@ -94,7 +94,7 @@ export default function FullScreenOverlay({ hideFullscreen }) {
                     </IconContainer>
 
                     <div className="flex aspect-square h-full items-center justify-center tablet:p-1 laptop:p-2" onClick={handlePlayPause}>
-                        <div className="h-full w-full cursor-pointer rounded-[50%] transition-colors duration-300 hover:bg-gray-800 tablet:p-1 laptop:p-2">
+                        <div className="h-full w-full cursor-pointer rounded-[50%] bg-zinc-800 transition-colors duration-300 hover:bg-gray-800 tablet:p-1 laptop:p-2">
                             {musicContext.isPlaying ? <MusicPausedSvg /> : <MusicPlaySvg />}
                         </div>
                     </div>

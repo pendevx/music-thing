@@ -64,6 +64,7 @@ export default function App() {
 
     return (
         <div onKeyDown={onKeyDown} tabIndex={0} className="font-sans">
+            <h1 className="hidden">pendevx music</h1>
             <div className="fixed inset-0 flex h-full flex-col justify-between">
                 <div className="mt-4 h-full overflow-hidden">
                     <div ref={bodyRef} className="r-0 relative flex h-full max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">

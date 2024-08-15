@@ -4,6 +4,7 @@ import { MusicProgressBar } from "./";
 import messageBus from "../utils/MessageBus";
 import { formatTime } from "../utils/formats";
 import { MusicIconSvg, PlayBehaviourIcon, MusicPausedSvg, MusicPlaySvg, ChangeTrack } from "../icons";
+import { nextPlayBehaviour } from "../utils/playBehaviour";
 
 export default function FullScreenOverlay({ hideFullscreen }) {
     const [totalDuration, setTotalDuration] = React.useState(0);
@@ -40,24 +41,8 @@ export default function FullScreenOverlay({ hideFullscreen }) {
         }
     }
 
-    function nextPlayBehaviour() {
-        let nextBehaviour = "";
-
-        switch (musicContext.playBehaviour) {
-            case "loop":
-                nextBehaviour = "shuffle";
-                break;
-
-            case "shuffle":
-                nextBehaviour = null;
-                break;
-
-            default:
-                nextBehaviour = "loop";
-                break;
-        }
-
-        musicContext.setPlayBehaviour(nextBehaviour);
+    function changePlayBehaviour() {
+        musicContext.setPlayBehaviour(nextPlayBehaviour(musicContext.playBehaviour));
     }
 
     return (
@@ -85,7 +70,7 @@ export default function FullScreenOverlay({ hideFullscreen }) {
 
                     <IconContainer></IconContainer>
 
-                    <IconContainer onClick={nextPlayBehaviour}>
+                    <IconContainer onClick={changePlayBehaviour}>
                         <PlayBehaviourIcon playBehaviour={musicContext.playBehaviour} className="h-full w-full fill-white" />
                     </IconContainer>
 
@@ -94,7 +79,7 @@ export default function FullScreenOverlay({ hideFullscreen }) {
                     </IconContainer>
 
                     <div className="flex aspect-square h-full items-center justify-center tablet:p-1 laptop:p-2" onClick={handlePlayPause}>
-                        <div className="h-full w-full cursor-pointer rounded-[50%] bg-zinc-800 transition-colors duration-300 hover:bg-gray-800 tablet:p-1 laptop:p-2">
+                        <div className="h-full w-full cursor-pointer rounded-[50%] bg-zinc-800 transition-colors duration-300 hover:bg-[#cea12765] tablet:p-1 laptop:p-2">
                             {musicContext.isPlaying ? <MusicPausedSvg /> : <MusicPlaySvg />}
                         </div>
                     </div>

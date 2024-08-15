@@ -1,6 +1,7 @@
 import React from "react";
 import localStorageRepository, { keys } from "../repositories/LocalStorageRepository";
 import createPRNG from "../utils/pseudo-rng";
+import { playBehaviours } from "../utils/playBehaviour";
 
 export const MusicContext = React.createContext();
 
@@ -83,9 +84,7 @@ export default function MusicProvider({ children, musicList }) {
     }
 
     function setPlayBehaviour(behaviour) {
-        const allowed = ["loop", "shuffle", null];
-
-        if (!allowed.includes(behaviour)) {
+        if (!playBehaviours.includes(behaviour)) {
             throw new Error("Invalid playBehaviour");
         }
 

@@ -39,6 +39,8 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
             setAudioTime(time);
         }
 
+        messageBus.publish("totalDurationUpdate", ref.current.duration);
+
         messageBus.subscribe("updateSongTime", timeUpdated);
 
         if (navigator.mediaSession) {

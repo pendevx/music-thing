@@ -19,12 +19,8 @@ export default {
         },
         screens: {
             mobile: "0px",
-            midmobile: "321px",
-            lgmobile: "500px",
             tablet: "641px",
             laptop: "769px",
-            lglaptop: "1025px",
-            xllaptop: "1123px",
             desktop: "1280px",
         },
     },

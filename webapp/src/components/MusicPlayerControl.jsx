@@ -7,7 +7,6 @@ import { downloadSong } from "../utils/url-builder.api";
 import { formatTime } from "../utils/formats";
 
 function MusicPlayerControl({ onplay, goFullscreen }, ref) {
-    const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
     const [songDurationSecs, setSongDurationSecs] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
@@ -75,7 +74,6 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
                 ref.current.load();
 
                 await ref.current.play();
-                setTotalDuration(formatTime(ref?.current.duration));
                 setSongDurationSecs(ref?.current.duration);
 
                 musicContext.play();
@@ -88,7 +86,6 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
 
     if (musicContext.isPlaying && ref.current?.paused) {
         ref.current?.play().then(() => {
-            setTotalDuration(formatTime(ref?.current.duration));
             setSongDurationSecs(ref?.current.duration);
         });
     } else if (!musicContext.isPlaying && !ref.current?.paused) {
@@ -96,6 +93,7 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     }
 
     const time = ref.current?.duration ? formatTime(audioTime) : "--:--";
+    const totalDuration = ref.current?.duration ? formatTime(ref.current.duration) : "--:--";
 
     return (
         <div className="bg-black">

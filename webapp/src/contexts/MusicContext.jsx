@@ -80,6 +80,7 @@ export default function MusicProvider({ children, musicList }) {
 
     function selectSong(key, index) {
         setCurrentSong({ key });
+        setIsPlaying(true);
         localStorageRepository.set(keys.LAST_SONG_INDEX, index);
     }
 

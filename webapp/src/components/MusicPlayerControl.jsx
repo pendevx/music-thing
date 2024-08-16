@@ -7,7 +7,6 @@ import { downloadSong } from "../utils/url-builder.api";
 import { formatTime } from "../utils/formats";
 
 function MusicPlayerControl({ onplay, goFullscreen }, ref) {
-    const [time, setTime] = React.useState("--:--");
     const [totalDuration, setTotalDuration] = React.useState("00:00");
     const [audioTime, setAudioTime] = React.useState(0);
     const [songDurationSecs, setSongDurationSecs] = React.useState(0);
@@ -16,7 +15,6 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     React.useEffect(function () {
         function timeUpdated(time) {
             ref.current.currentTime = time;
-            setAudioTime(time);
         }
 
         messageBus.publish("totalDurationUpdate", ref.current.duration);
@@ -36,7 +34,6 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     }, []);
 
     function timeUpdateHandler() {
-        setTime(formatTime(ref?.current.currentTime));
         setAudioTime(ref?.current.currentTime);
 
         messageBus.publish("audioTimeUpdate", ref?.current.currentTime);
@@ -81,11 +78,7 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
                 setTotalDuration(formatTime(ref?.current.duration));
                 setSongDurationSecs(ref?.current.duration);
 
-                if (isNaN(ref.current.duration)) {
-                    setTime("--:--");
-                } else {
-                    musicContext.play();
-                }
+                musicContext.play();
 
                 messageBus.publish("totalDurationUpdate", ref.current.duration);
             })();
@@ -101,6 +94,8 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     } else if (!musicContext.isPlaying && !ref.current?.paused) {
         ref.current?.pause();
     }
+
+    const time = ref.current?.duration ? formatTime(audioTime) : "--:--";
 
     return (
         <div className="bg-black">

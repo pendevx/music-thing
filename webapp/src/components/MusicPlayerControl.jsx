@@ -8,7 +8,6 @@ import { formatTime } from "../utils/formats";
 
 function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     const [audioTime, setAudioTime] = React.useState(0);
-    const [songDurationSecs, setSongDurationSecs] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
@@ -70,12 +69,9 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
 
                 ref.current.pause();
                 ref.current.src = songUrl;
-
                 ref.current.load();
 
                 await ref.current.play();
-                setSongDurationSecs(ref?.current.duration);
-
                 musicContext.play();
 
                 messageBus.publish("totalDurationUpdate", ref.current.duration);
@@ -85,15 +81,14 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     );
 
     if (musicContext.isPlaying && ref.current?.paused) {
-        ref.current?.play().then(() => {
-            setSongDurationSecs(ref?.current.duration);
-        });
+        ref.current?.play();
     } else if (!musicContext.isPlaying && !ref.current?.paused) {
         ref.current?.pause();
     }
 
     const time = ref.current?.duration ? formatTime(audioTime) : "--:--";
     const totalDuration = ref.current?.duration ? formatTime(ref.current.duration) : "--:--";
+    const songDurationSecs = ref.current?.duration || 0;
 
     return (
         <div className="bg-black">

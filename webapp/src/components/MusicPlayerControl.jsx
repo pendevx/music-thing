@@ -57,14 +57,6 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
             (async function () {
                 if (!musicContext.currentSong.key) return;
 
-                // possible error: Unhandled Promise Rejection: AbortError: The play() request was interrupted by a call to pause().
-                // https://developer.chrome.com/blog/play-request-was-interrupted
-
-                // we are able to swallow the error as:
-                // the any previous unfulfilled play requests should be exited anyways, and
-                // the pause current or load new song request should be ran.
-                // we only want the latest play request to be executed and fulfilled.
-
                 const songUrl = downloadSong(musicContext.currentSong.key);
 
                 ref.current.pause();
@@ -114,3 +106,11 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
 }
 
 export default React.forwardRef(MusicPlayerControl);
+
+// possible error: Unhandled Promise Rejection: AbortError: The play() request was interrupted by a call to pause().
+// https://developer.chrome.com/blog/play-request-was-interrupted
+
+// we are able to swallow/ignore the error since:
+// the any previous unfulfilled play requests should be exited anyways, and
+// the pause current or load new song request should be ran.
+// we only want the latest play request to be executed and fulfilled.

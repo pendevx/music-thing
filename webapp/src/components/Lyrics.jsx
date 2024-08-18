@@ -9,15 +9,18 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const [lyrics, setLyrics] = React.useState([]);
     const [index, setIndex] = React.useState(0);
     const [scrollTop, setScrollTop] = React.useState(0);
-    const lineHeight = React.useRef(null);
-    const lyricsListRef = React.useRef(null);
+    const getHeight = React.useCallback(
+        el => {
+            if (el) setLineHeight(el.scrollHeight / lyrics.length);
+        },
+        [lyrics]
+    );
+    const [lineHeight, setLineHeight] = React.useState(0);
     const timerRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(
         function () {
-            lineHeight.current = lyricsListRef.current.scrollHeight / lyrics.length;
-
             function handler(msg) {
                 const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
                 const nextIndex = highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex;
@@ -25,7 +28,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                 setIndex(nextIndex);
 
                 if (!timerRef.current) {
-                    setScrollTop(nextIndex * lineHeight.current);
+                    setScrollTop(nextIndex * lineHeight);
                 }
             }
 
@@ -35,7 +38,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
                 messageBus.unSubscribe("audioTimeUpdate", handler);
             };
         },
-        [lyrics]
+        [lyrics, lineHeight]
     );
 
     React.useEffect(
@@ -67,7 +70,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
 
     function updateIndex(i) {
         setIndex(i);
-        setScrollTop(i * lineHeight.current);
+        setScrollTop(i * lineHeight);
 
         messageBus.publish("updateSongTime", lyrics[i].time);
     }
@@ -90,8 +93,8 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             smooth={true}>
             <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
 
-            <div style={{ height: height - (lineHeight.current / 2 || 0) }} />
-            <div ref={lyricsListRef}>
+            <div style={{ height: height - (lineHeight / 2 || 0) }} />
+            <div ref={getHeight}>
                 {lyrics.map(({ words }, i) => (
                     <p
                         key={i}

@@ -93,7 +93,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
             smooth={true}>
             <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
 
-            <div style={{ height: height - (lineHeight / 2 || 0) }} />
+            <div style={{ height: height - lineHeight / 2 }} />
             <div ref={getHeight}>
                 {lyrics.map(({ words }, i) => (
                     <p

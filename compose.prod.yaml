@@ -2,7 +2,7 @@ version: "1"
 services:
     frontend:
         build: ./webapp
-        image: localhost:5000/music-frontend:20240818
+        image: 192.168.1.136:5000/music-frontend:latest
         container_name: music-frontend
         ports:
             - "8000:80"
@@ -11,7 +11,7 @@ services:
 
     backend:
         build: ./backend
-        image: localhost:5000/music-backend:20240818
+        image: 192.168.1.136:5000/music-backend:latest
         container_name: music-backend
         ports:
             - "8080:8080"

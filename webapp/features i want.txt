@@ -29,10 +29,11 @@ playlists
 
 # What I will do
 
-Create private docker registry for my images
-
 Design DB
 
 Create DB Data insertion script
+
+Create new root "Pendevx" or "Pendevx.Projects" sln for monorepo for all my projects (tbc)
+since I will start on other projects as well, and certain code can be reused, e.g. auth service
 
 Create autho+authen service in BE with perms

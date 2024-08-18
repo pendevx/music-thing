@@ -4,9 +4,10 @@ import { Scrollable } from "./";
 import { ToggleSonglist } from "../icons/";
 import { MusicContext } from "../contexts/MusicContext";
 import { downloadLyrics } from "../utils/url-builder.api";
+import useFetch from "../hooks/useFetch";
 
 export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
-    const [lyrics, setLyrics] = React.useState([]);
+    const { data: lyrics, refreshData } = useFetch([]);
     const [index, setIndex] = React.useState(0);
     const [scrollTop, setScrollTop] = React.useState(0);
     const getHeight = React.useCallback(
@@ -22,8 +23,8 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     React.useEffect(
         function () {
             function handler(msg) {
-                const highlightedIndex = lyrics.findIndex(({ time }) => time > msg) - 1;
-                const nextIndex = highlightedIndex === -2 ? lyrics.length - 1 : highlightedIndex;
+                const highlightedIndex = lyrics.findIndex(({ time }) => time > msg);
+                const nextIndex = highlightedIndex === -1 ? lyrics.length - 1 : highlightedIndex - 1;
 
                 setIndex(nextIndex);
 
@@ -44,28 +45,14 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     React.useEffect(
         function () {
             const { key } = musicContext.currentSong;
-            setLyrics([]);
 
             if (key == null) {
                 return;
             }
 
-            (async function () {
-                try {
-                    const path = downloadLyrics(key);
-                    const res = await fetch(path);
-                    if (!res.ok) {
-                        throw new Error();
-                    }
-
-                    const lyrics = await res.json();
-                    setLyrics(lyrics);
-                } catch {
-                    console.log("log: no lyrics were found");
-                }
-            })();
+            refreshData(downloadLyrics(key));
         },
-        [musicContext.currentSong]
+        [musicContext.currentSong, refreshData]
     );
 
     function updateIndex(i) {

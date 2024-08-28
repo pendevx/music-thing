@@ -13,4 +13,6 @@ public interface IGenericRepository
      */
     DbTransaction BeginTransaction();
     T GetById<T>(int id);
+    void Create<T>(T entity);
+    void CreateMany<T>(IEnumerable<T> entities);
 }

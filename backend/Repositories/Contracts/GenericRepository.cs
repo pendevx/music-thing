@@ -37,4 +37,14 @@ public class GenericRepository : IGenericRepository
     {
         throw new NotImplementedException();
     }
+
+    public void CreateMany<T>(IEnumerable<T> entities)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public void Create<T>(T entity)
+    {
+        throw new NotImplementedException();
+    }
 }

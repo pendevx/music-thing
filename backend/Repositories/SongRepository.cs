@@ -42,4 +42,16 @@ public class SongRepository : GenericRepository, ISongRepository
             Contents = GetSongStream(id)
         };
     }
+
+    public void CreateMany(IEnumerable<Song> songs)
+    {
+        MusicContext.Songs.AddRange(songs);
+        MusicContext.SaveChanges();
+    }
+
+    public void Create(Song song)
+    {
+        MusicContext.Songs.Add(song);
+        MusicContext.SaveChanges();
+    }
 }

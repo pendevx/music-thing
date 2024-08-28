@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using backend.DatabaseContexts;
 using backend.Models;
+using backend.Models.DTO;
 using backend.Repositories.Contracts;
 using Microsoft.Data.SqlTypes;
 

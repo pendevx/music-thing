@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlTypes;
 
-namespace backend.Models;
+namespace backend.Models.DTO;
 
 public class StreamedAudio : Song
 {

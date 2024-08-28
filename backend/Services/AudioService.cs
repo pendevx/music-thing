@@ -1,5 +1,6 @@
 ﻿using backend.Constants;
 using backend.Models;
+using backend.Models.DTO;
 using backend.Repositories.Contracts;
 using backend.Services.Contracts;
 

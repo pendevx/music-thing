@@ -6,6 +6,6 @@ namespace backend.Repositories.Contracts;
 public interface ISongRepository : IGenericRepository
 {
     StreamedAudio GetById(int id);
-    void Create(Song entity);
-    void CreateMany(IEnumerable<Song> entities);
+    void Create(Song song);
+    void Create(IEnumerable<Song> songs);
 }

@@ -1,8 +1,6 @@
-﻿using Microsoft.Data.SqlTypes;
-
-namespace backend.Models.DTO;
+﻿namespace backend.Models.DTO;
 
 public class StreamedAudio : Song
 {
-    public new SqlFileStream Contents { get; set; } = null!;
+    public new Stream Contents { get; set; } = null!;
 }

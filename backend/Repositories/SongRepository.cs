@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using backend.DatabaseContexts;
+﻿using backend.DatabaseContexts;
 using backend.Models;
 using backend.Models.DTO;
 using backend.Repositories.Contracts;
@@ -14,7 +13,7 @@ public class SongRepository : GenericRepository, ISongRepository
         
     }
     
-    private SqlFileStream GetSongStream(int id)
+    private Stream GetAudioStream(int id)
     {
         var transaction = BeginTransaction();
 
@@ -32,19 +31,16 @@ public class SongRepository : GenericRepository, ISongRepository
             .Select(s => new { s.Id, s.Guid, s.MimeType })
             .FirstOrDefault(s => s.Id == id);
 
-        if (song is null)
-            throw new ValidationException($"The song with ID={id} couldn't be found.");
-
         return new StreamedAudio
         {
             Guid = song.Guid,
             Id = song.Id,
             MimeType = song.MimeType,
-            Contents = GetSongStream(id)
+            Contents = GetAudioStream(id)
         };
     }
 
-    public void CreateMany(IEnumerable<Song> songs)
+    public void Create(IEnumerable<Song> songs)
     {
         MusicContext.Songs.AddRange(songs);
         MusicContext.SaveChanges();
@@ -52,6 +48,6 @@ public class SongRepository : GenericRepository, ISongRepository
 
     public void Create(Song song)
     {
-        CreateMany(new[] { song });
+        Create(new[] { song });
     }
 }

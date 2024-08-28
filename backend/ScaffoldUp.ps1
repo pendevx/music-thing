@@ -1,0 +1,1 @@
+﻿dotnet ef dbcontext scaffold "Name=ConnectionStrings:music-thing" Microsoft.EntityFrameworkCore.SqlServer --no-onconfiguring --data-annotations --context MusicContext --output-dir Models --context-dir DatabaseContexts

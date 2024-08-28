@@ -51,7 +51,6 @@ public class SongRepository : GenericRepository, ISongRepository
 
     public void Create(Song song)
     {
-        MusicContext.Songs.Add(song);
-        MusicContext.SaveChanges();
+        CreateMany(new[] { song });
     }
 }

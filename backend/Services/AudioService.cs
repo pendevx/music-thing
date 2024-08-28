@@ -22,6 +22,16 @@ public class AudioService : IAudioService
         return audio;
     }
 
+    public void UploadAudio(Song song)
+    {
+        _songRepository.Create(song);
+    }
+
+    public void UploadAudio(IEnumerable<Song> songs)
+    {
+        _songRepository.CreateMany(songs);
+    }
+
     public IEnumerable<string> ListAudioFiles()
     {
         return Directory.GetFiles(AssetsPath, "*.mp3", SearchOption.AllDirectories)

@@ -1,4 +1,5 @@
 using backend.Attributes;
+using backend.Models;
 using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +17,11 @@ public class AudioController : ControllerBase
     }
 
     [HttpGet]
-    [Route("download/{key}")]
-    [DecodeUrl]
+    [Route("download/{id}")]
     [RequiresDbConnection]
-    public IActionResult GetFile(string key)
+    public IActionResult GetFile(int id)
     {
-        var audio = _audioService.GetAudioById(1);
+        var audio = _audioService.GetAudioById(id);
 
         return new FileStreamResult(audio.Contents, audio.MimeType)
         {

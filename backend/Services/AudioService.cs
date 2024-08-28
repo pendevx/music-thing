@@ -1,16 +1,25 @@
 ﻿using backend.Constants;
+using backend.Models;
+using backend.Repositories.Contracts;
 using backend.Services.Contracts;
 
 namespace backend.Services;
 
-public class MusicService : IMusicService
+public class AudioService : IAudioService
 {
+    private readonly ISongRepository _songRepository;
+    
+    public AudioService(ISongRepository songRepository)
+    {
+        _songRepository = songRepository;
+    }
+    
     private static string AssetsPath => DirectoryConstants.Assets;
 
-    public FileStream GetAudioStream(string key)
+    public StreamedAudio GetAudioById(int id)
     {
-        key = Path.Combine(AssetsPath, $"{key}.mp3");
-        return new FileStream(key, new FileStreamOptions());
+        var audio = _songRepository.GetById(id);
+        return audio;
     }
 
     public IEnumerable<string> ListAudioFiles()

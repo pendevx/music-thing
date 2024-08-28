@@ -6,23 +6,24 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("music")]
-public class MusicController : ControllerBase
+public class AudioController : ControllerBase
 {
-    private readonly IMusicService _musicService;
+    private readonly IAudioService _audioService;
 
-    public MusicController(IMusicService musicService)
+    public AudioController(IAudioService audioService)
     {
-        _musicService = musicService;
+        _audioService = audioService;
     }
 
     [HttpGet]
     [Route("download/{key}")]
     [DecodeUrl]
+    [RequiresDbConnection]
     public IActionResult GetFile(string key)
     {
-        var stream = _musicService.GetAudioStream(key);
+        var audio = _audioService.GetAudioById(1);
 
-        return new FileStreamResult(stream, "audio/mp3")
+        return new FileStreamResult(audio.Contents, audio.MimeType)
         {
             EnableRangeProcessing = true
         };
@@ -32,7 +33,7 @@ public class MusicController : ControllerBase
     [Route("list")]
     public IActionResult ListAudioFiles()
     {
-        var files = _musicService.ListAudioFiles();
+        var files = _audioService.ListAudioFiles();
 
         return new JsonResult(files);
     }

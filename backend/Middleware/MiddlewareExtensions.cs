@@ -11,4 +11,9 @@ public static class MiddlewareExtensions
     {
         builder.UseMiddleware<MusicAppLogger>();
     }
+
+    public static void UseDbConnectionHandler(this IApplicationBuilder builder)
+    {
+        builder.UseMiddleware<DbConnectionHandler>();
+    }
 }

@@ -1,6 +1,0 @@
-{
-    "scripts": {
-        "fe-dev": "cd webapp && npm run dev",
-        "fe-prod": "cd webapp && npm run build"
-    }
-}

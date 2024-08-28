@@ -1,8 +1,9 @@
 ﻿using System.Data.Common;
 using backend.DatabaseContexts;
+using backend.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Repositories.Contracts;
+namespace backend.Repositories;
 
 public class GenericRepository : IGenericRepository
 {

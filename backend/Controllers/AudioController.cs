@@ -1,5 +1,4 @@
 using backend.Attributes;
-using backend.Models;
 using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 

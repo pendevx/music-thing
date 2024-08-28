@@ -6,13 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Models;
 
-[Index("Guid", Name = "UQ__Songs__A2B5777DDF8D05C4", IsUnique = true)]
+[Index("Guid", Name = "UQ__Songs__A2B5777D47B8A67B", IsUnique = true)]
 public partial class Song
 {
     [Key]
     public int Id { get; set; }
 
     public Guid Guid { get; set; }
+
+    [StringLength(256)]
+    public string Name { get; set; } = null!;
 
     public byte[] Contents { get; set; } = null!;
 

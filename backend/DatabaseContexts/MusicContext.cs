@@ -18,7 +18,7 @@ public partial class MusicContext : DbContext
     {
         modelBuilder.Entity<Song>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Songs__3214EC076B99986D");
+            entity.HasKey(e => e.Id).HasName("PK__Songs__3214EC076C077814");
         });
 
         OnModelCreatingPartial(modelBuilder);

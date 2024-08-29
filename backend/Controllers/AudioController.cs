@@ -22,7 +22,7 @@ public class AudioController : ControllerBase
     {
         var audio = _audioService.GetAudioById(id);
 
-        return new FileStreamResult(audio.Contents, audio.MimeType)
+        return new FileStreamResult(audio.Contents.Value, audio.MimeType)
         {
             EnableRangeProcessing = true
         };

@@ -2,6 +2,7 @@
 using backend.Models;
 using backend.Models.DTO;
 using backend.Repositories.Contracts;
+using backend.Utils;
 using Microsoft.Data.SqlTypes;
 
 namespace backend.Repositories;
@@ -34,7 +35,7 @@ public class SongRepository : GenericRepository<Song>, ISongRepository
                 Id = song.Id,
                 Guid = song.Guid,
                 MimeType = song.MimeType,
-                Contents = GetAudioStream(id) // TODO: make this lazy loaded
+                Contents = LazyLoad.Create(() => GetAudioStream(id))
             }
         );
     }

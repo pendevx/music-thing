@@ -3,9 +3,7 @@ using backend.Models.DTO;
 
 namespace backend.Repositories.Contracts;
 
-public interface ISongRepository : IGenericRepository
+public interface ISongRepository : IGenericRepository<Song>
 {
-    StreamedAudio GetById(int id);
-    void Create(Song song);
-    void Create(IEnumerable<Song> songs);
+    new StreamedAudio? GetById(int id);
 }

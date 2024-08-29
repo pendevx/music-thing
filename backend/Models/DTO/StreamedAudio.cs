@@ -1,6 +1,10 @@
-﻿namespace backend.Models.DTO;
+﻿using backend.Repositories;
 
-public class StreamedAudio : Song
+namespace backend.Models.DTO;
+
+public class StreamedAudio : Entity
 {
-    public new Stream Contents { get; set; } = null!;
+    public Guid Guid { get; set; }
+    public string MimeType { get; set; }
+    public Stream Contents { get; set; } = null!;
 }

@@ -30,7 +30,7 @@ public class AudioService : IAudioService
 
     public void UploadAudio(IEnumerable<Song> songs)
     {
-        _songRepository.CreateMany(songs);
+        _songRepository.Create(songs);
     }
 
     public IEnumerable<string> ListAudioFiles()

@@ -6,7 +6,7 @@ using Microsoft.Data.SqlTypes;
 
 namespace backend.Repositories;
 
-public class SongRepository : GenericRepository, ISongRepository
+public class SongRepository : GenericRepository<Song>, ISongRepository
 {
     public SongRepository(MusicContext ctx) : base(ctx)
     {
@@ -25,29 +25,17 @@ public class SongRepository : GenericRepository, ISongRepository
         return sqlFileStream;
     }
 
-    public StreamedAudio GetById(int id)
+    public new StreamedAudio? GetById(int id)
     {
-        var song = MusicContext.Songs
-            .Select(s => new { s.Id, s.Guid, s.MimeType })
-            .FirstOrDefault(s => s.Id == id);
-
-        return new StreamedAudio
-        {
-            Guid = song.Guid,
-            Id = song.Id,
-            MimeType = song.MimeType,
-            Contents = GetAudioStream(id)
-        };
-    }
-
-    public void Create(IEnumerable<Song> songs)
-    {
-        MusicContext.Songs.AddRange(songs);
-        MusicContext.SaveChanges();
-    }
-
-    public void Create(Song song)
-    {
-        Create(new[] { song });
+        return base.GetById(
+            id,
+            song => new StreamedAudio
+            {
+                Id = song.Id,
+                Guid = song.Guid,
+                MimeType = song.MimeType,
+                Contents = GetAudioStream(id) // TODO: make this lazy loaded
+            }
+        );
     }
 }

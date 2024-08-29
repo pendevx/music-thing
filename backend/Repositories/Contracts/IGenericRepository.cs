@@ -2,17 +2,18 @@
 
 namespace backend.Repositories.Contracts;
 
-public interface IGenericRepository
+public interface IGenericRepository<T>
 {
     /**
      * Requires an active connection with the database.
      */
-    T? ExecuteScalar<T>(string command, DbTransaction? transaction = null) where T : class;
+    TQueryResult? ExecuteScalar<TQueryResult>(string command, DbTransaction? transaction = null) where TQueryResult : class;
     /**
      * Requires an active connection with the database.
      */
     DbTransaction BeginTransaction();
-    T GetById<T>(int id);
-    void Create<T>(T entity);
-    void CreateMany<T>(IEnumerable<T> entities);
+    T? GetById(int id);
+    TMapped? GetById<TMapped>(int id, Func<T, TMapped> mapper) where TMapped : Entity;
+    void Create(T entity);
+    void Create(IEnumerable<T> entities);
 }

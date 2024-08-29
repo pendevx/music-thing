@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using backend.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Models;
 
 [Index("Guid", Name = "UQ__Songs__A2B5777D47B8A67B", IsUnique = true)]
-public partial class Song
+public partial class Song : Entity
 {
     [Key]
     public int Id { get; set; }

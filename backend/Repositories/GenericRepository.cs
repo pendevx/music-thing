@@ -5,16 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories;
 
-public class GenericRepository : IGenericRepository
+public class GenericRepository<T> : IGenericRepository<T> where T : Entity
 {
     protected readonly MusicContext MusicContext;
+    protected readonly DbSet<T> Entities;
 
     public GenericRepository(MusicContext ctx)
     {
         MusicContext = ctx;
+        Entities = ctx.Set<T>();
     }
     
-    public T? ExecuteScalar<T>(string commandText, DbTransaction? transaction = null) where T : class
+    public TQueryResult? ExecuteScalar<TQueryResult>(string commandText, DbTransaction? transaction = null) where TQueryResult : class
     {
         var connection = MusicContext.Database.GetDbConnection();
 
@@ -26,7 +28,7 @@ public class GenericRepository : IGenericRepository
 
         var results = command.ExecuteScalar();
         
-        return results as T;
+        return results as TQueryResult;
     }
 
     public DbTransaction BeginTransaction()
@@ -34,18 +36,26 @@ public class GenericRepository : IGenericRepository
         return MusicContext.Database.GetDbConnection().BeginTransaction();
     }
 
-    public T GetById<T>(int id)
+    public T? GetById(int id)
     {
-        throw new NotImplementedException();
+        return Entities.FirstOrDefault(e => e.Id == id);
     }
 
-    public void CreateMany<T>(IEnumerable<T> entities)
+    public void Create(IEnumerable<T> entities)
     {
-        throw new NotImplementedException();
+        Entities.AddRange(entities);
+        MusicContext.SaveChanges();
     }
     
-    public void Create<T>(T entity)
+    public void Create(T entity)
     {
-        throw new NotImplementedException();
+        Create(new[] { entity });
+    }
+
+    public TMapped? GetById<TMapped>(int id, Func<T, TMapped> mapper) where TMapped : Entity
+    {
+        return Entities.Where(e => e.Id == id)
+            .Select(x => mapper(x))
+            .FirstOrDefault();
     }
 }

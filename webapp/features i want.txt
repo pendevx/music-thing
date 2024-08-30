@@ -31,8 +31,6 @@ playlists
 
 Design DB
 
-Create DB Data insertion script
-
 Create new root "Pendevx" or "Pendevx.Projects" sln for monorepo for all my projects (tbc)
 since I will start on other projects as well, and certain code can be reused, e.g. auth service
 

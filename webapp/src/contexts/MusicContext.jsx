@@ -8,20 +8,16 @@ export const MusicContext = React.createContext();
 const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
 
 export default function MusicProvider({ children, musicList }) {
-    const [currentSong, setCurrentSong] = React.useState({ name: 0 });
+    const [currentSong, setCurrentSong] = React.useState({ name: "", id: null, index: -1 });
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [playBehaviour, _setPlayBehaviour] = React.useState(localStorageRepository.get(keys.PLAY_BEHAVIOUR));
     const shuffleInfo = React.useRef({
         seed: null,
         playOrder: null,
-        init: false,
     });
-    const init = React.useRef(false);
-
-    const currentSongIndex = () => +localStorageRepository.get(keys.LAST_SONG_ID);
 
     React.useEffect(function () {
-        const lastSongIndex = currentSongIndex();
+        const lastSongIndex = +localStorageRepository.get(keys.LAST_SONG_ID);
 
         if (playBehaviour === "shuffle") {
             const seed = localStorageRepository.get(keys.SEED) || randomSeed();
@@ -30,9 +26,11 @@ export default function MusicProvider({ children, musicList }) {
             shuffleInfo.current.playOrder = [...musicList];
         }
 
-        init.current = true;
-
-        setCurrentSong({ id: lastSongIndex ? shuffleInfo.current.playOrder[lastSongIndex] : "" });
+        setCurrentSong({ 
+            id: lastSongIndex ? shuffleInfo.current.playOrder[lastSongIndex].id : "",
+            name: shuffleInfo.current.playOrder[lastSongIndex].name,
+            index: lastSongIndex
+        });
     }, []);
 
     function shuffleSongs(seed) {
@@ -40,7 +38,6 @@ export default function MusicProvider({ children, musicList }) {
         const newPlayOrder = [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
 
         shuffleInfo.current = {
-            ...shuffleInfo.current,
             seed,
             playOrder: newPlayOrder,
         };
@@ -49,24 +46,14 @@ export default function MusicProvider({ children, musicList }) {
     }
 
     function previous() {
-        const index = (currentSongIndex() - 1 + shuffleInfo.current.playOrder.length) % shuffleInfo.current.playOrder.length;
+        const index = (currentSong.index - 1 + shuffleInfo.current.playOrder.length) % shuffleInfo.current.playOrder.length;
         selectSongByIndex(index);
     }
 
     function next() {
-        const index = (currentSongIndex() + 1) % shuffleInfo.current.playOrder.length;
+        const index = (currentSong.index + 1) % shuffleInfo.current.playOrder.length;
         selectSongByIndex(index);
     }
-
-    // function selectSongByKey(key) {
-    //     const index = shuffleInfo.current.playOrder.findIndex(x => x === key);
-
-    //     if (index === -1) {
-    //         throw new Error("Invalid song key");
-    //     }
-
-    //     selectSong(key, index);
-    // }
 
     function selectSongByIndex(index) {
         const song = shuffleInfo.current.playOrder[index];
@@ -75,7 +62,7 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid song index");
         }
 
-        selectSong(song.name, song.id);
+        selectSong(song.name, song.id, index);
     }
 
     function selectSongById(id) {
@@ -85,11 +72,11 @@ export default function MusicProvider({ children, musicList }) {
             throw new Error("Invalid song id");
         }
 
-        selectSong(shuffleInfo.current.playOrder[index].name, id);
+        selectSong(shuffleInfo.current.playOrder[index].name, id, index);
     }
 
-    function selectSong(name, id) {
-        setCurrentSong({ name, id });
+    function selectSong(name, id, index) {
+        setCurrentSong({ name, id, index });
         setIsPlaying(true);
         localStorageRepository.set(keys.LAST_SONG_ID, id);
     }

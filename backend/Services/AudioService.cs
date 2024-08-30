@@ -20,6 +20,10 @@ public class AudioService : IAudioService
     public StreamedAudio GetAudioById(int id)
     {
         var audio = _songRepository.GetById(id);
+
+        if (audio is null)
+            throw new FileNotFoundException($"The audio of ID=${id} doesn't exist.");
+
         return audio;
     }
 

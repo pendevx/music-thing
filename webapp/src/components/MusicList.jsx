@@ -6,9 +6,9 @@ import { MusicItem } from "./";
 export default function MusicList({ showSonglist, onSongSelected }) {
     const musicContext = React.useContext(MusicContext);
 
-    function onSongSelect(key) {
+    function onSongSelect(id) {
         onSongSelected();
-        musicContext.selectSongByKey(key);
+        musicContext.selectSongById(id);
     }
 
     return (
@@ -17,7 +17,7 @@ export default function MusicList({ showSonglist, onSongSelected }) {
             <div className="transition-transform duration-1000">
                 <ul>
                     {musicContext.musicList.map(x => (
-                        <MusicItem key={x} onClick={onSongSelect} fileKey={x} />
+                        <MusicItem key={x.id} onClick={onSongSelect} id={x.id} isPlaying={musicContext.currentSong.id === x.id} name={x.name} />
                     ))}
                 </ul>
             </div>

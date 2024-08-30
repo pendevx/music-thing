@@ -52,12 +52,12 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
 
     React.useEffect(
         function () {
-            document.title = musicContext.songName() || "pendevx music";
+            document.title = musicContext.currentSong.name || "pendevx music";
 
             (async function () {
-                if (!musicContext.currentSong.key) return;
+                if (!musicContext.currentSong.id) return;
 
-                const songUrl = downloadSong(musicContext.currentSong.key);
+                const songUrl = downloadSong(musicContext.currentSong.id);
 
                 ref.current.pause();
                 ref.current.src = songUrl;
@@ -90,7 +90,7 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
                 <p
                     className="flex h-full basis-32 items-center overflow-hidden overflow-ellipsis text-nowrap border-r-[1px] border-dotted border-slate-600 hover:cursor-pointer desktop:basis-60"
                     onClick={goFullscreen}>
-                    {musicContext.songName()}
+                    {musicContext.currentSong.name}
                 </p>
                 <div className="h-8">
                     <TrackButtons handlePlayPause={handlePlayPause} isPlaying={musicContext.isPlaying} next={musicContext.next} previous={musicContext.previous} className="ml-1 mr-2" />

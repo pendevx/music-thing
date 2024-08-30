@@ -49,7 +49,7 @@ export default function FullScreenOverlay({ hideFullscreen }) {
         <div className="absolute inset-0 flex flex-col items-center text-white">
             <div className="grid h-[1px] w-3/5 grow grid-rows-[1fr,4fr,1fr,3fr] gap-y-4 pb-8 pt-8 tablet:w-1/2 laptop:w-1/3 desktop:w-1/4">
                 <div>
-                    <h2 className="text-center text-3xl">{musicContext.songName()}</h2>
+                    <h2 className="text-center text-3xl">{musicContext.currentSong.name}</h2>
                     <h3 className="text-center text-xl">{"Artist" ?? musicContext.artist()}</h3>
                 </div>
 

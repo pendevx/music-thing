@@ -37,9 +37,11 @@ public class AudioService : IAudioService
         _songRepository.Create(songs);
     }
 
-    public IEnumerable<string> ListAudioFiles()
+    public IEnumerable<SongInfo> ListAudioFiles()
     {
-        return Directory.GetFiles(AssetsPath, "*.mp3", SearchOption.AllDirectories)
-            .Select(f => f[(AssetsPath.Length + 1)..].Replace('\\', '/').Replace(".mp3", ""));
+        var audioFiles = _songRepository.Entities
+            .Select(song => new SongInfo(song.Id, song.Name));
+
+        return audioFiles;
     }
 }

@@ -1,9 +1,14 @@
 ﻿using System.Data.Common;
+using backend.DatabaseContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.Contracts;
 
-public interface IGenericRepository<T>
+public interface IGenericRepository<T> where T : class
 {
+    MusicContext MusicContext { get; }
+    DbSet<T> Entities { get; }
+
     /**
      * Requires an active connection with the database.
      */

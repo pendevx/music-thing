@@ -8,6 +8,7 @@ import { formatTime } from "../utils/formats";
 
 function MusicPlayerControl({ onplay, goFullscreen }, ref) {
     const [audioTime, setAudioTime] = React.useState(0);
+    const [currentSongId, setCurrentSongId] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
@@ -50,27 +51,24 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
         }
     }
 
-    React.useEffect(
-        function () {
-            document.title = musicContext.currentSong.name || "pendevx music";
+    if (ref.current && currentSongId !== musicContext.currentSong.id) {
+        if (!musicContext.currentSong.id) return;
+        setCurrentSongId(musicContext.currentSong.id);
+        document.title = musicContext.currentSong.name || "pendevx music";
 
-            (async function () {
-                if (!musicContext.currentSong.id) return;
+        (async function () {
+            const songUrl = downloadSong(musicContext.currentSong.id);
 
-                const songUrl = downloadSong(musicContext.currentSong.id);
+            ref.current.pause();
+            ref.current.src = songUrl;
+            ref.current.load();
 
-                ref.current.pause();
-                ref.current.src = songUrl;
-                ref.current.load();
+            await ref.current.play();
+            musicContext.play();
 
-                await ref.current.play();
-                musicContext.play();
-
-                messageBus.publish("totalDurationUpdate", ref.current.duration);
-            })();
-        },
-        [musicContext.currentSong]
-    );
+            messageBus.publish("totalDurationUpdate", ref.current.duration);
+        })();
+    }
 
     if (musicContext.isPlaying && ref.current?.paused) {
         ref.current?.play();

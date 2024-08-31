@@ -5,8 +5,10 @@ import tailwindcss from "tailwindcss";
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     build: {
-        sourcemap: true,
         target: "esnext",
+    },
+    esbuild: {
+        sourcemap: true,
     },
     server: {
         host: "0.0.0.0",

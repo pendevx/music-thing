@@ -91,6 +91,7 @@ export default function MusicProvider({ children, musicList }) {
             });
         }   
     }
+    
     return (
         <MusicContext.Provider
             value={{

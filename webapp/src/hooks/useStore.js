@@ -15,9 +15,14 @@ export function useStoreState(key) {
 export function useStoreRef(key) {
     const ref = React.useRef(localStorageRepository.get(key));
 
-    const proxy = new Proxy(ref.current, {
+    const proxy = new Proxy(ref, {
+        get(target, prop, receiver) {
+            return Reflect.get(target, prop, receiver);
+        },
+
         set(obj, prop, value) {
             localStorageRepository.set(key, value);
+            return Reflect.set(obj, prop, value);
         }
     });
 

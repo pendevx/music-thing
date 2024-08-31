@@ -6,6 +6,8 @@ import { MusicContext } from "../contexts/MusicContext";
 import { downloadLyrics } from "../utils/url-builder.api";
 import useFetch from "../hooks/useFetch";
 
+const SCROLL_IGNORE_DURATION = 1500;
+
 export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     const { data: lyrics, refreshData } = useFetch([]);
     const [index, setIndex] = React.useState(0);
@@ -68,7 +70,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
 
         timerRef.current = setTimeout(() => {
             timerRef.current = null;
-        }, 1500);
+        }, SCROLL_IGNORE_DURATION);
     }
 
     return (

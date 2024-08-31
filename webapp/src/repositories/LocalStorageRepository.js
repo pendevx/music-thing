@@ -8,7 +8,7 @@ class LocalStorageRepository {
     }
 
     set(key, value) {
-        if (this.#cache.get(key) !== value) {
+        if (!this.#cache.has(key) || this.#cache.get(key) !== value) {
             this.#cache.set(key, value);
             localStorage.setItem(key, value);
         }

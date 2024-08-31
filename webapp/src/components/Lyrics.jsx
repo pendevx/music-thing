@@ -19,6 +19,7 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         [lyrics]
     );
     const [lineHeight, setLineHeight] = React.useState(0);
+    const [currentSongId, setCurrentSongId] = React.useState(0);
     const timerRef = React.useRef(null);
     const musicContext = React.useContext(MusicContext);
 
@@ -44,19 +45,6 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         [lyrics, lineHeight]
     );
 
-    React.useEffect(
-        function () {
-            const { key } = musicContext.currentSong;
-
-            if (key == null) {
-                return;
-            }
-
-            refreshData(downloadLyrics(key));
-        },
-        [musicContext.currentSong, refreshData]
-    );
-
     function updateIndex(i) {
         setIndex(i);
         setScrollTop(i * lineHeight);
@@ -71,6 +59,17 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         timerRef.current = setTimeout(() => {
             timerRef.current = null;
         }, SCROLL_IGNORE_DURATION);
+    }
+
+    if (currentSongId !== musicContext.currentSong.id) {
+        const { id } = musicContext.currentSong;
+
+        if (id == null) {
+            return;
+        }
+
+        setCurrentSongId(musicContext.currentSong.id);
+        refreshData(downloadLyrics(id));
     }
 
     return (

@@ -51,8 +51,7 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
         }
     }
 
-    if (ref.current && currentSongId !== musicContext.currentSong.id) {
-        if (!musicContext.currentSong.id) return;
+    if (ref.current && musicContext.currentSong.id && currentSongId !== musicContext.currentSong.id) {
         setCurrentSongId(musicContext.currentSong.id);
         document.title = musicContext.currentSong.name || "pendevx music";
 

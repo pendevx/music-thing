@@ -64,12 +64,11 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
     if (currentSongId !== musicContext.currentSong.id) {
         const { id } = musicContext.currentSong;
 
-        if (id == null) {
-            return;
+        if (id != null) {
+            setCurrentSongId(musicContext.currentSong.id);
+            refreshData(downloadLyrics(id));
         }
 
-        setCurrentSongId(musicContext.currentSong.id);
-        refreshData(downloadLyrics(id));
     }
 
     return (

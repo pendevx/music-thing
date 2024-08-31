@@ -11,27 +11,9 @@ const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
 export default function MusicProvider({ children, musicList }) {
     const [currentSong, setCurrentSong] = React.useState({ name: "", id: null, index: -1 });
     const [isPlaying, setIsPlaying] = React.useState(false);
-    const [ playBehaviour, _setPlayBehaviour ] = useStoreState(keys.PLAY_BEHAVIOUR);
+    const [ playBehaviour, updatePlayBehaviour ] = useStoreState(keys.PLAY_BEHAVIOUR);
     const shuffleSeed = useStoreRef(keys.SEED);
     const playOrder = React.useRef([...musicList]);
-
-    React.useEffect(function () {
-        if (playBehaviour === "shuffle") {
-            const seed = shuffleSeed.current || randomSeed();
-            shuffleSongs(seed);
-        }
-
-        const lastSongId = +localStorageRepository.get(keys.LAST_SONG_ID);
-        const lastSongIndex = playOrder.current.findIndex(s => s.id === lastSongId);
-
-        if (lastSongId !== 0) {
-            setCurrentSong({
-                id: lastSongIndex ? playOrder.current[lastSongIndex].id : null,
-                name: playOrder.current[lastSongIndex].name,
-                index: lastSongId
-            });
-        }   
-    }, []);
 
     function shuffleSongs(seed) {
         const prng = createPRNG(seed);
@@ -86,12 +68,29 @@ export default function MusicProvider({ children, musicList }) {
             shuffleSongs(randomSeed());
         }
 
-        _setPlayBehaviour(behaviour);
+        updatePlayBehaviour(behaviour);
     }
 
     const play = () => setIsPlaying(true);
     const pause = () => setIsPlaying(false);
 
+    if (currentSong.id == null) {
+        if (playBehaviour === "shuffle") {
+            const seed = shuffleSeed.current || randomSeed();
+            shuffleSongs(seed);
+        }
+
+        const lastSongId = +localStorageRepository.get(keys.LAST_SONG_ID);
+        const lastSongIndex = playOrder.current.findIndex(s => s.id === lastSongId);
+
+        if (lastSongId !== 0) {
+            setCurrentSong({
+                id: lastSongIndex ? playOrder.current[lastSongIndex].id : null,
+                name: playOrder.current[lastSongIndex].name,
+                index: lastSongId
+            });
+        }   
+    }
     return (
         <MusicContext.Provider
             value={{

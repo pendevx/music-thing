@@ -10,7 +10,12 @@ class LocalStorageRepository {
     set(key, value) {
         if (!this.#cache.has(key) || this.#cache.get(key) !== value) {
             this.#cache.set(key, value);
-            localStorage.setItem(key, value);
+        }
+    }
+
+    commit() {
+        for (const [k,v] in this.#cache.entries()) {
+            localStorage.setItem(k, v);
         }
     }
 }
@@ -21,4 +26,8 @@ export const keys = {
     CURRENT_SONG_ID: "lastSongId",
 };
 
-export default new LocalStorageRepository();
+const repository = new LocalStorageRepository();
+
+window.addEventListener("beforeunload", repository.commit);
+
+export default repository;

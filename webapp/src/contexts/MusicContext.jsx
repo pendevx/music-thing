@@ -10,42 +10,39 @@ export const MusicContext = React.createContext();
 
 const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
 
-globalThis.thing = [];
-
 export default function MusicProvider({ children }) {
     const [currentSong, setCurrentSong] = React.useState({ name: "", id: null, index: -1 });
     const [isPlaying, setIsPlaying] = React.useState(false);
     const { data: musicList, refreshData } = useFetch([]);
     const [ playBehaviour, updatePlayBehaviour ] = useStoreState(keys.PLAY_BEHAVIOUR);
     const shuffleSeed = useStoreRef(keys.SEED);
-    const playOrder = React.useRef([...musicList]);
+    const playOrder = React.useMemo(function() {
+        if (playBehaviour === "shuffle") {
+            const prng = createPRNG(shuffleSeed.current);
+            return [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
+        }
+
+        return musicList;
+    }, [musicList, playBehaviour, shuffleSeed]);
 
     React.useEffect(function() {
         refreshData(listSongs());
     }, []);
 
-    function shuffleSongs(seed) {
-        const prng = createPRNG(seed);
-        const newPlayOrder = [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
-
-        playOrder.current = newPlayOrder;
-        shuffleSeed.current = seed;
-    }
-
     function previous() {
-        const index = (currentSong.index - 1 + playOrder.current.length) % playOrder.current.length || 0;
+        const index = (currentSong.index - 1 + playOrder.length) % playOrder.length || 0;
         selectSongByIndex(index);
     }
 
     function next() {
-        const index = (currentSong.index + 1) % playOrder.current.length || 0;
+        const index = (currentSong.index + 1) % playOrder.length || 0;
         selectSongByIndex(index);
     }
 
     function selectSongByIndex(index) {
-        const song = playOrder.current[index];
+        const song = playOrder[index];
 
-        if (index < 0 || index >= playOrder.current.length) {
+        if (index < 0 || index >= playOrder.length) {
             throw new Error("Invalid song index");
         }
 
@@ -53,18 +50,18 @@ export default function MusicProvider({ children }) {
     }
 
     function selectSongById(id) {
-        const index = playOrder.current.findIndex(x => x.id === id);
+        const index = playOrder.findIndex(x => x.id === id);
 
         if (index === -1) {
             throw new Error("Invalid song id");
         }
 
-        selectSong(playOrder.current[index].name, id, index);
+        selectSong(playOrder[index].name, id, index);
     }
 
-    function selectSong(name, id, index) {
+    function selectSong(name, id, index, play = true) {
         setCurrentSong({ name, id, index });
-        setIsPlaying(true);
+        setIsPlaying(play);
         localStorageRepository.set(keys.CURRENT_SONG_ID, id);
     }
 
@@ -74,7 +71,7 @@ export default function MusicProvider({ children }) {
         }
 
         if (behaviour === "shuffle") {
-            shuffleSongs(randomSeed());
+            shuffleSeed.current = randomSeed();
         }
 
         updatePlayBehaviour(behaviour);
@@ -85,19 +82,14 @@ export default function MusicProvider({ children }) {
 
     if (currentSong.id == null) {
         if (playBehaviour === "shuffle") {
-            const seed = shuffleSeed.current || randomSeed();
-            shuffleSongs(seed);
+            shuffleSeed.current ||= randomSeed();
         }
 
         const lastSongId = +localStorageRepository.get(keys.CURRENT_SONG_ID);
-        const lastSongIndex = playOrder.current.findIndex(s => s.id === lastSongId);
 
-        if (lastSongId !== 0) {
-            setCurrentSong({
-                id: lastSongIndex ? playOrder.current[lastSongIndex]?.id : null,
-                name: playOrder.current[lastSongIndex]?.name || "",
-                index: lastSongId
-            });
+        if (lastSongId && playOrder.length) {
+            const lastSongIndex = playOrder.findIndex(s => s.id === lastSongId);
+            selectSong(playOrder[lastSongIndex]?.name || "", lastSongId, lastSongIndex, false);
         }
     }
 

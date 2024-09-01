@@ -55,18 +55,12 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
         setCurrentSongId(musicContext.currentSong.id);
         document.title = musicContext.currentSong.name || "pendevx music";
 
-        (async function () {
-            const songUrl = downloadSong(musicContext.currentSong.id);
+        const songUrl = downloadSong(musicContext.currentSong.id);
 
-            ref.current.pause();
-            ref.current.src = songUrl;
-            ref.current.load();
-
-            await ref.current.play();
-            musicContext.play();
-
-            messageBus.publish("totalDurationUpdate", ref.current.duration);
-        })();
+        ref.current.pause();
+        ref.current.src = songUrl;
+        ref.current.load();
+        ref.current.play().then(musicContext.play);
     }
 
     if (musicContext.isPlaying && ref.current?.paused) {
@@ -81,7 +75,9 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
 
     return (
         <div className="bg-black">
-            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={() => musicContext.next()} onPlay={onplay} crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
+            <audio ref={ref} onTimeUpdate={timeUpdateHandler} onEnded={musicContext.next} onPlay={onplay}
+                onLoadedMetadata={() => messageBus.publish("totalDurationUpdate", ref.current?.duration)}
+                crossOrigin="anonymous" loop={musicContext.playBehaviour === "loop"} />
 
             <div className="flex h-16 w-full items-center gap-2 overflow-hidden border-t-[1px] border-solid border-gray-900 bg-zinc-900 pl-4 pr-4 text-white">
                 <p

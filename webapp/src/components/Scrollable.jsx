@@ -32,7 +32,7 @@ export default function Scrollable({ className, children, showScroller = true, s
                 window.removeEventListener("resize", updateScrollbarHeight);
             };
         },
-        []
+        [children]
     );
 
     function updateScrollTop(next) {

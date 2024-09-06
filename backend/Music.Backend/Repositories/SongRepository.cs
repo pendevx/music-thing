@@ -1,11 +1,11 @@
-﻿using backend.DatabaseContexts;
-using backend.Models;
-using backend.Models.DTO;
-using backend.Repositories.Contracts;
-using backend.Utils;
-using Microsoft.Data.SqlTypes;
+﻿using Microsoft.Data.SqlTypes;
+using Music.Backend.DatabaseContexts;
+using Music.Backend.Models;
+using Music.Backend.Models.DTO;
+using Music.Backend.Repositories.Contracts;
+using Music.Backend.Utils;
 
-namespace backend.Repositories;
+namespace Music.Backend.Repositories;
 
 public class SongRepository : GenericRepository<Song>, ISongRepository
 {

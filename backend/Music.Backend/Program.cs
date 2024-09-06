@@ -1,12 +1,12 @@
-using backend.DatabaseContexts;
-using backend.Middleware;
-using backend.Repositories;
-using backend.Repositories.Contracts;
-using backend.Services;
-using backend.Services.Contracts;
+using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Music.Backend.DatabaseContexts;
+using Music.Backend.Repositories;
+using Music.Backend.Repositories.Contracts;
+using Music.Backend.Services;
+using Music.Backend.Services.Contracts;
 
-namespace backend;
+namespace Music.Backend;
 
 public class Program
 {

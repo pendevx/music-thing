@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using backend.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Music.Backend.Repositories;
 
-namespace backend.Models;
+namespace Music.Backend.Models;
 
 [Index("Guid", Name = "UQ__Songs__A2B5777D47B8A67B", IsUnique = true)]
 public partial class Song : Entity

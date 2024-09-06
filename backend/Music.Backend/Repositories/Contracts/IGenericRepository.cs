@@ -1,8 +1,8 @@
 ﻿using System.Data.Common;
-using backend.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
+using Music.Backend.DatabaseContexts;
 
-namespace backend.Repositories.Contracts;
+namespace Music.Backend.Repositories.Contracts;
 
 public interface IGenericRepository<T> where T : class
 {

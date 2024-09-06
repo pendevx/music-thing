@@ -1,8 +1,8 @@
-using backend.Attributes;
-using backend.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Music.Backend.Attributes;
+using Music.Backend.Services.Contracts;
 
-namespace backend.Controllers;
+namespace Music.Backend.Controllers;
 
 [ApiController]
 [Route("music")]

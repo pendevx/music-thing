@@ -1,4 +1,4 @@
-﻿namespace backend.Repositories;
+﻿namespace Music.Backend.Repositories;
 
 public class Entity
 {

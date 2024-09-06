@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace backend.Attributes;
+namespace Music.Backend.Attributes;
 
 public class DecodeUrlAttribute : ActionFilterAttribute
 {

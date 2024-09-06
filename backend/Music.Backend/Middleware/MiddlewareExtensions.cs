@@ -1,4 +1,4 @@
-﻿namespace backend.Middleware;
+﻿namespace Music.Backend.Middleware;
 
 public static class MiddlewareExtensions
 {

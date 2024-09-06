@@ -1,7 +1,7 @@
-﻿using backend.Repositories;
-using backend.Utils;
+﻿using Music.Backend.Repositories;
+using Music.Backend.Utils;
 
-namespace backend.Models.DTO;
+namespace Music.Backend.Models.DTO;
 
 public class StreamedAudio : Entity
 {

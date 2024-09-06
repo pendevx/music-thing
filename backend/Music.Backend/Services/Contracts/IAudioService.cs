@@ -1,7 +1,7 @@
-﻿using backend.Models;
-using backend.Models.DTO;
+﻿using Music.Backend.Models;
+using Music.Backend.Models.DTO;
 
-namespace backend.Services.Contracts;
+namespace Music.Backend.Services.Contracts;
 
 public interface IAudioService
 {

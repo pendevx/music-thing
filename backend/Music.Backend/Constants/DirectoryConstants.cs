@@ -1,4 +1,4 @@
-﻿namespace backend.Constants;
+﻿namespace Music.Backend.Constants;
 
 public static class DirectoryConstants
 {

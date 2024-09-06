@@ -1,9 +1,9 @@
 ﻿using System.Data.Common;
-using backend.DatabaseContexts;
-using backend.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Music.Backend.DatabaseContexts;
+using Music.Backend.Repositories.Contracts;
 
-namespace backend.Repositories;
+namespace Music.Backend.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : Entity
 {

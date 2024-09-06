@@ -1,4 +1,4 @@
-﻿namespace backend.Utils;
+﻿namespace Music.Backend.Utils;
 
 public class LazyLoad<T>
 {

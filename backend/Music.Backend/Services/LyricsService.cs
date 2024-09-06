@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
-using backend.Constants;
-using backend.Models.DTO;
-using backend.Services.Contracts;
+using Music.Backend.Constants;
+using Music.Backend.Models.DTO;
+using Music.Backend.Services.Contracts;
 
-namespace backend.Services;
+namespace Music.Backend.Services;
 
 public class LyricsService : ILyricsService
 {

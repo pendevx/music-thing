@@ -1,7 +1,7 @@
-﻿using backend.Models;
-using backend.Models.DTO;
+﻿using Music.Backend.Models;
+using Music.Backend.Models.DTO;
 
-namespace backend.Repositories.Contracts;
+namespace Music.Backend.Repositories.Contracts;
 
 public interface ISongRepository : IGenericRepository<Song>
 {

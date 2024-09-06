@@ -1,10 +1,10 @@
-﻿using backend.Constants;
-using backend.Models;
-using backend.Models.DTO;
-using backend.Repositories.Contracts;
-using backend.Services.Contracts;
+﻿using Music.Backend.Constants;
+using Music.Backend.Models;
+using Music.Backend.Models.DTO;
+using Music.Backend.Repositories.Contracts;
+using Music.Backend.Services.Contracts;
 
-namespace backend.Services;
+namespace Music.Backend.Services;
 
 public class AudioService : IAudioService
 {

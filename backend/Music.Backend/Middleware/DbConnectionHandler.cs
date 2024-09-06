@@ -1,9 +1,9 @@
-﻿using backend.Attributes;
-using backend.DatabaseContexts;
-using Microsoft.AspNetCore.Http.Features;
+﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Music.Backend.Attributes;
+using Music.Backend.DatabaseContexts;
 
-namespace backend.Middleware;
+namespace Music.Backend.Middleware;
 
 public class DbConnectionHandler
 {

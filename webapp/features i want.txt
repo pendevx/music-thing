@@ -1,27 +1,26 @@
 # order of priority
 
-audio.volume [0,1]
-audio.playbackRate
-    
-Media Session API
-    research audio no controls on mobile notification centre thingy
-    research audio next/previous (hardware media key handling thing)
-
-start some lyrics
-
-song + lrc uploading interface
-
-theme customization per- user/device
+DB schema updates management system
+- manual or Flyway?
 
 autho + authen
 
-song modifications 
+add typescript
+
+playlists 
+
+audio.volume [0,1]
+audio.playbackRate
+
+song + lrc uploading interface
+
+start some lyrics
+
+theme customization per- user/device
 
 lrc modifications 
 
-file structure modifications 
-
-playlists 
+song modifications 
 
 
 

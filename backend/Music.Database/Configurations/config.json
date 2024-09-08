@@ -1,0 +1,5 @@
+﻿{
+    "ConnectionStrings": {
+        "music-thing": "data source=localhost;trusted_connection=true;TrustServerCertificate=True"
+    }
+}

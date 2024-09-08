@@ -1,27 +1,33 @@
-﻿using System.Reflection;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Music.Database.Services;
+using Music.Database.Services.Contracts;
 
 namespace Music.Database;
 
 class Program
 {
+    static IServiceProvider ConfigureServices()
+    {
+        IServiceCollection services = new ServiceCollection();
+
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory() + "/Configurations")
+            .AddJsonFile("config.json", false)
+            .Build();
+
+        services.AddSingleton(configuration);
+        services.AddSingleton<IDatabaseSchemaManager, DatabaseSchemaManager>();
+
+        return services.BuildServiceProvider();
+    }
+
     static void Main(string[] args)
     {
-        var serviceCollection = new ServiceCollection();
+        var services = ConfigureServices();
 
-        var thisAssembly = Assembly.GetExecutingAssembly();
-        var embeddedResources = thisAssembly.GetManifestResourceNames();
-
-        foreach (var resource in embeddedResources)
-        {
-            Console.WriteLine(resource);
-
-            var content = thisAssembly.GetManifestResourceStream(resource);
-            if (content is null) return;
-
-            var stdout = Console.OpenStandardOutput();
-            content.CopyTo(stdout);
-        }
+        var entry = services.GetRequiredService<IDatabaseSchemaManager>();
+        entry.Run();
     }
 }
 

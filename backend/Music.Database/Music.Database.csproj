@@ -17,7 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-08T10.00.02.412Z] Database_Init.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-08T10.00.28.577Z] FILESTREAM_Init.sql" />
     </ItemGroup>
 

@@ -8,7 +8,6 @@ namespace Music.Database.Services;
 public class DatabaseSchemaManager : IDatabaseSchemaManager
 {
     private readonly IRepository _repository;
-    private readonly IConfiguration _configuration;
     private readonly string? _databaseName;
 
     private const string ScriptsPrefix = "Music.Database.Scripts.";
@@ -16,9 +15,7 @@ public class DatabaseSchemaManager : IDatabaseSchemaManager
     public DatabaseSchemaManager(IRepository repository, IConfiguration configuration)
     {
         _repository = repository;
-        _configuration = configuration;
-
-        _databaseName = _configuration.GetValue<string>("DatabaseName");
+        _databaseName = configuration.GetValue<string>("DatabaseName");
     }
 
     public void Run()

@@ -28,7 +28,6 @@ public class Program
         builder.Services.AddDbContext<MusicContext>(opt =>
         {
             var connectionString = builder.Configuration.GetConnectionString("music-thing");
-            builder.Configuration.GetValue<string>("");
             opt.UseSqlServer(connectionString);
         });
 

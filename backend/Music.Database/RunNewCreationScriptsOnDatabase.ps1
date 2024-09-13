@@ -19,12 +19,7 @@ foreach ($file in (Get-ChildItem -Path $directoryPath -Recurse -File)) {
 
         Rename-Item -Path $file.FullName -NewName $newFileName
 
-#        $csproj = Get-Content -Path $csprojPath -Raw
         $csproj = $csproj -replace [regex]::Escape($fileName), $newFileName
-
-#        $csproj = $csproj.Trim()
-
-#        Set-Content -Path $csprojPath -Value $replaced
     }
 }
 

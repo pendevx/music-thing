@@ -27,6 +27,7 @@ public class DatabaseSchemaManager : IDatabaseSchemaManager
         var setupScripts = ExtractUnexecutedScripts(embeddedResources.Where(s => s.StartsWith($"{ScriptsPrefix}_01_DbSetup")));
         var updateScripts = ExtractUnexecutedScripts(embeddedResources.Where(s => s.StartsWith($"{ScriptsPrefix}_02_UpdateDb")));
 
+        _repository.UseDatabase(_databaseName);
         SetupDatabase(thisAssembly, setupScripts);
         SetupVersioningTables();
         UpdateSchema(thisAssembly, updateScripts);
@@ -54,11 +55,6 @@ public class DatabaseSchemaManager : IDatabaseSchemaManager
 
     private void SetupVersioningTables()
     {
-        if (_databaseName is not null)
-        {
-            _repository.UseDatabase(_databaseName);
-        }
-
         // Check for existence of the versioning tables
         var exists = _repository.ExecuteScalar<string>(
             """

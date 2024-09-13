@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Music.Database.Services;
 using Music.Database.Services.Contracts;
+using Music.Database.Services.Repositories;
 
 namespace Music.Database;
 
@@ -12,12 +13,13 @@ class Program
         IServiceCollection services = new ServiceCollection();
 
         IConfiguration configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory() + "/Configurations")
-            .AddJsonFile("config.json", false)
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false)
             .Build();
 
         services.AddSingleton(configuration);
         services.AddSingleton<IDatabaseSchemaManager, DatabaseSchemaManager>();
+        services.AddSingleton<IRepository, Repository>();
 
         return services.BuildServiceProvider();
     }

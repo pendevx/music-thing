@@ -1,7 +1,10 @@
 ﻿$directoryPath = "./Scripts"
 $beginsWithISO = "^\[\d{4}-\d{2}-\d{2}T\d{2}.\d{2}.\d{2}.\d{3}Z]"
+$csprojPath = "./Music.Database.csproj"
 
-foreach ($file in (Get-ChildItem -Path $directoryPath)) {
+$csproj = Get-Content -Path $csprojPath -Raw
+
+foreach ($file in (Get-ChildItem -Path $directoryPath -Recurse -File)) {
     $fileName = $file.Name
 
     $fileName = $file.Name
@@ -15,5 +18,15 @@ foreach ($file in (Get-ChildItem -Path $directoryPath)) {
         $newFileName = "[$createdOnISO] $fileName"
 
         Rename-Item -Path $file.FullName -NewName $newFileName
+
+#        $csproj = Get-Content -Path $csprojPath -Raw
+        $csproj = $csproj -replace [regex]::Escape($fileName), $newFileName
+
+#        $csproj = $csproj.Trim()
+
+#        Set-Content -Path $csprojPath -Value $replaced
     }
 }
+
+$csproj = $csproj.Trim()
+Set-Content -Path $csprojPath -Value $csproj

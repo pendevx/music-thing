@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /backend
 
 # Copy everything
@@ -9,9 +9,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /backend
 COPY --from=build-env /backend/out .
-ENTRYPOINT ["dotnet", "Music.Backend.dll"]
-
-# Share Docker images without using a registry: https://stackoverflow.com/a/50827357
+ENTRYPOINT ["dotnet", "Music.Database.dll"]

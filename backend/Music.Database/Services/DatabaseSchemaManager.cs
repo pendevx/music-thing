@@ -27,7 +27,6 @@ public class DatabaseSchemaManager : IDatabaseSchemaManager
         var setupScripts = ExtractUnexecutedScripts(embeddedResources.Where(s => s.StartsWith($"{ScriptsPrefix}_01_DbSetup")));
         var updateScripts = ExtractUnexecutedScripts(embeddedResources.Where(s => s.StartsWith($"{ScriptsPrefix}_02_UpdateDb")));
 
-        _repository.UseDatabase(_databaseName);
         SetupDatabase(thisAssembly, setupScripts);
         SetupVersioningTables();
         UpdateSchema(thisAssembly, updateScripts);
@@ -36,6 +35,7 @@ public class DatabaseSchemaManager : IDatabaseSchemaManager
     private void SetupDatabase(Assembly assembly, IEnumerable<string> setupScripts)
     {
         CreateDatabaseIfNotExists();
+        _repository.UseDatabase(_databaseName);
         ExecuteAllScripts(assembly, setupScripts);
     }
 

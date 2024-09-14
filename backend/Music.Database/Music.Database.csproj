@@ -18,7 +18,6 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-08T10.00.28.577Z] FILESTREAM_Init.sql" />
-      <None Remove="Scripts\01_DbSetup\[2024-09-13T12.11.25.595Z] Create Songs Table.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-13T12.11.25.595Z] Create Songs Table.sql" />
     </ItemGroup>
 

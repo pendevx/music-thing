@@ -10,19 +10,3 @@ services:
         container_name: music-frontend
         ports:
             - "8000:80"
-        networks:
-            - music-network
-
-    backend:
-        build: ./backend/Music.Backend
-        image: localhost:5000/music-backend:20240914
-        container_name: music-backend
-        ports:
-            - "8080:8080"
-        volumes:
-            - ./backend/assets:/backend/assets
-        networks:
-            - music-network
-
-networks:
-    music-network: {}

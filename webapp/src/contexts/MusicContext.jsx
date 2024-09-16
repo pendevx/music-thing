@@ -1,5 +1,5 @@
 import React from "react";
-import localStorageRepository, { keys } from "../repositories/LocalStorageRepository";
+import { keys } from "../repositories/LocalStorageRepository";
 import createPRNG from "../utils/pseudo-rng";
 import { playBehaviours } from "../utils/playBehaviour";
 import { useStoreRef, useStoreState } from "../hooks/useStore";
@@ -84,16 +84,18 @@ export default function MusicProvider({ children }) {
     const play = () => setIsPlaying(true);
     const pause = () => setIsPlaying(false);
 
-    if (currentSongId == null) {
+    if (currentSong.index === -1) {
         if (playBehaviour === "shuffle") {
             shuffleSeed.current ||= randomSeed();
         }
 
-        const lastSongId = +localStorageRepository.get(keys.CURRENT_SONG_ID);
-
-        if (lastSongId && playOrder.length) {
-            const lastSongIndex = playOrder.findIndex(s => s.id === lastSongId);
-            selectSong(playOrder[lastSongIndex]?.name || "", lastSongId, lastSongIndex, false);
+        if (playOrder.length) {
+            if (currentSongId == null) {
+                selectSong(playOrder[0]?.name || "", playOrder[0]?.id, 0, false);
+            } else {
+                const lastSongIndex = playOrder.findIndex(s => s.id == currentSongId);
+                selectSong(playOrder[lastSongIndex]?.name || "", currentSongId, lastSongIndex, false);
+            }
         }
     }
 

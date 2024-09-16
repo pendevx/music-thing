@@ -2,9 +2,9 @@ import React from "react";
 import localStorageRepository from "../repositories/LocalStorageRepository";
 
 export function useStoreState(key) {
-    const [ data, setData ] = React.useState(localStorageRepository.get(key));
+    const [data, setData] = React.useState(localStorageRepository.get(key));
     localStorageRepository.set(key, data);
-    return [ data, setData ];
+    return [data, setData];
 }
 
 export function useStoreRef(key) {
@@ -14,7 +14,7 @@ export function useStoreRef(key) {
         set(obj, prop, value) {
             localStorageRepository.set(key, value);
             return Reflect.set(obj, prop, value);
-        }
+        },
     });
 
     return proxy;

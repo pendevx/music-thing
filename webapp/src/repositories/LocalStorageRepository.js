@@ -16,9 +16,7 @@ class LocalStorageRepository {
     }
 
     commit() {
-        for (const [k, v] in this.#cache.entries()) {
-            localStorage.setItem(k, v);
-        }
+        this.#cache.entries().forEach(([k, v]) => localStorage.setItem(k, v));
     }
 }
 

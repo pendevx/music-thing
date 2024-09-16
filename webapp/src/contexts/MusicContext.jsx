@@ -12,11 +12,11 @@ const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
 
 export default function MusicProvider({ children }) {
     const [currentSong, setCurrentSong] = React.useState({ name: "", index: -1 });
-    const [currentSongId, setCurrentSongId] = useStoreState(keys.CURRENT_SONG_ID);
+    const [currentSongId, setCurrentSongId] = useStoreState(keys.CURRENT_SONG_ID, Number);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const { data: musicList, refreshData } = useFetch([]);
-    const [playBehaviour, updatePlayBehaviour] = useStoreState(keys.PLAY_BEHAVIOUR);
-    const shuffleSeed = useStoreRef(keys.SEED);
+    const [playBehaviour, updatePlayBehaviour] = useStoreState(keys.PLAY_BEHAVIOUR, String);
+    const shuffleSeed = useStoreRef(keys.SEED, Number);
     const playOrder = React.useMemo(
         function () {
             if (playBehaviour === "shuffle") {
@@ -93,7 +93,7 @@ export default function MusicProvider({ children }) {
             if (currentSongId == null) {
                 selectSong(playOrder[0]?.name || "", playOrder[0]?.id, 0, false);
             } else {
-                const lastSongIndex = playOrder.findIndex(s => s.id == currentSongId);
+                const lastSongIndex = playOrder.findIndex(s => s.id === currentSongId);
                 selectSong(playOrder[lastSongIndex]?.name || "", currentSongId, lastSongIndex, false);
             }
         }

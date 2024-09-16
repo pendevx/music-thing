@@ -61,14 +61,13 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }) {
         }, SCROLL_IGNORE_DURATION);
     }
 
-    if (currentSongId !== musicContext.currentSong.id) {
+    if (currentSongId !== musicContext.currentSongId) {
         const { id } = musicContext.currentSong;
 
         if (id != null) {
-            setCurrentSongId(musicContext.currentSong.id);
+            setCurrentSongId(musicContext.currentSongId);
             refreshData(downloadLyrics(id));
         }
-
     }
 
     return (

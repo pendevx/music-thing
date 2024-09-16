@@ -11,21 +11,25 @@ export const MusicContext = React.createContext();
 const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
 
 export default function MusicProvider({ children }) {
-    const [currentSong, setCurrentSong] = React.useState({ name: "", id: null, index: -1 });
+    const [currentSong, setCurrentSong] = React.useState({ name: "", index: -1 });
+    const [currentSongId, setCurrentSongId] = useStoreState(keys.CURRENT_SONG_ID);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const { data: musicList, refreshData } = useFetch([]);
-    const [ playBehaviour, updatePlayBehaviour ] = useStoreState(keys.PLAY_BEHAVIOUR);
+    const [playBehaviour, updatePlayBehaviour] = useStoreState(keys.PLAY_BEHAVIOUR);
     const shuffleSeed = useStoreRef(keys.SEED);
-    const playOrder = React.useMemo(function() {
-        if (playBehaviour === "shuffle") {
-            const prng = createPRNG(shuffleSeed.current);
-            return [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
-        }
+    const playOrder = React.useMemo(
+        function () {
+            if (playBehaviour === "shuffle") {
+                const prng = createPRNG(shuffleSeed.current);
+                return [...musicList].sort(() => prng.next().value / 2 ** 31 - 0.5);
+            }
 
-        return musicList;
-    }, [musicList, playBehaviour, shuffleSeed]);
+            return musicList;
+        },
+        [musicList, playBehaviour, shuffleSeed]
+    );
 
-    React.useEffect(function() {
+    React.useEffect(function () {
         refreshData(listSongs());
     }, []);
 
@@ -60,9 +64,9 @@ export default function MusicProvider({ children }) {
     }
 
     function selectSong(name, id, index, play = true) {
-        setCurrentSong({ name, id, index });
+        setCurrentSong({ name, index });
+        setCurrentSongId(id);
         setIsPlaying(play);
-        localStorageRepository.set(keys.CURRENT_SONG_ID, id);
     }
 
     function setPlayBehaviour(behaviour) {
@@ -80,7 +84,7 @@ export default function MusicProvider({ children }) {
     const play = () => setIsPlaying(true);
     const pause = () => setIsPlaying(false);
 
-    if (currentSong.id == null) {
+    if (currentSongId == null) {
         if (playBehaviour === "shuffle") {
             shuffleSeed.current ||= randomSeed();
         }
@@ -97,6 +101,7 @@ export default function MusicProvider({ children }) {
         <MusicContext.Provider
             value={{
                 currentSong,
+                currentSongId,
                 isPlaying,
                 playBehaviour,
                 setPlayBehaviour,

@@ -27,7 +27,7 @@ export default function App() {
             case " ": {
                 e.preventDefault();
 
-                if (musicContext.currentSong.id == null) {
+                if (musicContext.currentSongId == null) {
                     musicContext.next();
                 } else {
                     musicContext.isPlaying ? musicContext.pause() : musicContext.play();

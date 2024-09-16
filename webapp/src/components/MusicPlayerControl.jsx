@@ -54,11 +54,11 @@ function MusicPlayerControl({ onplay, goFullscreen }, ref) {
         }
     }
 
-    if (ref.current && musicContext.currentSong.id && currentSongId !== musicContext.currentSong.id) {
-        setCurrentSongId(musicContext.currentSong.id);
+    if (ref.current && musicContext.currentSongId && currentSongId !== musicContext.currentSongId) {
+        setCurrentSongId(musicContext.currentSongId);
         document.title = musicContext.currentSong.name || "pendevx music";
 
-        const songUrl = downloadSong(musicContext.currentSong.id);
+        const songUrl = downloadSong(musicContext.currentSongId);
 
         ref.current.pause();
         ref.current.src = songUrl;

@@ -17,7 +17,7 @@ export default function MusicList({ showSonglist, onSongSelected }) {
             <div className="transition-transform duration-1000">
                 <ul>
                     {musicContext.musicList.map(x => (
-                        <MusicItem key={x.id} onClick={onSongSelect} id={x.id} isPlaying={musicContext.currentSong.id === x.id} name={x.name} />
+                        <MusicItem key={x.id} onClick={onSongSelect} id={x.id} isPlaying={musicContext.currentSongId === x.id} name={x.name} />
                     ))}
                 </ul>
             </div>

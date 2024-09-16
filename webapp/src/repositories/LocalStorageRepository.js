@@ -1,3 +1,5 @@
+import singleton from "../utils/singleton";
+
 class LocalStorageRepository {
     #cache = new Map();
 
@@ -14,7 +16,7 @@ class LocalStorageRepository {
     }
 
     commit() {
-        for (const [k,v] in this.#cache.entries()) {
+        for (const [k, v] in this.#cache.entries()) {
             localStorage.setItem(k, v);
         }
     }
@@ -26,8 +28,8 @@ export const keys = {
     CURRENT_SONG_ID: "lastSongId",
 };
 
-const repository = new LocalStorageRepository();
+const repository = new (singleton(LocalStorageRepository))();
 
-window.addEventListener("beforeunload", repository.commit);
+window.addEventListener("beforeunload", () => repository.commit());
 
 export default repository;

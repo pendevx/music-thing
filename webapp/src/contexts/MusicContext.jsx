@@ -91,10 +91,9 @@ export default function MusicProvider({ children }) {
 
         if (playOrder.length) {
             if (currentSongId == null) {
-                selectSong(playOrder[0]?.name || "", playOrder[0]?.id, 0, false);
+                selectSong(playOrder[0]?.name || "", playOrder[0]?.id, 0, false); // default to first song in the list
             } else {
-                const lastSongIndex = playOrder.findIndex(s => s.id === currentSongId);
-                selectSong(playOrder[lastSongIndex]?.name || "", currentSongId, lastSongIndex, false);
+                selectSongById(currentSongId);
             }
         }
     }

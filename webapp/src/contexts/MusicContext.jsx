@@ -90,7 +90,7 @@ export default function MusicProvider({ children }) {
         }
 
         if (playOrder.length) {
-            if (currentSongId == null) {
+            if (!currentSongId) {
                 selectSong(playOrder[0]?.name || "", playOrder[0]?.id, 0, false); // default to first song in the list
             } else {
                 selectSongById(currentSongId);

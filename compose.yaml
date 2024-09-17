@@ -1,12 +1,12 @@
 services:
     db-schema-update:
         build: ./backend/Music.Database
-        image: localhost:5000/music-db-schema-update:20240914
+        image: localhost:5000/music-db-schema-update
         container_name: music-db-schema-update
 
     frontend:
         build: ./webapp
-        image: localhost:5000/music-frontend:20240914
+        image: localhost:5000/music-frontend
         container_name: music-frontend
         ports:
             - "8000:80"

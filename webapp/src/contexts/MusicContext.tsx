@@ -1,17 +1,17 @@
 import React from "react";
-import { keys } from "../repositories/LocalStorageRepository";
 import createPRNG from "../utils/pseudo-rng";
 import { playBehaviours } from "../utils/playBehaviour";
 import { useStoreRef, useStoreState } from "../hooks/useStore";
 import useFetch from "../hooks/useFetch";
 import { listSongs } from "../utils/url-builder.api";
+import { PlayBehaviour } from "../types/playBehaviour";
 
 type TMusicContext = {
     currentSong: SongInformation;
     currentSongId: number;
     isPlaying: boolean;
-    playBehaviour: string | null;
-    setPlayBehaviour: (behaviour: string | null) => void;
+    playBehaviour: PlayBehaviour;
+    setPlayBehaviour: (behaviour: PlayBehaviour) => void;
     previous: () => void;
     next: () => void;
     musicList: SongInfoDTO[];
@@ -36,11 +36,11 @@ const randomSeed = () => Math.floor(Math.random() * 2 ** 16);
 
 export default function MusicProvider({ children }: { children: React.ReactNode }) {
     const [currentSong, setCurrentSong] = React.useState<SongInformation>({ name: "", index: -1 });
-    const [currentSongId, setCurrentSongId] = useStoreState<number>(keys.CURRENT_SONG_ID, Number);
+    const [currentSongId, setCurrentSongId] = useStoreState<number>("lastSongId", Number);
     const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
     const { data: musicList, refreshData } = useFetch<SongInfoDTO[]>([]);
-    const [playBehaviour, updatePlayBehaviour] = useStoreState<string | null>(keys.PLAY_BEHAVIOUR, String);
-    const shuffleSeed = useStoreRef<number>(keys.SEED, Number);
+    const [playBehaviour, updatePlayBehaviour] = useStoreState<PlayBehaviour>("playBehaviour");
+    const shuffleSeed = useStoreRef<number>("seed", Number);
     const playOrder = React.useMemo<SongInfoDTO[]>(
         function (): SongInfoDTO[] {
             if (playBehaviour === "shuffle") {
@@ -93,7 +93,7 @@ export default function MusicProvider({ children }: { children: React.ReactNode 
         setIsPlaying(play);
     }
 
-    function setPlayBehaviour(behaviour: string | null) {
+    function setPlayBehaviour(behaviour: PlayBehaviour) {
         if (!playBehaviours.includes(behaviour)) {
             throw new Error("Invalid playBehaviour");
         }

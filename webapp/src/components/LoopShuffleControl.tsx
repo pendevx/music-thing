@@ -2,10 +2,11 @@ import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
 import { CircularSvg } from "./";
 import { MusicShuffleSvg, MusicLoopSvg, MusicIconSvg } from "../icons";
+import { PlayBehaviour } from "../types/playBehaviour";
 
 const height = "h-[60%]";
 
-function playBehaviourStyles(playBehaviour: string | null) {
+function playBehaviourStyles(playBehaviour: PlayBehaviour) {
     switch (playBehaviour) {
         case "shuffle":
             return "-translate-x-full";
@@ -21,7 +22,7 @@ function playBehaviourStyles(playBehaviour: string | null) {
 export default function LoopShuffleControl() {
     const musicContext = React.useContext(MusicContext);
 
-    function onPlayBehaviourChange(behaviour: string | null) {
+    function onPlayBehaviourChange(behaviour: PlayBehaviour) {
         if (behaviour == null || musicContext.playBehaviour === behaviour) {
             musicContext.setPlayBehaviour(null);
         } else {

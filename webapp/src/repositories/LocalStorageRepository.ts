@@ -10,7 +10,7 @@ class LocalStorageRepository {
         return value;
     }
 
-    set(key: Key, value: string) {
+    set(key: Key, value: any) {
         if (!this.cache.has(key) || this.cache.get(key) !== value) {
             this.cache.set(key, value);
         }
@@ -32,12 +32,6 @@ class LocalStorageRepository {
 }
 
 export type Key = "playBehaviour" | "seed" | "lastSongId";
-
-export const keys = {
-    PLAY_BEHAVIOUR: "playBehaviour",
-    SEED: "seed",
-    CURRENT_SONG_ID: "lastSongId",
-};
 
 const repository = new (singleton(LocalStorageRepository))();
 

@@ -1,7 +1,8 @@
 import { MusicLoopSvg, MusicShuffleSvg, MusicIconSvg } from ".";
+import { PlayBehaviour } from "../types/playBehaviour";
 
 type PlayBehaviourIconProps = {
-    playBehaviour: "loop" | "shuffle" | null;
+    playBehaviour: PlayBehaviour;
     className?: string;
 };
 

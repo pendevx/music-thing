@@ -6,7 +6,7 @@ import { useStoreRef, useStoreState } from "../hooks/useStore";
 import useFetch from "../hooks/useFetch";
 import { listSongs } from "../utils/url-builder.api";
 
-export type TMusicContext = {
+type TMusicContext = {
     currentSong: SongInformation;
     currentSongId: number;
     isPlaying: boolean;

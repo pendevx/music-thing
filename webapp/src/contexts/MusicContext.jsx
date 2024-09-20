@@ -43,24 +43,24 @@ export default function MusicProvider({ children }) {
         selectSongByIndex(index);
     }
 
-    function selectSongByIndex(index) {
+    function selectSongByIndex(index, play = true) {
         const song = playOrder[index];
 
         if (index < 0 || index >= playOrder.length) {
             throw new Error("Invalid song index");
         }
 
-        selectSong(song.name, song.id, index);
+        selectSong(song.name, song.id, index, play);
     }
 
-    function selectSongById(id) {
+    function selectSongById(id, play = true) {
         const index = playOrder.findIndex(x => x.id === id);
 
         if (index === -1) {
             throw new Error("Invalid song id");
         }
 
-        selectSong(playOrder[index].name, id, index);
+        selectSong(playOrder[index].name, id, index, play);
     }
 
     function selectSong(name, id, index, play = true) {
@@ -93,7 +93,7 @@ export default function MusicProvider({ children }) {
             if (!currentSongId) {
                 selectSong(playOrder[0]?.name || "", playOrder[0]?.id, 0, false); // default to first song in the list
             } else {
-                selectSongById(currentSongId);
+                selectSongById(currentSongId, false);
             }
         }
     }

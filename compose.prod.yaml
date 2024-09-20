@@ -1,24 +1,22 @@
-version: "1"
 services:
+    database:
+        image: 192.168.1.136:5000/music-db-schema-update:latest
+        container_name: music-db-schema-update
+        volumes:
+            - ./database/appsettings.json:/database/appsettings.json
+
     frontend:
-        build: ./webapp
         image: 192.168.1.136:5000/music-frontend:latest
         container_name: music-frontend
         ports:
-            - "8000:80"
-        networks:
-            - music-network
-
-    backend:
-        build: ./backend
-        image: 192.168.1.136:5000/music-backend:latest
-        container_name: music-backend
-        ports:
-            - "8080:8080"
+            - "8000:443"
         volumes:
-            - ./backend/assets:/backend/assets
-        networks:
-            - music-network
+            - ./certbot/www/:/var/www/certbot/:ro
+            - ./certbot/conf/:/etc/letsencrypt/:ro
 
-networks:
-    music-network: {}
+    certbot:
+        image: certbot/certbot:latest
+        container_name: certbot
+        volumes:
+            - ./certbot/www/:/var/www/certbot/:rw
+            - ./certbot/conf/:/etc/letsencrypt/:rw

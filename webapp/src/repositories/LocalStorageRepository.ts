@@ -1,7 +1,7 @@
 import singleton from "../utils/singleton";
 
 class LocalStorageRepository {
-    private cache = new Map();
+    private cache = new Map<Key, any>();
     private deleteSym = Symbol("delete");
 
     get(key: Key) {

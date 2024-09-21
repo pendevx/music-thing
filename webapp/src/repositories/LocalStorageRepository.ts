@@ -16,7 +16,7 @@ class LocalStorageRepository {
         }
     }
 
-    reset(key: Key) {
+    unset(key: Key) {
         this.cache.set(key, this.deleteSym);
     }
 

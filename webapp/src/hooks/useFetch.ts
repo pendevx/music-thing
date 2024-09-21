@@ -12,7 +12,7 @@ export default function useFetch<T>(fallbackValue: T) {
          * @param {object} options Fetch API options object
          * @returns The data after being parsed into JSON
          */
-        function (url: string, options = {}) {
+        function (url: string, options: RequestInit = {}) {
             setError(null);
 
             aborter.current && aborter.current.abort();

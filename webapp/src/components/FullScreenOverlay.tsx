@@ -16,20 +16,12 @@ export default function FullScreenOverlay({ hideFullscreen }: FullScreenOverlayP
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
-        function updateTotalDuration(duration: number) {
-            setTotalDuration(duration);
-        }
-
-        function timeUpdate(time: number) {
-            setCurrentTime(time);
-        }
-
-        messageBus.subscribe("totalDurationUpdate", updateTotalDuration);
-        messageBus.subscribe("audioTimeUpdate", timeUpdate);
+        messageBus.subscribe("totalDurationUpdate", setTotalDuration);
+        messageBus.subscribe("audioTimeUpdate", setCurrentTime);
 
         return function () {
-            messageBus.unSubscribe("totalDurationUpdate", updateTotalDuration);
-            messageBus.unSubscribe("audioTimeUpdate", timeUpdate);
+            messageBus.unSubscribe("totalDurationUpdate", setTotalDuration);
+            messageBus.unSubscribe("audioTimeUpdate", setCurrentTime);
         };
     }, []);
 

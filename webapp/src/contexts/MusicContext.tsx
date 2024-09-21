@@ -67,7 +67,7 @@ export default function MusicProvider({ children }: { children: React.ReactNode 
         selectSongByIndex(index);
     }
 
-    function selectSongByIndex(index: number, play = true) {
+    function selectSongByIndex(index: number, play: boolean = true) {
         const song = playOrder[index];
 
         if (index < 0 || index >= playOrder.length) {
@@ -77,7 +77,7 @@ export default function MusicProvider({ children }: { children: React.ReactNode 
         selectSong(song.name, song.id, index, play);
     }
 
-    function selectSongById(id: number, play = true) {
+    function selectSongById(id: number, play: boolean = true) {
         const index = playOrder.findIndex(x => x.id === id);
 
         if (index === -1) {
@@ -94,10 +94,6 @@ export default function MusicProvider({ children }: { children: React.ReactNode 
     }
 
     function setPlayBehaviour(behaviour: PlayBehaviour) {
-        if (!playBehaviours.includes(behaviour)) {
-            throw new Error("Invalid playBehaviour");
-        }
-
         if (behaviour === "shuffle") {
             shuffleSeed.current = randomSeed();
         }

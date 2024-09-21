@@ -12,7 +12,12 @@ export default function App() {
     const musicContext = React.useContext(MusicContext);
 
     React.useEffect(function () {
-        const resizeHandler = () => setBodyHeight(bodyRef.current?.clientHeight || 0);
+        const resizeHandler = () => {
+            if (bodyRef.current) {
+                setBodyHeight(bodyRef.current.clientHeight);
+            }
+        };
+
         resizeHandler();
 
         window.addEventListener("resize", resizeHandler);

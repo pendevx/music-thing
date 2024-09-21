@@ -1,10 +1,10 @@
 import singleton from "./singleton";
 
-export type TAudioAnalyzer = {
+export interface IAudioAnalyzer {
     getFreqs(): Uint8Array;
-};
+}
 
-class AudioAnalyzer {
+class AudioAnalyzer implements IAudioAnalyzer {
     private analyzer: AnalyserNode;
     private freqsArr: Uint8Array;
 

@@ -1,13 +1,13 @@
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
-import AudioAnalyzer, { TAudioAnalyzer } from "../utils/AudioAnalyzer";
+import AudioAnalyzer, { IAudioAnalyzer } from "../utils/AudioAnalyzer";
 
 type FrequencyGraphProps = {
     audioRef: React.RefObject<HTMLAudioElement>;
 };
 
 function FrequencyGraph({ audioRef }: FrequencyGraphProps) {
-    const audioCtx = React.useRef<TAudioAnalyzer | null>(null);
+    const audioCtx = React.useRef<IAudioAnalyzer | null>(null);
     const canvas = React.useRef<HTMLCanvasElement | null>(null);
     const canvasCtx = React.useRef<CanvasRenderingContext2D | null>(null);
     const musicContext = React.useContext(MusicContext);

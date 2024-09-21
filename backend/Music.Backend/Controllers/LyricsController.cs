@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Music.Backend.Attributes;
+using Music.Backend.Models.DTO;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Controllers;
@@ -18,7 +19,7 @@ public class LyricsController : ControllerBase
     [HttpGet]
     [Route("download/{key}")]
     [DecodeUrl]
-    public IActionResult GetFile(string key)
+    public ActionResult<IEnumerable<LyricsLine>> GetFile(string key)
     {
         var lyrics = _lyricsService.GetLyrics(key);
 

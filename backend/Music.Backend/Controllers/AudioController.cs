@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Music.Backend.Attributes;
+using Music.Backend.Models.DTO;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Controllers;
@@ -30,7 +31,7 @@ public class AudioController : ControllerBase
 
     [HttpGet]
     [Route("list")]
-    public IActionResult ListAudioFiles()
+    public ActionResult<IEnumerable<SongInfo>> ListAudioFiles()
     {
         var files = _audioService.ListAudioFiles();
 

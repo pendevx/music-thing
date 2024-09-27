@@ -7,7 +7,7 @@ type BlurredModalProps = {
 };
 
 export default function BlurredModal({ show, transitionDurationMs = 1000, children }: BlurredModalProps) {
-    const ref = React.useRef<HTMLDivElement>(null);
+    const ref = React.useRef<HTMLDivElement | null>(null);
     const hideTimer = React.useRef<number>(-1);
 
     React.useEffect(() => {
@@ -29,7 +29,7 @@ export default function BlurredModal({ show, transitionDurationMs = 1000, childr
     // children is allowed, so that the modal can be used as a wrapper to show conceptual relationship between the modal and the modal content.
     return (
         <>
-            <div ref={ref} className="fixed inset-0 z-10 hidden bg-[#0004] opacity-0 transition-all" style={{ transitionDuration: transitionDurationMs + "ms", backdropFilter: "blur(5px)" }} />
+            <div ref={ref} className="fixed inset-0 z-10 hidden bg-[#0008] opacity-0 transition-all" style={{ transitionDuration: transitionDurationMs + "ms", backdropFilter: "blur(5px)" }} />
             {children}
         </>
     );

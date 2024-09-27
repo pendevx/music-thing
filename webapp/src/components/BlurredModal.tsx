@@ -20,12 +20,7 @@ export default function BlurredModal({ show, transitionDurationMs = 1000, childr
         }
 
         if (ref.current?.classList.contains("opacity-100")) {
-            hideTimer.current = setTimeout(() => {
-                if (!ref.current) return;
-
-                ref.current.classList.add("hidden");
-            }, transitionDurationMs);
-
+            hideTimer.current = setTimeout(() => ref.current?.classList.add("hidden"), transitionDurationMs);
             ref.current?.classList.remove("opacity-100");
         }
     }, [show]);

@@ -1,7 +1,8 @@
-import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, FullScreenOverlay } from "./components";
+import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, FullScreenOverlay, BlurredModal } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 import { ToggleSonglist } from "./icons";
+import getViewportResolution, { ViewportResolution } from "./utils/viewportResolution";
 
 export default function App() {
     const [showSonglist, setShowSonglist] = React.useState<boolean>(true);
@@ -28,7 +29,7 @@ export default function App() {
     }, []);
 
     function onKeyDown(e: React.KeyboardEvent) {
-        switch (e.key) {
+        switch (e.key.toLowerCase()) {
             case " ": {
                 e.preventDefault();
 
@@ -40,7 +41,7 @@ export default function App() {
                 break;
             }
 
-            case "Escape": {
+            case "escape": {
                 setFullScreen(false);
                 break;
             }
@@ -58,10 +59,10 @@ export default function App() {
     }
 
     function onSongSelected() {
-        const isBelowLaptop = window.matchMedia("(max-width: 768px)").matches;
+        const resolution = getViewportResolution();
 
-        if (isBelowLaptop) {
-            setShowSonglist(false);
+        if (resolution < ViewportResolution.Laptop) {
+            setFullScreen(true);
         }
     }
 
@@ -86,9 +87,11 @@ export default function App() {
                 </div>
             </div>
 
-            <div className={`fixed inset-0 z-10 bg-zinc-900 transition-all duration-1000 ${!fullScreen && "translate-y-full"}`}>
-                <FullScreenOverlay hideFullscreen={() => setFullScreen(false)} />
-            </div>
+            <BlurredModal show={fullScreen}>
+                <div className={`fixed inset-0 z-20 transition-all duration-1000 ${!fullScreen && "translate-y-full"}`}>
+                    <FullScreenOverlay hideFullscreen={() => setFullScreen(false)} />
+                </div>
+            </BlurredModal>
         </div>
     );
 }

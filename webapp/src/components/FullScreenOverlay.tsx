@@ -5,6 +5,7 @@ import messageBus from "../utils/MessageBus";
 import { formatTime } from "../utils/formats";
 import { MusicIconSvg, PlayBehaviourIcon, MusicPausedSvg, MusicPlaySvg, ChangeTrack } from "../icons";
 import { nextPlayBehaviour } from "../utils/playBehaviour";
+import getViewportResolution, { ViewportResolution } from "../utils/viewportResolution";
 
 type FullScreenOverlayProps = {
     hideFullscreen: () => void;
@@ -41,8 +42,16 @@ export default function FullScreenOverlay({ hideFullscreen }: FullScreenOverlayP
         musicContext.setPlayBehaviour(nextPlayBehaviour(musicContext.playBehaviour));
     }
 
+    const handleBackgroundClick = (e: React.MouseEvent) => {
+        const viewportResolution = getViewportResolution();
+
+        if (viewportResolution > ViewportResolution.Tablet && e.target === e.currentTarget) {
+            hideFullscreen();
+        }
+    };
+
     return (
-        <div className="absolute inset-0 flex flex-col items-center text-white">
+        <div className="absolute inset-0 flex flex-col items-center text-white" onClick={handleBackgroundClick}>
             <div className="grid h-[1px] w-3/5 grow grid-rows-[1fr,4fr,1fr,3fr] gap-y-4 pb-8 pt-8 tablet:w-1/2 laptop:w-1/3 desktop:w-1/4">
                 <div>
                     <h2 className="text-center text-3xl">{musicContext.currentSong.name}</h2>
@@ -85,10 +94,6 @@ export default function FullScreenOverlay({ hideFullscreen }: FullScreenOverlayP
                     </IconContainer>
                 </div>
             </div>
-
-            <div className="basis-8 cursor-pointer self-start px-8 py-4 transition-colors duration-100 hover:bg-zinc-800" onClick={hideFullscreen}>
-                <button className="cursor-pointer text-white">Back</button>
-            </div>
         </div>
     );
 }
@@ -97,6 +102,7 @@ type IconContainerProps = {
     onClick?: () => void;
     children?: React.ReactNode;
 };
+
 function IconContainer({ onClick, children }: IconContainerProps) {
     return (
         <div className="flex aspect-square h-full items-center justify-center tablet:p-2 laptop:p-4" onClick={onClick}>

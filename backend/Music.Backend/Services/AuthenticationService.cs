@@ -64,7 +64,8 @@ public class AuthenticationService : IAuthenticationService
         _sessionRepository.Create(new Session
         {
             Account = existingUser,
-            ExpiresOn = DateTime.UtcNow.AddDays(7) // Expire the token in one week
+            ExpiresOn = DateTime.UtcNow.AddDays(7), // Expire the token in one week
+            Token = token
         });
 
         return token.ToString();

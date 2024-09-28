@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Music.Backend.Models.Generated;
 
+[Index("Token", Name = "UQ__Sessions__1EB4F817630CAA66", IsUnique = true)]
 public partial class Session
 {
     [Key]
@@ -16,6 +17,8 @@ public partial class Session
     public DateTime CreatedOn { get; set; }
 
     public DateTime ExpiresOn { get; set; }
+
+    public Guid Token { get; set; }
 
     [ForeignKey("AccountId")]
     [InverseProperty("Sessions")]

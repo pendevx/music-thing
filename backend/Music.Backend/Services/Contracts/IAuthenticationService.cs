@@ -4,4 +4,5 @@ public interface IAuthenticationService
 {
     bool Register(string username, string password, string displayName);
     string Login(string username, string password);
+    void CleanupExpiredTokensForAccount(int accountId);
 }

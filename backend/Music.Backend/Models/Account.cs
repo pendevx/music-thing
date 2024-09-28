@@ -11,6 +11,4 @@ public partial class Account : Entity
     public string Username { get; set; } = null!;
 
     public byte[] SaltedPassword { get; set; } = null!;
-
-    public DateTime CreatedOn { get; set; }
 }

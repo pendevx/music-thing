@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Music.Backend.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Music.Backend.Models.Generated;
 
 namespace Music.Backend.DatabaseContexts;
 
@@ -17,6 +15,8 @@ public partial class MusicContext : DbContext
     public virtual DbSet<DbSchemaVersion> DbSchemaVersions { get; set; }
 
     public virtual DbSet<DbSchemaVersionScript> DbSchemaVersionScripts { get; set; }
+
+    public virtual DbSet<Session> Sessions { get; set; }
 
     public virtual DbSet<Song> Songs { get; set; }
 
@@ -41,6 +41,15 @@ public partial class MusicContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__DB_SCHEM__3214EC07AC1EF7BF");
 
             entity.Property(e => e.ExecutedOn).IsFixedLength();
+        });
+
+        modelBuilder.Entity<Session>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Sessions__3214EC07A0C7AA82");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Sessions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Sessions__Accoun__52593CB8");
         });
 
         modelBuilder.Entity<Song>(entity =>

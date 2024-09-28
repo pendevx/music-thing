@@ -1,5 +1,5 @@
 using Music.Backend.DatabaseContexts;
-using Music.Backend.Models;
+using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 
 namespace Music.Backend.Repositories;

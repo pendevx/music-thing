@@ -1,7 +1,7 @@
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
-using Music.Backend.Models;
+using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services.Contracts;
 using Music.Backend.Utils;

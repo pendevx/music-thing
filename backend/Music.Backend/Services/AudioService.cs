@@ -1,6 +1,6 @@
 ﻿using Music.Backend.Constants;
-using Music.Backend.Models;
 using Music.Backend.Models.DTO;
+using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services.Contracts;
 

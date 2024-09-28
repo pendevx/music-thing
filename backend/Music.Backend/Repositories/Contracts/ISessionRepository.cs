@@ -1,4 +1,4 @@
-using Music.Backend.Models;
+using Music.Backend.Models.Generated;
 
 namespace Music.Backend.Repositories.Contracts;
 

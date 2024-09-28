@@ -1,11 +1,10 @@
 ﻿using Microsoft.Data.SqlTypes;
 using Music.Backend.DatabaseContexts;
-using Music.Backend.Models;
 using Music.Backend.Models.DTO;
+using Music.Backend.Models.Generated;
+using Music.Backend.Repositories;
 using Music.Backend.Repositories.Contracts;
 using Music.Backend.Utils;
-
-namespace Music.Backend.Repositories;
 
 public class SongRepository : GenericRepository<Song>, ISongRepository
 {

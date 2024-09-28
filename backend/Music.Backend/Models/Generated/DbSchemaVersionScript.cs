@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Music.Backend.Repositories;
 
-namespace Music.Backend.Models;
+namespace Music.Backend.Models.Generated;
 
 [Table("DB_SCHEMA_VERSION_SCRIPTS")]
-public partial class DbSchemaVersionScript : Entity
+public partial class DbSchemaVersionScript
 {
+    [Key]
+    public int Id { get; set; }
+
     [StringLength(200)]
     public string? ScriptName { get; set; }
 

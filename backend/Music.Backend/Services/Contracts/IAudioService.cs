@@ -1,5 +1,5 @@
-﻿using Music.Backend.Models;
-using Music.Backend.Models.DTO;
+﻿using Music.Backend.Models.DTO;
+using Music.Backend.Models.Generated;
 
 namespace Music.Backend.Services.Contracts;
 

@@ -16,6 +16,7 @@ public class Program
         builder.Services.AddSingleton<ILyricsService, LyricsService>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
         builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
     }
 
     public static void Main(string[] args)

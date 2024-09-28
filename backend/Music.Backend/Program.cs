@@ -13,8 +13,9 @@ public class Program
     private static void RegisterDependencies(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IAudioService, AudioService>();
-        builder.Services.AddScoped<ILyricsService, LyricsService>();
+        builder.Services.AddSingleton<ILyricsService, LyricsService>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
+        builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
     }
 
     public static void Main(string[] args)

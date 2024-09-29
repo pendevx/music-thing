@@ -19,7 +19,7 @@ public class AccountsController : ControllerBase
 
     [HttpPost]
     [Route("register")]
-    public void RegisterUser(UserRegistrationInfo userInformation)
+    public void Register(UserRegistrationInfo userInformation)
     {
         var successfullyRegistered = _authenticationService.Register(
             userInformation.Username,

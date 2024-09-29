@@ -68,6 +68,8 @@ public class AuthenticationService : IAuthenticationService
             Token = token
         });
 
+        CleanupExpiredTokensForAccount(existingUser);
+
         return token.ToString();
     }
 

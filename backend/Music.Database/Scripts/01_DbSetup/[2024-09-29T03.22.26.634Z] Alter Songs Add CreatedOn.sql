@@ -1,0 +1,7 @@
+IF COL_LENGTH('Songs', 'CreatedOn') IS NULL
+    BEGIN
+
+        ALTER TABLE Songs
+            ADD CreatedOn DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+
+    END

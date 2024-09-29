@@ -20,14 +20,11 @@
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-08T10.00.28.577Z] FILESTREAM_Init.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-13T12.11.25.595Z] Create Songs Table.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-28T11.15.39.263Z] Create Accounts Table.sql" />
-      <None Remove="Scripts\01_DbSetup\[2024-09-28T14.23.16.883Z] Create Session Table.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-28T14.23.16.883Z] Create Session Table.sql" />
-      <None Remove="Scripts\01_DbSetup\[2024-09-28T16.19.58.138Z] Alter Sessions Table Add Token.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-28T16.19.58.138Z] Alter Sessions Table Add Token.sql" />
-      <None Remove="Scripts\01_DbSetup\[2024-09-29T02.28.59.158Z] Alter Accounts Display Name.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-29T02.28.59.158Z] Alter Accounts Display Name.sql" />
-      <None Remove="Scripts\01_DbSetup\[2024-09-29T02.28.45.900Z] Alter Accounts Unique Username.sql" />
       <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-29T02.28.45.900Z] Alter Accounts Unique Username.sql" />
+      <EmbeddedResource Include="Scripts\01_DbSetup\[2024-09-29T03.22.26.634Z] Alter Songs Add CreatedOn.sql" />
     </ItemGroup>
 
     <ItemGroup>

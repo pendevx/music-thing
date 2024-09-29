@@ -1,4 +1,4 @@
-IF OBJECT_ID('Sessions', 'U') IS NOT NULL
+IF COL_LENGTH('Sessions', 'Token') IS NULL
     BEGIN
 
         ALTER TABLE Sessions

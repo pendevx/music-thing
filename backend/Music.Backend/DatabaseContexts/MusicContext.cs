@@ -27,6 +27,8 @@ public partial class MusicContext : DbContext
         modelBuilder.Entity<Account>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Accounts__3214EC078F873733");
+
+            entity.Property(e => e.DisplayName).HasDefaultValue("");
         });
 
         modelBuilder.Entity<DbSchemaVersion>(entity =>

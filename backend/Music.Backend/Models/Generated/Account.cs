@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Music.Backend.Models.Generated;
 
+[Index("Username", Name = "Accounts_Username_Unique", IsUnique = true)]
 [Index("Guid", Name = "UQ__Accounts__A2B5777DA7795D85", IsUnique = true)]
 public partial class Account
 {
@@ -20,6 +21,9 @@ public partial class Account
     public byte[] SaltedPassword { get; set; } = null!;
 
     public DateTime CreatedOn { get; set; }
+
+    [StringLength(30)]
+    public string DisplayName { get; set; } = null!;
 
     [InverseProperty("Account")]
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();

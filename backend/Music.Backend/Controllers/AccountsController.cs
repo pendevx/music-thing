@@ -32,15 +32,23 @@ public class AccountsController : ControllerBase
             return;
         }
 
-        Login(userInformation.Username, userInformation.Password);
+        Login(new UserLoginInfo(userInformation.Username, userInformation.Password));
     }
 
     [HttpPost]
     [Route("login")]
-    public void Login(string username, string password)
+    public void Login(UserLoginInfo credentials)
     {
-        var authCookie = _authenticationService.Login(username, password);
-        Response.Cookies.Append(AuthorizationCookie, authCookie, new CookieOptions
+        var authorizationCookie = Request.Cookies[AuthorizationCookie];
+
+        if (authorizationCookie is not null)
+        {
+            var isActive = _authenticationService.TokenIsActive(Guid.Parse(authorizationCookie));
+            if (isActive) return;
+        }
+
+        var newAuthCookie = _authenticationService.Login(credentials.Username, credentials.Password);
+        Response.Cookies.Append(AuthorizationCookie, newAuthCookie, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,

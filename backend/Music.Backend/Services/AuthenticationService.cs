@@ -83,6 +83,11 @@ public class AuthenticationService : IAuthenticationService
         CleanupExpiredTokensForAccount(account);
     }
 
+    public bool TokenIsActive(Guid token)
+    {
+        return _sessionRepository.Entities.FirstOrDefault(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow) is not null;
+    }
+
     private void CleanupExpiredTokensForAccount(Account account)
     {
         var toExpire = _sessionRepository.Entities.Where(a => a.Id == account.Id && a.ExpiresOn > DateTime.UtcNow);

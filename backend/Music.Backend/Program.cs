@@ -12,12 +12,12 @@ public class Program
 {
     private static void RegisterDependencies(WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IAudioService, AudioService>();
-        builder.Services.AddSingleton<ILyricsService, LyricsService>();
-        builder.Services.AddSingleton<ISongRepository, SongRepository>();
-        builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
-        builder.Services.AddSingleton<IAccountRepository, AccountRepository>();
-        builder.Services.AddSingleton<ISessionRepository, SessionRepository>();
+        builder.Services.AddScoped<IAudioService, AudioService>();
+        builder.Services.AddScoped<ILyricsService, LyricsService>();
+        builder.Services.AddScoped<ISongRepository, SongRepository>();
+        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+        builder.Services.AddScoped<ISessionRepository, SessionRepository>();
     }
 
     public static void Main(string[] args)
@@ -32,7 +32,7 @@ public class Program
         {
             var connectionString = builder.Configuration.GetConnectionString("music-thing");
             opt.UseSqlServer(connectionString);
-        }, ServiceLifetime.Singleton, ServiceLifetime.Singleton);
+        });
 
         RegisterDependencies(builder);
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Music.Backend.Attributes;
-using Music.Backend.Models.DTO;
+using Music.Backend.Models.DTO.HttpResponses;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Controllers;

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Music.Backend.Models.DTO;
+using Music.Backend.Models.DTO.HttpRequests;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Controllers;

@@ -1,7 +1,7 @@
 ﻿using Music.Backend.Repositories;
 using Music.Backend.Utils;
 
-namespace Music.Backend.Models.DTO;
+namespace Music.Backend.Models.DTO.HttpResponses;
 
 public class StreamedAudio : Entity
 {

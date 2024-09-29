@@ -1,4 +1,4 @@
-﻿using Music.Backend.Models.DTO;
+﻿using Music.Backend.Models.DTO.HttpResponses;
 
 namespace Music.Backend.Services.Contracts;
 

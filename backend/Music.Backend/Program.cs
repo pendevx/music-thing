@@ -15,6 +15,9 @@ public class Program
         builder.Services.AddScoped<IAudioService, AudioService>();
         builder.Services.AddScoped<ILyricsService, LyricsService>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
+        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+        builder.Services.AddScoped<ISessionRepository, SessionRepository>();
     }
 
     public static void Main(string[] args)

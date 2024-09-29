@@ -43,10 +43,28 @@ public class GenericRepository<T> : IGenericRepository<T> where T : Entity
 
     public void Create(IEnumerable<T> entities)
     {
-        Entities.AddRange(entities);
+        foreach (var entity in entities)
+        {
+            entity.CreatedOn = DateTime.UtcNow;
+            Entities.Add(entity);
+        }
+
         MusicContext.SaveChanges();
     }
-    
+
+    public void Delete(T entity, bool commit)
+    {
+        Delete(new[] { entity }, commit);
+    }
+
+    public void Delete(IEnumerable<T> entities, bool commit)
+    {
+        Entities.RemoveRange(entities);
+
+        if (commit)
+            MusicContext.SaveChanges();
+    }
+
     public void Create(T entity)
     {
         Create(new[] { entity });

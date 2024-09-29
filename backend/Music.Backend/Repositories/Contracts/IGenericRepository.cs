@@ -21,4 +21,6 @@ public interface IGenericRepository<T> where T : class
     TMapped? GetById<TMapped>(int id, Func<T, TMapped> mapper) where TMapped : Entity;
     void Create(T entity);
     void Create(IEnumerable<T> entities);
+    void Delete(T entity, bool commit = false);
+    void Delete(IEnumerable<T> entities, bool commit = false);
 }

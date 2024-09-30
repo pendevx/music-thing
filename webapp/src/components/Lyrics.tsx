@@ -11,7 +11,6 @@ const SCROLL_IGNORE_DURATION = 1500;
 type LyricsProps = {
     height: number;
     showSonglist: boolean;
-    toggleShowSonglist: () => void;
 };
 
 type LyricsLine = {
@@ -19,7 +18,7 @@ type LyricsLine = {
     words: string;
 };
 
-export default function Lyrics({ height, showSonglist, toggleShowSonglist }: LyricsProps) {
+export default function Lyrics({ height, showSonglist }: LyricsProps) {
     const { data: lyrics, refreshData } = useFetch<LyricsLine[]>([]);
     const [index, setIndex] = React.useState<number>(0);
     const [scrollTop, setScrollTop] = React.useState<number | null>(0);
@@ -89,8 +88,6 @@ export default function Lyrics({ height, showSonglist, toggleShowSonglist }: Lyr
             scrollTop={scrollTop || 0}
             onScroll={handleScroll}
             smooth={true}>
-            <ToggleSonglist onClick={toggleShowSonglist} className="absolute bottom-0 left-1 top-0 my-auto hidden laptop:flex" />
-
             <div style={{ height: height - (lineHeight || 0) / 2 }} />
             <div ref={getHeight}>
                 {lyrics.map(({ words }, i) => (

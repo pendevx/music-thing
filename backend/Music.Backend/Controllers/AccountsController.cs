@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Music.Backend.Models.DTO.HttpRequests;
+using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Controllers;
@@ -11,15 +12,17 @@ public class AccountsController : ControllerBase
     private const string AuthorizationCookie = "Authorization";
 
     private readonly IAuthenticationService _authenticationService;
+    private readonly IAccountRepository _accountRepository;
 
-    public AccountsController(IAuthenticationService authenticationService)
+    public AccountsController(IAuthenticationService authenticationService, IAccountRepository accountRepository)
     {
         _authenticationService = authenticationService;
+        _accountRepository = accountRepository;
     }
 
     [HttpPost]
     [Route("register")]
-    public void Register(UserRegistrationInfo userInformation)
+    public ActionResult<UserInformation> Register(UserRegistrationInfo userInformation)
     {
         var successfullyRegistered = _authenticationService.Register(
             userInformation.Username,
@@ -29,22 +32,22 @@ public class AccountsController : ControllerBase
         if (!successfullyRegistered)
         {
             Response.StatusCode = 409;
-            return;
+            return null!;
         }
 
-        Login(new UserLoginInfo(userInformation.Username, userInformation.Password));
+        return Login(new UserLoginInfo(userInformation.Username, userInformation.Password));
     }
 
     [HttpPost]
     [Route("login")]
-    public void Login(UserLoginInfo credentials)
+    public ActionResult<UserInformation> Login(UserLoginInfo credentials)
     {
         var authorizationCookie = Request.Cookies[AuthorizationCookie];
 
         if (authorizationCookie is not null)
         {
             var isActive = _authenticationService.TokenIsActive(Guid.Parse(authorizationCookie));
-            if (isActive) return;
+            if (isActive) return null!;
         }
 
         var newAuthCookie = _authenticationService.Login(credentials.Username, credentials.Password);
@@ -54,5 +57,14 @@ public class AccountsController : ControllerBase
             Secure = true,
             SameSite = SameSiteMode.Strict
         });
+
+        var account = _accountRepository.GetByUsername(credentials.Username);
+
+        if (account is null)
+        {
+            return BadRequest();
+        }
+
+        return new UserInformation(account.DisplayName);
     }
 }

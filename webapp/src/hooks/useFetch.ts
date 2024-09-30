@@ -50,5 +50,6 @@ export default function useFetch<T>(fallbackValue: T) {
         error,
         isFetching,
         refreshData,
+        setData,
     };
 }

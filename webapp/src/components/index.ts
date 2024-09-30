@@ -11,3 +11,4 @@ export { default as FullScreenOverlay } from "./FullScreenOverlay";
 export { default as TrackButtons } from "./TrackButtons";
 export { default as BlurredModal } from "./BlurredModal";
 export { default as SettingsButton } from "./SettingsButton";
+export { default as RaisedInputPlaceholder } from "./RaisedInputPlaceholder";

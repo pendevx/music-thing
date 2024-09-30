@@ -61,9 +61,24 @@ public class AccountsController : ControllerBase
         var account = _accountRepository.GetByUsername(credentials.Username);
 
         if (account is null)
-        {
             return BadRequest();
-        }
+
+        return new UserInformation(account.DisplayName);
+    }
+
+    [HttpGet]
+    [Route("user")]
+    public ActionResult<UserInformation> GetUserInformation()
+    {
+        var authorizationCookie = Request.Cookies[AuthorizationCookie];
+
+        if (authorizationCookie is null)
+            return Unauthorized();
+
+        var account = _authenticationService.GetByToken(Guid.Parse(authorizationCookie));
+
+        if (account is null)
+            return Unauthorized();
 
         return new UserInformation(account.DisplayName);
     }

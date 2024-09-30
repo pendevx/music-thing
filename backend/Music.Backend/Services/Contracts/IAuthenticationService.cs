@@ -1,3 +1,5 @@
+using Music.Backend.Models.Generated;
+
 namespace Music.Backend.Services.Contracts;
 
 public interface IAuthenticationService
@@ -6,4 +8,5 @@ public interface IAuthenticationService
     string Login(string username, string password);
     void CleanupExpiredTokensForAccount(int accountId);
     bool TokenIsActive(Guid token);
+    Account? GetByToken(Guid token);
 }

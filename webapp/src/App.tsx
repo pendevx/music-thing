@@ -1,11 +1,11 @@
-import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, FullScreenOverlay, BlurredModal, SettingsButton } from "./components";
+import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, BlurredModal, SettingsButton, FullScreenOverlay } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 import { ToggleSonglist } from "./icons";
 import getViewportResolution, { ViewportResolution } from "./utils/viewportResolution";
+import { CurrentSongModal, SettingsModal } from "./components/modals";
 
-const modalReducer = (state: Modal, action: { type: Modal; forceTo?: "set" | "reset" }): Modal =>
-    action.forceTo === "set" ? action.type : action.forceTo === "reset" ? Modal.None : action.type === state ? Modal.None : action.type;
+const modalReducer = (state: Modal, action: { type: Modal; toggle?: boolean }): Modal => (action.toggle === false ? action.type : action.type === state ? Modal.None : action.type);
 
 enum Modal {
     None,
@@ -60,6 +60,11 @@ export default function App() {
                 break;
             }
 
+            case "s": {
+                dispatchModal({ type: Modal.Settings });
+                break;
+            }
+
             case "d": {
                 setShowSonglist(!showSonglist);
                 break;
@@ -74,6 +79,8 @@ export default function App() {
             dispatchModal({ type: Modal.Fullscreen });
         }
     }
+
+    const hideFullscreen = () => dispatchModal({ type: Modal.None });
 
     return (
         <div onKeyDown={onKeyDown} tabIndex={0} className="font-sans">
@@ -94,16 +101,34 @@ export default function App() {
 
                     <div>
                         <FrequencyGraph audioRef={audioRef} />
-                        <MusicPlayerControl audioRef={audioRef} goFullscreen={() => dispatchModal({ type: Modal.Fullscreen, forceTo: "set" })} />
+                        <MusicPlayerControl audioRef={audioRef} goFullscreen={() => dispatchModal({ type: Modal.Fullscreen, toggle: false })} />
                     </div>
                 </div>
             </div>
 
             <BlurredModal show={activeModal != Modal.None}>
-                <div className={`fixed inset-0 z-20 transition-all duration-1000 ${activeModal === Modal.None && "translate-y-full"}`}>
-                    <FullScreenOverlay hideFullscreen={() => dispatchModal({ type: Modal.Fullscreen, forceTo: "reset" })} />
-                </div>
+                <ModalContainer isActive={activeModal === Modal.Fullscreen} hideFullscreen={hideFullscreen}>
+                    <CurrentSongModal />
+                </ModalContainer>
+
+                <ModalContainer isActive={activeModal === Modal.Settings} hideFullscreen={hideFullscreen}>
+                    <SettingsModal />
+                </ModalContainer>
             </BlurredModal>
+        </div>
+    );
+}
+
+type ModalContainerProps = {
+    children: React.ReactNode;
+    isActive: boolean;
+    hideFullscreen: () => void;
+};
+
+function ModalContainer({ children, isActive, hideFullscreen }: ModalContainerProps) {
+    return (
+        <div className={`fixed inset-0 z-20 transition-all duration-1000 ${!isActive && "translate-y-full"}`}>
+            <FullScreenOverlay hideFullscreen={hideFullscreen}>{children}</FullScreenOverlay>
         </div>
     );
 }

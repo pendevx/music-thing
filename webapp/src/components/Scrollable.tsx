@@ -3,7 +3,7 @@ import { TouchMouseEvent, TouchMouseEventType, getEventYPos, getEvents } from ".
 import debounce from "../utils/debounce";
 
 type ScrollableProps = {
-    className: string;
+    className?: string;
     children: React.ReactNode;
     showScroller?: boolean;
     scrollTop?: number;

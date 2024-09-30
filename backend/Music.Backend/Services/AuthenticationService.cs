@@ -88,6 +88,11 @@ public class AuthenticationService : IAuthenticationService
         return _sessionRepository.Entities.FirstOrDefault(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow) is not null;
     }
 
+    public Account? GetByToken(Guid token)
+    {
+        return _sessionRepository.Entities.FirstOrDefault(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow)?.Account;
+    }
+
     private void CleanupExpiredTokensForAccount(Account account)
     {
         var toExpire = _sessionRepository.Entities.Where(a => a.Id == account.Id && a.ExpiresOn > DateTime.UtcNow);

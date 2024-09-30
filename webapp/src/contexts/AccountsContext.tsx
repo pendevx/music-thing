@@ -8,14 +8,14 @@ type TAccountsContext = {
     userInformation: UserInformation | null;
 };
 
-type UserInformation = {
+export type UserInformation = {
     displayName: string;
 };
 
-const AccountsContext = React.createContext<TAccountsContext>({} as TAccountsContext);
+export const AccountsContext = React.createContext<TAccountsContext>({} as TAccountsContext);
 
 export default function AccountsProvider({ children }: { children?: React.ReactNode }) {
-    const { data: userInformation, error, refreshData, setData: setUserInformation } = useFetch<UserInformation | null>(null);
+    const { data, error, refreshData, setData } = useFetch<UserInformation | null>(null);
 
     const register = async (username: string, password: string) => {
         await fetch("/accounts/register", {
@@ -40,13 +40,13 @@ export default function AccountsProvider({ children }: { children?: React.ReactN
             method: "POST",
         });
 
-        setUserInformation(null);
+        setData(null);
     };
 
     return (
         <AccountsContext.Provider
             value={{
-                userInformation,
+                userInformation: data,
                 register,
                 login,
                 logout,

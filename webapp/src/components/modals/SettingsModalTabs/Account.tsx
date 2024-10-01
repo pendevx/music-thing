@@ -1,7 +1,7 @@
 import React from "react";
 import { AccountsContext, UserInformation } from "../../../contexts/AccountsContext";
 import CommonSettingsTab from "./CommonSettingsTab";
-import { RaisedInputPlaceholder } from "../../";
+import ValidatableForm, { ReportValidity } from "../../ValidatableForm";
 
 export default function AccountTab() {
     const accountsContext = React.useContext(AccountsContext);
@@ -31,6 +31,7 @@ function UserDetails({ userInformation }: { userInformation: UserInformation }) 
 
 function Unauthenticated() {
     const [action, setAction] = React.useState<"login" | "register">("register");
+    const [formValid, setFormValid] = React.useState<boolean>(false);
 
     const switchAction = () => {
         setAction(action === "login" ? "register" : "login");
@@ -49,13 +50,13 @@ function Unauthenticated() {
             </div>
 
             <form className="flex flex-col items-start gap-4" onKeyDown={e => e.stopPropagation()}>
-                {action === "login" ? <LoginForm /> : <RegistrationForm />}
+                {action === "login" ? <LoginForm reportValidity={setFormValid} /> : <RegistrationForm reportValidity={setFormValid} />}
 
                 <div className="grid w-full grid-cols-2 gap-4">
                     <button type="reset" className="w-full border-[1px] border-solid border-white bg-[#333] p-2 text-center text-white">
                         Reset
                     </button>
-                    <button type="submit" className="w-full border-[1px] border-solid border-white bg-[#333] p-2 text-center text-white">
+                    <button type="submit" className="w-full border-[1px] border-solid border-white bg-[#004317] p-2 text-center text-white disabled:bg-[#355c42]" disabled={!formValid}>
                         {actionName}
                     </button>
                 </div>
@@ -64,22 +65,28 @@ function Unauthenticated() {
     );
 }
 
-function RegistrationForm() {
+function RegistrationForm({ reportValidity }: { reportValidity: ReportValidity }) {
     return (
-        <div className="grid w-full grid-cols-2 gap-4">
-            <RaisedInputPlaceholder placeholder="Username" className="w-full border-[1px] border-solid border-white p-2" type="text" colorClass="text-white bg-[#080808] px-2" />
-            <RaisedInputPlaceholder placeholder="Password" className="w-full border-[1px] border-solid border-white p-2" type="password" colorClass="text-white bg-[#080808] px-2" />
-            <RaisedInputPlaceholder placeholder="Display Name" className="w-full border-[1px] border-solid border-white p-2" type="text" colorClass="text-white bg-[#080808] px-2" />
-            <RaisedInputPlaceholder placeholder="Email" className="w-full border-[1px] border-solid border-white p-2" type="email" colorClass="text-white bg-[#080808] px-2" />
-        </div>
+        <ValidatableForm
+            fields={[
+                { placeholder: "Username", type: "text", required: true },
+                { placeholder: "Password", type: "password", required: true },
+                { placeholder: "Display Name", type: "text", required: true },
+                { placeholder: "Email", type: "email", required: true },
+            ]}
+            reportValidity={reportValidity}
+        />
     );
 }
 
-function LoginForm() {
+function LoginForm({ reportValidity }: { reportValidity: ReportValidity }) {
     return (
-        <>
-            <RaisedInputPlaceholder placeholder="Username" className="w-full border-[1px] border-solid border-white p-2" type="text" colorClass="text-white bg-[#080808] px-2" />
-            <RaisedInputPlaceholder placeholder="Password" className="w-full border-[1px] border-solid border-white p-2" type="password" colorClass="text-white bg-[#080808] px-2" />
-        </>
+        <ValidatableForm
+            fields={[
+                { placeholder: "Username", type: "text", required: true },
+                { placeholder: "Password", type: "password", required: true },
+            ]}
+            reportValidity={reportValidity}
+        />
     );
 }

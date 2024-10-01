@@ -91,11 +91,6 @@ export default function App() {
                         <div ref={bodyRef} className="r-0 relative flex h-full max-h-full w-full justify-end laptop:right-[33.33333%] laptop:w-[133.33333%] desktop:right-[25%] desktop:w-[125%]">
                             <MusicList showSonglist={showSonglist} onSongSelected={onSongSelected} />
                             <Lyrics height={bodyHeight / 2} showSonglist={showSonglist} />
-
-                            <div className="fixed right-6 top-6 z-20 flex w-12 flex-col gap-2 p-1 laptop:w-14">
-                                <ToggleSonglist onClick={() => setShowSonglist(!showSonglist)} />
-                                <SettingsButton onClick={() => dispatchModal({ type: Modal.Settings })} />
-                            </div>
                         </div>
                     </div>
 
@@ -115,6 +110,11 @@ export default function App() {
                     <SettingsModal />
                 </ModalContainer>
             </BlurredModal>
+
+            <div className="fixed right-6 top-6 z-20 flex w-12 flex-col gap-2 p-1 laptop:w-14">
+                <ToggleSonglist onClick={() => setShowSonglist(!showSonglist)} />
+                <SettingsButton onClick={() => dispatchModal({ type: Modal.Settings })} />
+            </div>
         </div>
     );
 }

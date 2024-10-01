@@ -55,7 +55,8 @@ public class AccountsController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict
+            SameSite = SameSiteMode.Strict,
+            MaxAge = TimeSpan.FromDays(7)
         });
 
         var account = _accountRepository.GetByUsername(credentials.Username);
@@ -76,6 +77,8 @@ public class AccountsController : ControllerBase
             return;
 
         _authenticationService.Logout(Guid.Parse(authorizationCookie));
+
+        Response.Cookies.Delete(AuthorizationCookie);
     }
 
     [HttpGet]

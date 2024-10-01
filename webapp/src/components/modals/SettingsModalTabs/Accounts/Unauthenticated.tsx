@@ -14,7 +14,7 @@ export default function Unauthenticated() {
 
     const actionName = action.charAt(0).toUpperCase() + action.slice(1);
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const form = e.currentTarget as HTMLFormElement;
@@ -26,9 +26,9 @@ export default function Unauthenticated() {
         const email = formData.get("email") as string;
 
         if (action === "login") {
-            await login(username, password);
+            login({ username, password });
         } else {
-            await register(username, password, { displayName: displayName });
+            register({ username, password, displayName });
         }
     };
 
@@ -47,10 +47,13 @@ export default function Unauthenticated() {
                 {action === "login" ? <LoginForm reportValidity={setFormValid} /> : <RegistrationForm reportValidity={setFormValid} />}
 
                 <div className="grid w-full grid-cols-2 gap-4">
-                    <button type="reset" className="w-full border-[1px] border-solid border-white bg-[#333] p-2 text-center text-white">
+                    <button type="reset" className="w-full cursor-pointer rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white bg-[#333] p-2 text-center text-white">
                         Reset
                     </button>
-                    <button type="submit" className="w-full border-[1px] border-solid border-white bg-[#004317] p-2 text-center text-white disabled:bg-[#355c42]" disabled={!formValid}>
+                    <button
+                        type="submit"
+                        className="w-full cursor-pointer rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white bg-[#004317] p-2 text-center text-white disabled:cursor-not-allowed disabled:bg-[#355c42] [&:hover:not(:disabled)]:bg-[#117b38]"
+                        disabled={!formValid}>
                         {actionName}
                     </button>
                 </div>

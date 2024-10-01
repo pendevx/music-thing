@@ -29,7 +29,7 @@ export default function ValidatableForm({ fields, reportValidity }: { fields: Fo
                 <RaisedInputPlaceholder
                     key={i}
                     placeholder={field.placeholder}
-                    className="w-full border-[1px] border-solid border-white p-2"
+                    className="w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
                     colorClass="text-white bg-[#080808] px-2"
                     reportValidity={checkValidity}
                     index={i}

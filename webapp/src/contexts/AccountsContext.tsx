@@ -1,9 +1,20 @@
 import React from "react";
 import useFetch from "../hooks/useFetch";
+import { loginAccount, logoutAccount, registerAccount, userDetails } from "../utils/url-builder.api";
+
+type Credentials = {
+    username: string;
+    password: string;
+};
+
+type RegisterInformation = {
+    username: string;
+    password: string;
+} & UserInformation;
 
 type TAccountsContext = {
-    register: (username: string, password: string, userInformation: UserInformation) => void;
-    login: (username: string, password: string) => void;
+    register: (registrationInfo: RegisterInformation) => void;
+    login: (credentials: Credentials) => void;
     logout: () => void;
     userInformation: UserInformation | null;
 };
@@ -15,32 +26,30 @@ export type UserInformation = {
 export const AccountsContext = React.createContext<TAccountsContext>({} as TAccountsContext);
 
 export default function AccountsProvider({ children }: { children?: React.ReactNode }) {
-    const { data, refreshData, setData } = useFetch<UserInformation | null>(null);
+    const { data, refreshData } = useFetch<UserInformation | null>(null);
 
     React.useEffect(() => {
-        refreshData("/api/accounts/user");
+        refreshData(userDetails());
     }, []);
 
-    const register = (username: string, password: string, userInformation: UserInformation) => {
-        refreshData("/api/accounts/register", {
+    const register = (registrationInfo: RegisterInformation) => {
+        refreshData(registerAccount(), {
             method: "POST",
-            body: JSON.stringify({ ...userInformation, username, password }),
+            body: JSON.stringify({ ...registrationInfo }),
         });
     };
 
-    const login = (username: string, password: string) => {
-        refreshData("/api/accounts/login", {
+    const login = (credentials: Credentials) => {
+        refreshData(loginAccount(), {
             method: "POST",
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ ...credentials }),
         });
     };
 
     const logout = () => {
-        refreshData("/api/accounts/logout", {
+        refreshData(logoutAccount(), {
             method: "POST",
         });
-
-        setData(null);
     };
 
     return (

@@ -1,7 +1,11 @@
-export default function SettingsIcon() {
+type SettingsIconProps = {
+    isOpen: boolean;
+};
+
+export default function SettingsIcon({ isOpen }: SettingsIconProps) {
     return (
         <svg
-            className="h-full w-full fill-white p-1"
+            className={`h-full w-full p-1 transition-colors duration-1000 ${isOpen ? "fill-[#ffc421]" : "fill-white"}`}
             height="800px"
             width="800px"
             version="1.1"

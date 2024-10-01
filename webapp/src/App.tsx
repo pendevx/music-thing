@@ -112,8 +112,8 @@ export default function App() {
             </BlurredModal>
 
             <div className="fixed right-6 top-6 z-20 flex w-12 flex-col gap-2 p-1 laptop:w-14">
-                <ToggleSonglist onClick={() => setShowSonglist(!showSonglist)} />
-                <SettingsButton onClick={() => dispatchModal({ type: Modal.Settings })} />
+                <ToggleSonglist isOpen={showSonglist} onClick={() => setShowSonglist(!showSonglist)} />
+                <SettingsButton isOpen={activeModal === Modal.Settings} onClick={() => dispatchModal({ type: Modal.Settings })} />
             </div>
         </div>
     );

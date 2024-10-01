@@ -1,6 +1,17 @@
-export default function SongList() {
+type SongListProps = {
+    isOpen: boolean;
+};
+
+export default function SongList({ isOpen }: SongListProps) {
     return (
-        <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className="h-full w-full fill-white" viewBox="0 0 512 512" xmlSpace="preserve">
+        <svg
+            version="1.1"
+            id="_x32_"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            className={`h-full w-full transition-colors duration-1000 ${isOpen ? "fill-[#ffc421]" : "fill-white"}`}
+            viewBox="0 0 512 512"
+            xmlSpace="preserve">
             <g>
                 <path
                     className="st0"

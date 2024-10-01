@@ -10,9 +10,9 @@ export default function useFetch<T>(fallbackValue: T) {
          * Fetches data. Any incomplete requests at the time of a new request being sent will will be aborted.
          * @param {string} url The URL to request
          * @param {object} options Fetch API options object
-         * @returns The data after being parsed into JSON
+         * @returns A promise resolving to the returned data as a JSON object
          */
-        function (url: string, options: RequestInit = {}) {
+        async function (url: string, options: RequestInit = {}) {
             setError(null);
 
             aborter.current && aborter.current.abort();
@@ -26,21 +26,26 @@ export default function useFetch<T>(fallbackValue: T) {
 
             setIsFetching(true);
 
-            (async function () {
-                try {
-                    const response = await fetch(url, {
-                        ...options,
-                        signal: aborter.current?.signal,
-                    });
-                    const json = await response.json();
-                    setData(json);
-                } catch (err) {
-                    setError(err as Error);
-                    setData(fallbackValue);
+            try {
+                const fetchOptions: any = {
+                    ...options,
+                    headers: Object.assign({ "Content-Type": "application/json" }, options.headers),
+                    signal: aborter.current?.signal,
+                };
+
+                const response = await fetch(url, fetchOptions);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.statusText}`);
                 }
 
-                setIsFetching(false);
-            })();
+                const json: T = await response.json();
+                setData(json);
+                return json;
+            } catch (err) {
+                setError(err as Error);
+                setData(fallbackValue);
+            }
         },
         []
     );

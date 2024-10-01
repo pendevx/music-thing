@@ -1,6 +1,7 @@
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services.Contracts;
@@ -41,7 +42,8 @@ public class AuthenticationService : IAuthenticationService
         {
             Guid = newGuid,
             Username = username,
-            SaltedPassword = saltedPassword
+            SaltedPassword = saltedPassword,
+            DisplayName = displayName
         });
 
         return true;
@@ -90,7 +92,10 @@ public class AuthenticationService : IAuthenticationService
 
     public Account? GetByToken(Guid token)
     {
-        return _sessionRepository.Entities.FirstOrDefault(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow)?.Account;
+        return _sessionRepository.Entities.Where(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow)
+            .Include(s => s.Account)
+            .FirstOrDefault()?
+            .Account;
     }
 
     private void CleanupExpiredTokensForAccount(Account account)

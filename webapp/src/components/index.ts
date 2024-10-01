@@ -13,3 +13,4 @@ export { default as BlurredModal } from "./BlurredModal";
 export { default as SettingsButton } from "./SettingsButton";
 export { default as RaisedInputPlaceholder } from "./RaisedInputPlaceholder";
 export { default as ValidatableForm } from "./ValidatableForm";
+export { default as KeyedForm } from "./KeyedForm";

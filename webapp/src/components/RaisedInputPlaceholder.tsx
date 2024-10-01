@@ -1,5 +1,5 @@
 import React from "react";
-import { AccountSettingsContext } from "./modals/SettingsModalTabs/Account";
+import { AccountSettingsContext } from "./KeyedForm";
 
 type RaisedInputPlaceholderProps = {
     className?: string;

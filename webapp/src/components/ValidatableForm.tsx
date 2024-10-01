@@ -5,6 +5,7 @@ type FormField = {
     placeholder: string;
     type: string;
     required: boolean;
+    name: string;
 };
 
 export type ReportValidity = {
@@ -34,6 +35,7 @@ export default function ValidatableForm({ fields, reportValidity }: { fields: Fo
                     index={i}
                     type={field.type}
                     required={field.required}
+                    name={field.name}
                 />
             ))}
         </div>

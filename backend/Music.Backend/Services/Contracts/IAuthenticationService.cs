@@ -9,4 +9,5 @@ public interface IAuthenticationService
     void CleanupExpiredTokensForAccount(int accountId);
     bool TokenIsActive(Guid token);
     Account? GetByToken(Guid token);
+    void Logout(Guid token);
 }

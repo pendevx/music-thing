@@ -98,6 +98,14 @@ public class AuthenticationService : IAuthenticationService
             .Account;
     }
 
+    public void Logout(Guid token)
+    {
+        var session = _sessionRepository.Entities.FirstOrDefault(s => s.Token == token);
+
+        if (session is not null)
+            _sessionRepository.Delete(session);
+    }
+
     private void CleanupExpiredTokensForAccount(Account account)
     {
         var toExpire = _sessionRepository.Entities.Where(a => a.Id == account.Id && a.ExpiresOn > DateTime.UtcNow);

@@ -1,14 +1,17 @@
-import { UserInformation, AccountsContext } from "../../../../contexts/AccountsContext";
+import { AccountsContext } from "../../../../contexts/AccountsContext";
 import React from "react";
 
 export default function UserDetails() {
-    const { userInformation } = React.useContext(AccountsContext) as { userInformation: UserInformation };
-
-    console.log(userInformation);
+    const { userInformation, logout } = React.useContext(AccountsContext);
 
     return (
-        <>
-            <h4>Currently signed in as: {userInformation.displayName}</h4>
-        </>
+        <div>
+            <div className="relative">
+                <h4>Currently signed in as: {userInformation!.displayName}</h4>
+                <button type="button" className="absolute bottom-0 right-0 w-fit cursor-pointer text-white" onClick={logout}>
+                    Log out
+                </button>
+            </div>
+        </div>
     );
 }

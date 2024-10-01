@@ -66,6 +66,18 @@ public class AccountsController : ControllerBase
         return new UserInformation(account.DisplayName);
     }
 
+    [HttpPost]
+    [Route("logout")]
+    public void Logout()
+    {
+        var authorizationCookie = Request.Cookies[AuthorizationCookie];
+
+        if (authorizationCookie is null)
+            return;
+
+        _authenticationService.Logout(Guid.Parse(authorizationCookie));
+    }
+
     [HttpGet]
     [Route("user")]
     public ActionResult<UserInformation> GetUserInformation()

@@ -10,4 +10,5 @@ public interface IAuthenticationService
     bool TokenIsActive(Guid token);
     Account? GetByToken(Guid token);
     void Logout(Guid token);
+    Account? GetByUsername(string username);
 }

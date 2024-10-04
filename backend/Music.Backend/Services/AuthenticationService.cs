@@ -106,6 +106,11 @@ public class AuthenticationService : IAuthenticationService
             _sessionRepository.Delete(session);
     }
 
+    public Account? GetByUsername(string username)
+    {
+        return _accountRepository.GetByUsername(username);
+    }
+
     private void CleanupExpiredTokensForAccount(Account account)
     {
         var toExpire = _sessionRepository.Entities.Where(a => a.Id == account.Id && a.ExpiresOn > DateTime.UtcNow);

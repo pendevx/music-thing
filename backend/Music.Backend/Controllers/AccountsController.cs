@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Music.Backend.Models.DTO.HttpRequests;
-using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Controllers;
@@ -12,12 +11,10 @@ public class AccountsController : ControllerBase
     private const string AuthorizationCookie = "Authorization";
 
     private readonly IAuthenticationService _authenticationService;
-    private readonly IAccountRepository _accountRepository;
 
-    public AccountsController(IAuthenticationService authenticationService, IAccountRepository accountRepository)
+    public AccountsController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
-        _accountRepository = accountRepository;
     }
 
     [HttpPost]
@@ -59,7 +56,7 @@ public class AccountsController : ControllerBase
             MaxAge = TimeSpan.FromDays(7)
         });
 
-        var account = _accountRepository.GetByUsername(credentials.Username);
+        var account = _authenticationService.GetByUsername(credentials.Username);
 
         if (account is null)
             return BadRequest();

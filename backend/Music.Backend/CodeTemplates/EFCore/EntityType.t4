@@ -40,7 +40,6 @@
     {
         "System",
         "System.Collections.Generic",
-        "Music.Backend.Repositories"
     };
 
     if (Options.UseDataAnnotations)

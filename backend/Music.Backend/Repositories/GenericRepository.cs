@@ -10,7 +10,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     public MusicContext MusicContext { get; }
     public DbSet<T> Entities { get; }
 
-    public GenericRepository(MusicContext ctx)
+    protected GenericRepository(MusicContext ctx)
     {
         MusicContext = ctx;
         Entities = ctx.Set<T>();

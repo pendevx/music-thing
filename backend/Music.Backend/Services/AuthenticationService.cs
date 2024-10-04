@@ -30,7 +30,7 @@ public class AuthenticationService : IAuthenticationService
 
     public bool Register(string username, string password, string displayName)
     {
-        var existingAccount = _accountRepository.Entities.FirstOrDefault(a => a.Username == username);
+        var existingAccount = _accountRepository.GetByUsername(username);
 
         if (existingAccount is not null)
             return false;
@@ -51,7 +51,7 @@ public class AuthenticationService : IAuthenticationService
 
     public Guid Login(string username, string password)
     {
-        var existingUser = _accountRepository.Entities.FirstOrDefault(a => a.Username == username);
+        var existingUser = _accountRepository.GetByUsername(username);
 
         if (existingUser is null)
             throw new AuthenticationException(GenericAuthenticationFailure);
@@ -87,20 +87,17 @@ public class AuthenticationService : IAuthenticationService
 
     public bool TokenIsActive(Guid token)
     {
-        return _sessionRepository.Entities.FirstOrDefault(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow) is not null;
+        return _sessionRepository.GetSessionByToken(token)?.ExpiresOn < DateTime.UtcNow;
     }
 
     public Account? GetByToken(Guid token)
     {
-        return _sessionRepository.Entities.Where(s => s.Token == token && s.ExpiresOn > DateTime.UtcNow)
-            .Include(s => s.Account)
-            .FirstOrDefault()?
-            .Account;
+        return _sessionRepository.GetAccountFromSession(token);
     }
 
     public void Logout(Guid token)
     {
-        var session = _sessionRepository.GetByToken(token);
+        var session = _sessionRepository.GetSessionByToken(token);
 
         if (session is not null)
             _sessionRepository.Delete(session);
@@ -113,7 +110,7 @@ public class AuthenticationService : IAuthenticationService
 
     public bool ExtendSession(Guid token, int extensionSeconds)
     {
-        var session = _sessionRepository.GetByToken(token);
+        var session = _sessionRepository.GetSessionByToken(token);
 
         if (session is null)
             return false;
@@ -126,7 +123,7 @@ public class AuthenticationService : IAuthenticationService
 
     private void CleanupExpiredTokensForAccount(Account account)
     {
-        var toExpire = _sessionRepository.Entities.Where(a => a.Id == account.Id && a.ExpiresOn > DateTime.UtcNow);
+        var toExpire = _sessionRepository.GetExpiredSessions(account.Id);
         _sessionRepository.Delete(toExpire);
     }
 }

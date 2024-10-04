@@ -49,7 +49,7 @@ public class AuthenticationService : IAuthenticationService
         return true;
     }
 
-    public string Login(string username, string password)
+    public Guid Login(string username, string password)
     {
         var existingUser = _accountRepository.Entities.FirstOrDefault(a => a.Username == username);
 
@@ -72,7 +72,7 @@ public class AuthenticationService : IAuthenticationService
 
         CleanupExpiredTokensForAccount(existingUser);
 
-        return token.ToString();
+        return token;
     }
 
     public void CleanupExpiredTokensForAccount(int accountId)
@@ -100,7 +100,7 @@ public class AuthenticationService : IAuthenticationService
 
     public void Logout(Guid token)
     {
-        var session = _sessionRepository.Entities.FirstOrDefault(s => s.Token == token);
+        var session = _sessionRepository.GetByToken(token);
 
         if (session is not null)
             _sessionRepository.Delete(session);
@@ -109,6 +109,19 @@ public class AuthenticationService : IAuthenticationService
     public Account? GetByUsername(string username)
     {
         return _accountRepository.GetByUsername(username);
+    }
+
+    public bool ExtendSession(Guid token, int extensionSeconds)
+    {
+        var session = _sessionRepository.GetByToken(token);
+
+        if (session is null)
+            return false;
+
+        session.ExpiresOn = DateTime.UtcNow.AddSeconds(extensionSeconds);
+        _sessionRepository.MusicContext.SaveChanges();
+
+        return true;
     }
 
     private void CleanupExpiredTokensForAccount(Account account)

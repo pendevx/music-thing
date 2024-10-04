@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Music.Backend.Attributes;
 using Music.Backend.Models.DTO.HttpRequests;
 using Music.Backend.Services.Contracts;
 
@@ -6,10 +7,8 @@ namespace Music.Backend.Controllers;
 
 [ApiController]
 [Route("accounts")]
-public class AccountsController : ControllerBase
+public class AccountsController : BaseController
 {
-    private const string AuthorizationCookie = "Authorization";
-
     private readonly IAuthenticationService _authenticationService;
 
     public AccountsController(IAuthenticationService authenticationService)
@@ -39,59 +38,48 @@ public class AccountsController : ControllerBase
     [Route("login")]
     public ActionResult<UserInformation> Login(UserLoginInfo credentials)
     {
-        var authorizationCookie = Request.Cookies[AuthorizationCookie];
-
-        if (authorizationCookie is not null)
-        {
-            var isActive = _authenticationService.TokenIsActive(Guid.Parse(authorizationCookie));
-            if (isActive) return null!;
-        }
-
         var newAuthCookie = _authenticationService.Login(credentials.Username, credentials.Password);
-        Response.Cookies.Append(AuthorizationCookie, newAuthCookie, new CookieOptions
+        AuthenticationCookie = newAuthCookie;
+
+        var account = _authenticationService.GetByUsername(credentials.Username)!;
+
+        return new UserInformation
         {
-            HttpOnly = true,
-            Secure = true,
-            SameSite = SameSiteMode.Strict,
-            MaxAge = TimeSpan.FromDays(7)
-        });
-
-        var account = _authenticationService.GetByUsername(credentials.Username);
-
-        if (account is null)
-            return BadRequest();
-
-        return new UserInformation(account.DisplayName);
+            DisplayName = account.DisplayName
+        };
     }
 
     [HttpPost]
     [Route("logout")]
+    [RequiresAuthenticated]
     public void Logout()
     {
-        var authorizationCookie = Request.Cookies[AuthorizationCookie];
-
-        if (authorizationCookie is null)
-            return;
-
-        _authenticationService.Logout(Guid.Parse(authorizationCookie));
-
-        Response.Cookies.Delete(AuthorizationCookie);
+        _authenticationService.Logout(AuthenticationCookie);
+        AuthenticationCookie = Guid.Empty;
     }
 
     [HttpGet]
     [Route("user")]
+    [RequiresAuthenticated]
     public ActionResult<UserInformation> GetUserInformation()
     {
-        var authorizationCookie = Request.Cookies[AuthorizationCookie];
+        var account = _authenticationService.GetByToken(AuthenticationCookie)!;
 
-        if (authorizationCookie is null)
-            return Unauthorized();
+        return new UserInformation
+        {
+            DisplayName = account.DisplayName
+        };
+    }
 
-        var account = _authenticationService.GetByToken(Guid.Parse(authorizationCookie));
+    [HttpPost]
+    [Route("extendsession")]
+    [RequiresAuthenticated]
+    public void ExtendSession()
+    {
+        // store it so we can re-set the token to the same value after, but with a new max-age
+        var cookieGuid = AuthenticationCookie;
 
-        if (account is null)
-            return Unauthorized();
-
-        return new UserInformation(account.DisplayName);
+        _authenticationService.ExtendSession(AuthenticationCookie, (int)TimeSpan.FromDays(7).TotalSeconds);
+        AuthenticationCookie = cookieGuid;
     }
 }

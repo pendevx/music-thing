@@ -4,5 +4,5 @@ namespace Music.Backend.Repositories.Contracts;
 
 public interface ISessionRepository : IGenericRepository<Session>
 {
-
+    Session? GetByToken(Guid token);
 }

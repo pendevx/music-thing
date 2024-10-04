@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Music.Backend.DatabaseContexts;
+using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 
 namespace Music.Backend.Repositories;

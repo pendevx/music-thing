@@ -1,4 +1,5 @@
-﻿using Music.Backend.Repositories;
+﻿using Music.Backend.Models.Generated;
+using Music.Backend.Repositories;
 using Music.Backend.Utils;
 
 namespace Music.Backend.Models.DTO.HttpResponses;

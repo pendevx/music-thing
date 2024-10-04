@@ -59,6 +59,8 @@ public partial class MusicContext : DbContext
         modelBuilder.Entity<Song>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Songs__3214EC0777BE66D4");
+
+            entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysutcdatetime())");
         });
 
         OnModelCreatingPartial(modelBuilder);

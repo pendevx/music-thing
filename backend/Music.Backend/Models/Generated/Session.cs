@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Music.Backend.Repositories;
 
 namespace Music.Backend.Models.Generated;
 
 [Index("Token", Name = "UQ__Sessions__1EB4F817630CAA66", IsUnique = true)]
-public partial class Session
+public partial class Session : Entity
 {
-    [Key]
-    public int Id { get; set; }
-
     public int AccountId { get; set; }
-
-    public DateTime CreatedOn { get; set; }
 
     public DateTime ExpiresOn { get; set; }
 

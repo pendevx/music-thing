@@ -20,6 +20,18 @@
         return "";
     }
 
+    // Ignore these tables when scaffolding
+    var ignoreTables = new[]
+    {
+        "DbSchemaVersion",
+        "DbSchemaVersionScript"
+    };
+
+    if (ignoreTables.Contains(EntityType.Name))
+    {
+        return "";
+    }
+
     var services = (IServiceProvider)Host;
     var annotationCodeGenerator = services.GetRequiredService<IAnnotationCodeGenerator>();
     var code = services.GetRequiredService<ICSharpHelper>();
@@ -27,7 +39,8 @@
     var usings = new List<string>
     {
         "System",
-        "System.Collections.Generic"
+        "System.Collections.Generic",
+        "Music.Backend.Repositories"
     };
 
     if (Options.UseDataAnnotations)
@@ -64,12 +77,17 @@ namespace <#= NamespaceHint #>;
         }
     }
 #>
-public partial class <#= EntityType.Name #>
+public partial class <#= EntityType.Name #> : Entity
 {
 <#
     var firstProperty = true;
     foreach (var property in EntityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
     {
+        if (property.Name == "Id" || property.Name == "CreatedOn")
+        {
+            continue;
+        }
+
         if (!firstProperty)
         {
             WriteLine("");

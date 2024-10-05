@@ -28,15 +28,15 @@ public class SongRepository : GenericRepository<Song>, ISongRepository
 
     public new StreamedAudio? GetById(int id)
     {
-        return base.GetById(
-            id,
-            song => new StreamedAudio
+        // project before returning, so the Contents aren't loaded into memory.
+        return Entities
+            .Select(song => new StreamedAudio
             {
                 Id = song.Id,
                 Guid = song.Guid,
                 MimeType = song.MimeType,
                 Contents = LazyLoad.Create(() => GetAudioStream(id))
-            }
-        );
+            })
+            .FirstOrDefault(song => song.Id == id);
     }
 }

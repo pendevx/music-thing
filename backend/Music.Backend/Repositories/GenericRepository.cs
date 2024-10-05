@@ -70,11 +70,4 @@ public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     {
         Create(new[] { entity });
     }
-
-    public TMapped? GetById<TMapped>(int id, Func<T, TMapped> mapper) where TMapped : Entity
-    {
-        return Entities.Where(e => e.Id == id)
-            .Select(x => mapper(x))
-            .FirstOrDefault();
-    }
 }

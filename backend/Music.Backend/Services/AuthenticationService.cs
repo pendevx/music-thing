@@ -87,7 +87,7 @@ public class AuthenticationService : IAuthenticationService
 
     public bool TokenIsActive(Guid token)
     {
-        return _sessionRepository.GetSessionByToken(token)?.ExpiresOn < DateTime.UtcNow;
+        return _sessionRepository.GetSessionByToken(token)?.ExpiresOn > DateTime.UtcNow;
     }
 
     public Account? GetByToken(Guid token)

@@ -1,5 +1,5 @@
 ﻿using Music.Backend.Constants;
-using Music.Backend.Models.DTO.HttpResponses;
+using Music.Backend.Models.DTO.Http;
 using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services.Contracts;

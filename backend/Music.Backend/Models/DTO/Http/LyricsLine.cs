@@ -1,4 +1,4 @@
-﻿namespace Music.Backend.Models.DTO.HttpResponses;
+﻿namespace Music.Backend.Models.DTO.Http;
 
 public struct LyricsLine
 {

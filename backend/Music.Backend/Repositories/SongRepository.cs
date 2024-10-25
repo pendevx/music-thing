@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlTypes;
 using Music.Backend.DatabaseContexts;
-using Music.Backend.Models.DTO.HttpResponses;
+using Music.Backend.Models.DTO.Http;
 using Music.Backend.Models.Generated;
 using Music.Backend.Repositories.Contracts;
 using Music.Backend.Utils;

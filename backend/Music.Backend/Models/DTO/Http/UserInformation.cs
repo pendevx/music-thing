@@ -1,4 +1,4 @@
-namespace Music.Backend.Models.DTO.HttpRequests;
+namespace Music.Backend.Models.DTO.Http;
 
 public class UserInformation
 {

@@ -1,17 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using Music.Backend.Attributes;
 using Music.Backend.Models.DTO.Http;
 using Music.Backend.Services.Contracts;
 
-namespace Music.Backend.Controllers;
+namespace Music.Backend.Controllers.Accounts;
 
 [ApiController]
 [Route("accounts")]
-public class AccountsController : BaseController
+public class UnauthenticatedAccountsController : BaseController
 {
     private readonly IAuthenticationService _authenticationService;
 
-    public AccountsController(IAuthenticationService authenticationService)
+    public UnauthenticatedAccountsController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
@@ -47,39 +46,5 @@ public class AccountsController : BaseController
         {
             DisplayName = account.DisplayName
         };
-    }
-
-    [HttpPost]
-    [Route("logout")]
-    [RequiresAuthenticated]
-    public void Logout()
-    {
-        _authenticationService.Logout(AuthenticationCookie);
-        AuthenticationCookie = Guid.Empty;
-    }
-
-    [HttpGet]
-    [Route("user")]
-    [RequiresAuthenticated]
-    public ActionResult<UserInformation> GetUserInformation()
-    {
-        var account = _authenticationService.GetByToken(AuthenticationCookie)!;
-
-        return new UserInformation
-        {
-            DisplayName = account.DisplayName
-        };
-    }
-
-    [HttpPost]
-    [Route("extendsession")]
-    [RequiresAuthenticated]
-    public void ExtendSession()
-    {
-        // store it so we can re-set the token to the same value after, but with a new max-age
-        var cookieGuid = AuthenticationCookie;
-
-        _authenticationService.ExtendSession(AuthenticationCookie, (int)TimeSpan.FromDays(7).TotalSeconds);
-        AuthenticationCookie = cookieGuid;
     }
 }

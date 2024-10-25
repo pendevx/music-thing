@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Music.Backend.Constants;
-using Music.Backend.Models.DTO.HttpResponses;
+using Music.Backend.Models.DTO.Http;
 using Music.Backend.Services.Contracts;
 
 namespace Music.Backend.Services;

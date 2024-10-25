@@ -21,6 +21,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Music.Queries", "Music.Queries\Music.Queries.csproj", "{F13E1BDD-B18C-4916-9F69-89AF158F9F71}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pendevx.Music.Repositories", "Pendevx.Music.Repositories", "{D5FB90DC-3618-4DDF-A0BB-C960F3C47666}"
+	ProjectSection(SolutionItems) = preProject
+		CodeTemplates\EFCore = CodeTemplates\EFCore
+		CodeTemplates\EFCore\DbContext.t4 = CodeTemplates\EFCore\DbContext.t4
+		CodeTemplates\EFCore\EntityType.t4 = CodeTemplates\EFCore\EntityType.t4
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Music.Repositories", "Music.Repositories\Music.Repositories.csproj", "{7EC02F27-BE7D-4654-8F4F-0E03B761D158}"
 EndProject

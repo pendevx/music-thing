@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Music.Backend.Models.Generated;
+namespace Music.Database.Entities;
 
 [Index("Guid", Name = "UQ__Songs__A2B5777D2053A439", IsUnique = true)]
 public partial class Song : Entity

@@ -1,7 +1,6 @@
-﻿using Music.Backend.Models.Generated;
-using Music.Backend.Utils;
+﻿using Music.Backend.Utils;
 
-namespace Music.Backend.Models.DTO.Http;
+namespace Music.Database.Entities;
 
 public class StreamedAudio : Entity
 {

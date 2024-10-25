@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Music.Backend.DatabaseContexts;
-using Music.Backend.Models.Generated;
-using Music.Backend.Repositories.Contracts;
+using Music.Database.Entities;
+using Music.EF.DatabaseContexts;
+using Music.Repositories.Contracts;
 
-namespace Music.Backend.Repositories;
+namespace Music.Repositories;
 
 public class SessionRepository : GenericRepository<Session>, ISessionRepository
 {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Music.Backend.Models.Generated;
+namespace Music.Database.Entities;
 
 [Index("Token", Name = "UQ__Sessions__1EB4F817630CAA66", IsUnique = true)]
 public partial class Session : Entity

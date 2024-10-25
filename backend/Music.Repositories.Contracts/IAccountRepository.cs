@@ -1,6 +1,6 @@
-using Music.Backend.Models.Generated;
+using Music.Database.Entities;
 
-namespace Music.Backend.Repositories.Contracts;
+namespace Music.Repositories.Contracts;
 
 public interface IAccountRepository : IGenericRepository<Account>
 {

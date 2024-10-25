@@ -1,19 +1,18 @@
 ﻿using Microsoft.Data.SqlTypes;
-using Music.Backend.DatabaseContexts;
-using Music.Backend.Models.DTO.Http;
-using Music.Backend.Models.Generated;
-using Music.Backend.Repositories.Contracts;
 using Music.Backend.Utils;
+using Music.Database.Entities;
+using Music.EF.DatabaseContexts;
+using Music.Repositories.Contracts;
 
-namespace Music.Backend.Repositories;
+namespace Music.Repositories;
 
 public class SongRepository : GenericRepository<Song>, ISongRepository
 {
     public SongRepository(MusicContext ctx) : base(ctx)
     {
-        
+
     }
-    
+
     private Stream GetAudioStream(int id)
     {
         var transaction = BeginTransaction();

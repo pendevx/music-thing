@@ -1,10 +1,10 @@
 using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
-using Music.Backend.DatabaseContexts;
-using Music.Backend.Repositories;
-using Music.Backend.Repositories.Contracts;
 using Music.Backend.Services;
 using Music.Backend.Services.Contracts;
+using Music.EF.DatabaseContexts;
+using Music.Repositories;
+using Music.Repositories.Contracts;
 
 namespace Music.Backend;
 

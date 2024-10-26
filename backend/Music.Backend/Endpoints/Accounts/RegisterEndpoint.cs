@@ -1,8 +1,10 @@
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
+using Music.Backend.HttpContextExtensions;
 using Music.Backend.Models.DTO.Http;
-using Music.CommandHandlers.Contracts.Accounts;
+using Music.CommandHandlers.Accounts;
 using Music.Commands.Accounts;
+using Music.QueryHandlers.Accounts;
 
 namespace Music.Backend.Endpoints.Accounts;
 
@@ -10,12 +12,18 @@ namespace Music.Backend.Endpoints.Accounts;
 [AllowAnonymous]
 public class RegisterEndpoint : Endpoint<UserRegistrationInfo, UserInformation>
 {
-    private readonly IRegisterAccountHandler _registerAccountHandler;
+    private readonly RegisterAccountHandler _registerAccountHandler;
+    private readonly LoginHandler _loginHandler;
+    private readonly GetAccountByUsernameHandler _getAccountByUsername;
 
     public RegisterEndpoint(
-        IRegisterAccountHandler registerAccountHandler)
+        RegisterAccountHandler registerAccountHandler,
+        LoginHandler loginHandler,
+        GetAccountByUsernameHandler getAccountByUsername)
     {
         _registerAccountHandler = registerAccountHandler;
+        _loginHandler = loginHandler;
+        _getAccountByUsername = getAccountByUsername;
     }
 
     public override async Task HandleAsync(UserRegistrationInfo req, CancellationToken ct)
@@ -29,6 +37,15 @@ public class RegisterEndpoint : Endpoint<UserRegistrationInfo, UserInformation>
             return;
         }
 
-        return Login(new UserLoginInfo(req.Username, req.Password));
+        var token = _loginHandler.Execute(new LoginCommand(req.Username, req.Password));
+        var account = _getAccountByUsername.Execute(req.Username)!;
+
+        HttpContext.Response.SetAuthenticationCookie(token);
+
+        await SendAsync(
+            new UserInformation
+            {
+                DisplayName = account.DisplayName
+            }, 200, ct);
     }
 }

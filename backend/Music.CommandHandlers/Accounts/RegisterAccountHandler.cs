@@ -1,46 +1,44 @@
-using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Music.CommandHandlers.Contracts.Accounts;
 using Music.Commands.Accounts;
+using Music.Repositories.Contracts;
+using Music.Repository.EF.Models.Generated;
 
-namespace Music.CommandHandlers.Accounts
+namespace Music.CommandHandlers.Accounts;
+
+public class RegisterAccountHandler : IBaseCommandHandler<RegisterAccountCommand, bool>
 {
-    public class RegisterAccountHandler : IRegisterAccountHandler
+    private readonly IAccountRepository _accountRepository;
+
+    public RegisterAccountHandler(IAccountRepository accountRepository)
     {
-        private readonly IAccountRepository _accountRepository;
+        _accountRepository = accountRepository;
+    }
 
-        public RegisterAccountHandler()
+    private static byte[] GenerateSaltedHash(byte[] raw, byte[] salt)
+    {
+        var salted = raw.Concat(salt).ToArray();
+        return SHA256.HashData(salted);
+    }
+
+    public bool Execute(RegisterAccountCommand command)
+    {
+        var existingAccount = _accountRepository.GetByUsername(command.Username);
+
+        if (!(existingAccount is null))
+            return false;
+
+        var newGuid = Guid.NewGuid();
+        var saltedPassword = GenerateSaltedHash(Encoding.UTF8.GetBytes(command.Password), newGuid.ToByteArray());
+
+        _accountRepository.Create(new Account
         {
+            Guid = newGuid,
+            Username = command.Username,
+            SaltedPassword = saltedPassword,
+            DisplayName = command.DisplayName
+        });
 
-        }
-
-        private static byte[] GenerateSaltedHash(byte[] raw, byte[] salt)
-        {
-            var salted = raw.Concat(salt).ToArray();
-            return SHA256.Create().ComputeHash(salted);
-        }
-
-        public bool Execute(RegisterAccountCommand command)
-        {
-            var existingAccount = _accountRepository.GetByUsername(command.Username);
-
-            if (!(existingAccount is null))
-                return false;
-
-            var newGuid = Guid.NewGuid();
-            var saltedPassword = GenerateSaltedHash(Encoding.UTF8.GetBytes(command.Password), newGuid.ToByteArray());
-
-            _accountRepository.Create(new Account
-            {
-                Guid = newGuid,
-                Username = username,
-                SaltedPassword = saltedPassword,
-                DisplayName = displayName
-            });
-
-            return true;
-        }
+        return true;
     }
 }

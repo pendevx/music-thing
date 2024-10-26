@@ -1,8 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>false</InvariantGlobalization>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Music.Queries\Music.Queries.csproj" />
+      <ProjectReference Include="..\Music.Repositories.Contracts\Music.Repositories.Contracts.csproj" />
+      <ProjectReference Include="..\Music.Repository.EF\Music.Repository.EF.csproj" />
+    </ItemGroup>
 
 </Project>

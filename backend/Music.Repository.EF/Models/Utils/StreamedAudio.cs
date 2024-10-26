@@ -1,6 +1,4 @@
-﻿using Music.Backend.Utils;
-
-namespace Music.Database.Entities;
+namespace Music.Repository.EF.Models.Utils;
 
 public class StreamedAudio : Entity
 {

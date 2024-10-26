@@ -1,0 +1,1 @@
+﻿dotnet ef dbcontext scaffold "data source=localhost;initial catalog=MusicThing;trusted_connection=true;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer --force --no-onconfiguring --data-annotations --context MusicContext --output-dir Models/Generated --context-dir DatabaseContexts

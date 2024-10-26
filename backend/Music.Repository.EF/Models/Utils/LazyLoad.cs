@@ -1,8 +1,8 @@
-﻿namespace Music.Backend.Utils;
+namespace Music.Repository.EF.Models.Utils;
 
 public class LazyLoad<T>
 {
-    private T? _value;
+    private T _value;
     private readonly Func<T> _loader;
 
     public LazyLoad(Func<T> loader)

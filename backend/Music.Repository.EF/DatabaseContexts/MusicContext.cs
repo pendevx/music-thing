@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Music.Database.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Music.Repository.EF.Models.Generated;
 
-namespace Music.EF.DatabaseContexts;
+namespace Music.Repository.EF.DatabaseContexts;
 
 public partial class MusicContext : DbContext
 {

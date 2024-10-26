@@ -8,9 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Music.EF.DatabaseContexts\Music.EF.DatabaseContexts.csproj" />
       <ProjectReference Include="..\Music.Repositories.Contracts\Music.Repositories.Contracts.csproj" />
-      <ProjectReference Include="..\Music.Database.Entities\Music.Database.Entities.csproj" />
+      <ProjectReference Include="..\Music.Repository.EF\Music.Repository.EF.csproj" />
     </ItemGroup>
 
     <ItemGroup>

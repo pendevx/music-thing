@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Music.Database.Entities;
+namespace Music.Repository.EF;
 
 public class Entity
 {

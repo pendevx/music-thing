@@ -3,8 +3,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Music.Backend.Services.Contracts;
 using Music.Backend.Utils;
-using Music.Database.Entities;
 using Music.Repositories.Contracts;
+using Music.Repository.EF.Models.Generated;
 
 namespace Music.Backend.Services;
 

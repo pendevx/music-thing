@@ -1,8 +1,8 @@
 ﻿using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
-using Music.Database.Entities;
-using Music.EF.DatabaseContexts;
 using Music.Repositories.Contracts;
+using Music.Repository.EF;
+using Music.Repository.EF.DatabaseContexts;
 
 namespace Music.Repositories;
 

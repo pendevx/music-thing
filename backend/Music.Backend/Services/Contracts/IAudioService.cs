@@ -1,5 +1,6 @@
 ﻿using Music.Backend.Models.DTO.Http;
-using Music.Database.Entities;
+using Music.Repository.EF.Models.Generated;
+using Music.Repository.EF.Models.Utils;
 
 namespace Music.Backend.Services.Contracts;
 

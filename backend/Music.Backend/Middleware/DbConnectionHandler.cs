@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Music.Backend.Attributes;
-using Music.EF.DatabaseContexts;
+using Music.Repository.EF.DatabaseContexts;
 
 namespace Music.Backend.Middleware;
 

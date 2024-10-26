@@ -2,15 +2,15 @@ using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Music.Backend.Services;
 using Music.Backend.Services.Contracts;
-using Music.EF.DatabaseContexts;
 using Music.Repositories;
 using Music.Repositories.Contracts;
+using Music.Repository.EF.DatabaseContexts;
 
 namespace Music.Backend;
 
-public class Program
+public static class DependencyInjectionConfiguration
 {
-    private static void RegisterDependencies(WebApplicationBuilder builder)
+    public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IAudioService, AudioService>();
         builder.Services.AddScoped<ILyricsService, LyricsService>();
@@ -18,8 +18,13 @@ public class Program
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();
         builder.Services.AddScoped<ISessionRepository, SessionRepository>();
-    }
 
+        return builder;
+    }
+}
+
+public class Program
+{
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -34,7 +39,7 @@ public class Program
             opt.UseSqlServer(connectionString);
         });
 
-        RegisterDependencies(builder);
+        builder.ConfigureServices();
 
         var app = builder.Build();
 

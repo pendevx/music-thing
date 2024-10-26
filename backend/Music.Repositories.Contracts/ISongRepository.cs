@@ -1,4 +1,5 @@
-﻿using Music.Database.Entities;
+﻿using Music.Repository.EF.Models.Generated;
+using Music.Repository.EF.Models.Utils;
 
 namespace Music.Repositories.Contracts;
 

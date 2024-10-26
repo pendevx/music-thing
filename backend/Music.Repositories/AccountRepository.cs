@@ -1,6 +1,6 @@
-using Music.Database.Entities;
-using Music.EF.DatabaseContexts;
 using Music.Repositories.Contracts;
+using Music.Repository.EF.DatabaseContexts;
+using Music.Repository.EF.Models.Generated;
 
 namespace Music.Repositories;
 

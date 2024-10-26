@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlTypes;
-using Music.Backend.Utils;
-using Music.Database.Entities;
-using Music.EF.DatabaseContexts;
 using Music.Repositories.Contracts;
+using Music.Repository.EF.DatabaseContexts;
+using Music.Repository.EF.Models.Generated;
+using Music.Repository.EF.Models.Utils;
 
 namespace Music.Repositories;
 

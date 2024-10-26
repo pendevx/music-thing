@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Music.Database.Entities;
+namespace Music.Repository.EF.Models.Generated;
 
 [Index("Username", Name = "Accounts_Username_Unique", IsUnique = true)]
 [Index("Guid", Name = "UQ__Accounts__A2B5777DA7795D85", IsUnique = true)]

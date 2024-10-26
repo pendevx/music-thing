@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Music.CommandHandlers.Contracts\Music.CommandHandlers.Contracts.csproj" />
     <ProjectReference Include="..\Music.Repositories\Music.Repositories.csproj" />
   </ItemGroup>
 

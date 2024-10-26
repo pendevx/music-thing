@@ -5,4 +5,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Music.CommandHandlers.Contracts\Music.CommandHandlers.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>

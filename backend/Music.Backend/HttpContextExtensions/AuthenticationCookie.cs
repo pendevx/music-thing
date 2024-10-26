@@ -27,4 +27,9 @@ public static class AuthenticationCookie
             });
         }
     }
+
+    public static void ResetAuthenticationCookie(this HttpResponse ctx)
+    {
+        ctx.SetAuthenticationCookie(Guid.Empty);
+    }
 }

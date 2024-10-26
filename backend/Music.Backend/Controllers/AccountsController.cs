@@ -49,14 +49,14 @@ public class AccountsController : BaseController
     //     };
     // }
 
-    [HttpPost]
-    [Route("logout")]
-    [RequiresAuthenticated]
-    public void Logout()
-    {
-        _authenticationService.Logout(AuthenticationCookie);
-        AuthenticationCookie = Guid.Empty;
-    }
+    // [HttpPost]
+    // [Route("logout")]
+    // [RequiresAuthenticated]
+    // public void Logout()
+    // {
+    //     _authenticationService.Logout(AuthenticationCookie);
+    //     AuthenticationCookie = Guid.Empty;
+    // }
 
     [HttpGet]
     [Route("user")]

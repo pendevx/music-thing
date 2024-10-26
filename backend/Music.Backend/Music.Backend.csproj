@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FastEndpoints" Version="5.30.0.15-beta" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="5.30.0.15-beta" />
     <PackageReference Include="Seq.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>

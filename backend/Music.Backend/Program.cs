@@ -1,3 +1,5 @@
+using FastEndpoints;
+using FastEndpoints.Swagger;
 using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Music.Backend.Services;
@@ -39,6 +41,9 @@ public class Program
             opt.UseSqlServer(connectionString);
         });
 
+        builder.Services.AddFastEndpoints()
+            .SwaggerDocument();
+
         builder.ConfigureServices();
 
         var app = builder.Build();
@@ -52,8 +57,9 @@ public class Program
         app.UseGlobalExceptionHandler();
         app.UseLogger();
         app.UseAuthorization();
-        app.UseDbConnectionHandler();
         app.MapControllers();
+        app.UseFastEndpoints()
+            .UseSwaggerGen();
         app.Run();
     }
 }

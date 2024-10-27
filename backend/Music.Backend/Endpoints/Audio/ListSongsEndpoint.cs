@@ -1,7 +1,7 @@
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
-using Music.Backend.Models.DTO.Http;
-using Music.Backend.Services.Contracts;
+using Music.QueryHandlers.Audio;
+using Music.Repository.EF.Models.Utils;
 
 namespace Music.Backend.Endpoints.Audio;
 
@@ -9,16 +9,16 @@ namespace Music.Backend.Endpoints.Audio;
 [AllowAnonymous]
 public class ListSongs : Ep.NoReq.Res<IEnumerable<SongInfo>>
 {
-    private readonly IAudioService _audioService;
+    private readonly ListAudioFilesHandler _listAudioFiles;
 
-    public ListSongs(IAudioService audioService)
+    public ListSongs(ListAudioFilesHandler listAudioFiles)
     {
-        _audioService = audioService;
+        _listAudioFiles = listAudioFiles;
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var files = _audioService.ListAudioFiles();
+        var files = _listAudioFiles.Execute();
         await SendAsync(files, 200, ct);
     }
 }

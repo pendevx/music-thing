@@ -1,12 +1,12 @@
 ﻿namespace Music.QueryHandlers
 {
-    public interface IBaseQueryHandler<in TCommand, out TResult>
+    public interface IBaseQueryHandler<in TQuery, out TResult>
     {
-        public TResult Execute(TCommand command);
+        public TResult Execute(TQuery command);
     }
 
-    public interface IBaseQueryHandler<in TCommand>
+    public interface IBaseQueryHandler<in TQuery>
     {
-        public void Execute(TCommand command);
+        public void Execute(TQuery command);
     }
 }

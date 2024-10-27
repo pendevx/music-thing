@@ -1,4 +1,4 @@
-﻿namespace Music.Backend.Models.DTO.Http;
+﻿namespace Music.Repository.EF.Models.Utils;
 
 public class SongInfo
 {

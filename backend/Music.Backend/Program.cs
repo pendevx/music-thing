@@ -16,7 +16,6 @@ public static class DependencyInjectionConfiguration
 {
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IAudioService, AudioService>();
         builder.Services.AddScoped<ILyricsService, LyricsService>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();

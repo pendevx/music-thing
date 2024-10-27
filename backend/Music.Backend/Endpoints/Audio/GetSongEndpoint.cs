@@ -2,7 +2,7 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
 using Music.Backend.EndpointProcessors.PostProcessors;
 using Music.Backend.EndpointProcessors.PreProcessors;
-using Music.Backend.Services.Contracts;
+using Music.QueryHandlers.Audio;
 using Music.Repository.EF.Models.Utils;
 
 namespace Music.Backend.Endpoints.Audio;
@@ -15,16 +15,16 @@ public record GetSongRequest(int Id);
 [AllowAnonymous]
 public class GetSongEndpoint : Endpoint<GetSongRequest, StreamedAudio>
 {
-    private readonly IAudioService _audioService;
+    private readonly GetAudioByIdHandler _getAudioById;
 
-    public GetSongEndpoint(IAudioService audioService)
+    public GetSongEndpoint(GetAudioByIdHandler getAudioById)
     {
-        _audioService = audioService;
+        _getAudioById = getAudioById;
     }
 
     public override async Task HandleAsync(GetSongRequest req, CancellationToken ct)
     {
-        var audio = _audioService.GetAudioById(req.Id);
+        var audio = _getAudioById.Execute(req.Id);
 
         await SendStreamAsync(
             audio.Contents.Value,

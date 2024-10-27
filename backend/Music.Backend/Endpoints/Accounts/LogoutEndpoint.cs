@@ -1,13 +1,10 @@
 using FastEndpoints;
-using Microsoft.AspNetCore.Authorization;
 using Music.Backend.EndpointFilters;
 using Music.Backend.HttpContextExtensions;
 using Music.CommandHandlers.Accounts;
 
 namespace Music.Backend.Endpoints.Accounts;
 
-[HttpPost("/accounts/logout")]
-[AllowAnonymous]
 public class LogoutEndpoint : Ep.NoReq.NoRes
 {
     private readonly LogoutHandler _logoutHandler;
@@ -19,6 +16,8 @@ public class LogoutEndpoint : Ep.NoReq.NoRes
 
     public override void Configure()
     {
+        Post("/accounts/logout");
+        AllowAnonymous();
         Options(x => x.AddEndpointFilter<RequiresAuthenticatedFilter>());
     }
 

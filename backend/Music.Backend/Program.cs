@@ -4,6 +4,8 @@ using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Music.Backend.Services;
 using Music.Backend.Services.Contracts;
+using Music.CommandHandlers.Accounts;
+using Music.QueryHandlers.Accounts;
 using Music.Repositories;
 using Music.Repositories.Contracts;
 using Music.Repository.EF.DatabaseContexts;
@@ -20,6 +22,12 @@ public static class DependencyInjectionConfiguration
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();
         builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+        builder.Services.AddScoped<LogoutHandler>();
+        builder.Services.AddScoped<LoginHandler>();
+        builder.Services.AddScoped<RegisterAccountHandler>();
+        builder.Services.AddScoped<GetAccountByUsernameHandler>();
+        builder.Services.AddScoped<ValidateTokenIsActiveHandler>();
 
         return builder;
     }

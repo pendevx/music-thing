@@ -1,8 +1,11 @@
+using System.Reflection;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Music.CommandHandlers;
 using Music.CommandHandlers.Accounts;
+using Music.QueryHandlers;
 using Music.QueryHandlers.Accounts;
 using Music.Repositories;
 using Music.Repositories.Contracts;
@@ -18,11 +21,16 @@ public static class DependencyInjectionConfiguration
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();
         builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
-        builder.Services.AddScoped<LogoutHandler>();
-        builder.Services.AddScoped<LoginHandler>();
-        builder.Services.AddScoped<RegisterAccountHandler>();
-        builder.Services.AddScoped<GetAccountByUsernameHandler>();
-        builder.Services.AddScoped<ValidateTokenIsActiveHandler>();
+        var commandHandlers = Assembly.GetAssembly(typeof(IBaseCommandHandler<>))?.GetTypes()
+            .Where(t => t.IsClass) ?? [];
+
+        var queryHandlers = Assembly.GetAssembly(typeof(IBaseQueryHandler<>))?.GetTypes()
+            .Where(t => t.IsClass) ?? [];
+
+        foreach (var handler in commandHandlers)
+            builder.Services.AddScoped(handler);
+        foreach (var handler in queryHandlers)
+            builder.Services.AddScoped(handler);
 
         return builder;
     }

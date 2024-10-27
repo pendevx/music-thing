@@ -2,8 +2,6 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
-using Music.Backend.Services;
-using Music.Backend.Services.Contracts;
 using Music.CommandHandlers.Accounts;
 using Music.QueryHandlers.Accounts;
 using Music.Repositories;
@@ -16,7 +14,6 @@ public static class DependencyInjectionConfiguration
 {
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<ILyricsService, LyricsService>();
         builder.Services.AddScoped<ISongRepository, SongRepository>();
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();
         builder.Services.AddScoped<ISessionRepository, SessionRepository>();

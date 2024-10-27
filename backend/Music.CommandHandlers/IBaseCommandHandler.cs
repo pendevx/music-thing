@@ -1,6 +1,4 @@
-﻿using Music.Commands;
-
-namespace Music.CommandHandlers
+﻿namespace Music.CommandHandlers
 {
     public interface IBaseCommandHandler<in TCommand, out TResult>
     {

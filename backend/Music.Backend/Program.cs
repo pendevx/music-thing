@@ -1,40 +1,10 @@
-using System.Reflection;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Music.Backend.Middleware;
 using Microsoft.EntityFrameworkCore;
-using Music.CommandHandlers;
-using Music.CommandHandlers.Accounts;
-using Music.QueryHandlers;
-using Music.QueryHandlers.Accounts;
-using Music.Repositories;
-using Music.Repositories.Contracts;
 using Music.Repository.EF.DatabaseContexts;
 
 namespace Music.Backend;
-
-public static class DependencyInjectionConfiguration
-{
-    public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddScoped<ISongRepository, SongRepository>();
-        builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-        builder.Services.AddScoped<ISessionRepository, SessionRepository>();
-
-        var commandHandlers = Assembly.GetAssembly(typeof(IBaseCommandHandler<>))?.GetTypes()
-            .Where(t => t.IsClass) ?? [];
-
-        var queryHandlers = Assembly.GetAssembly(typeof(IBaseQueryHandler<>))?.GetTypes()
-            .Where(t => t.IsClass) ?? [];
-
-        foreach (var handler in commandHandlers)
-            builder.Services.AddScoped(handler);
-        foreach (var handler in queryHandlers)
-            builder.Services.AddScoped(handler);
-
-        return builder;
-    }
-}
 
 public class Program
 {

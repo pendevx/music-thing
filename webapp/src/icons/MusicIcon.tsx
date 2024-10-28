@@ -1,8 +1,10 @@
 type MusicIconProps = {
     className?: string;
+    isOpen?: boolean;
+    fill?: string;
 };
 
-export default function MusicIcon({ className }: MusicIconProps) {
+export default function MusicIcon({ className, isOpen, fill = "fill-black" }: MusicIconProps) {
     return (
         <svg
             version="1.1"
@@ -11,7 +13,7 @@ export default function MusicIcon({ className }: MusicIconProps) {
             xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 512 512"
             xmlSpace="preserve"
-            className={`h-full max-w-full bg-transparent ${className}`}>
+            className={`h-full max-w-full bg-transparent p-1 transition-colors duration-1000 ${className} ${isOpen ? "fill-[#ffc421]" : fill}`}>
             <g>
                 <g>
                     <path

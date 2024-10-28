@@ -1,4 +1,4 @@
-import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, BlurredModal, SettingsButton, FullScreenOverlay } from "./components";
+import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, BlurredModal, SettingsButton, FullScreenOverlay, FullscreenButton } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 import { ToggleSonglist } from "./icons";
@@ -114,6 +114,7 @@ export default function App() {
             <div className="fixed right-6 top-6 z-20 flex w-12 flex-col gap-2 p-1 laptop:w-14">
                 <ToggleSonglist isOpen={showSonglist} onClick={() => setShowSonglist(!showSonglist)} />
                 <SettingsButton isOpen={activeModal === Modal.Settings} onClick={() => dispatchModal({ type: Modal.Settings })} />
+                <FullscreenButton isOpen={activeModal === Modal.Fullscreen} onClick={() => dispatchModal({ type: Modal.Fullscreen })} />
             </div>
         </div>
     );

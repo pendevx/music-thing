@@ -7,7 +7,7 @@ import localStorageRepository, { Key } from "../repositories/LocalStorageReposit
  * @param converter A runtime type converter
  * @returns A tuple containing the value and a setter function for the state
  */
-export function useStoreState<T>(key: Key, converter: (value: any) => T = Object): [T, React.Dispatch<React.SetStateAction<T>>] {
+export function useStoreState<T>(key: Key, converter: (value: any) => T = (value: any) => value): [T, React.Dispatch<React.SetStateAction<T>>] {
     const [data, setData] = React.useState<T>(converter(localStorageRepository.get(key)));
     localStorageRepository.set(key, data);
     return [data, setData];

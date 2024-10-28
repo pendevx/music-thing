@@ -76,7 +76,7 @@ export default function App() {
         const resolution = getViewportResolution();
 
         if (resolution < ViewportResolution.Laptop) {
-            dispatchModal({ type: Modal.Fullscreen });
+            setShowSonglist(false);
         }
     }
 

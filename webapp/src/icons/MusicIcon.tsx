@@ -11,7 +11,7 @@ export default function MusicIcon({ className }: MusicIconProps) {
             xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 512 512"
             xmlSpace="preserve"
-            className={`h-full w-auto bg-transparent ${className}`}>
+            className={`h-full max-w-full bg-transparent ${className}`}>
             <g>
                 <g>
                     <path

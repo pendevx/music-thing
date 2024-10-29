@@ -1,6 +1,5 @@
 import React from "react";
 import { Scrollable } from ".";
-import { ToggleSonglist } from "../icons";
 import { MusicContext } from "../contexts/MusicContext";
 import { downloadLyrics } from "../utils/url-builder.api";
 import useFetch from "../hooks/useFetch";

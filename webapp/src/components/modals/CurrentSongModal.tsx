@@ -1,28 +1,17 @@
 import React from "react";
 import { MusicContext } from "../../contexts/MusicContext";
 import { MusicProgressBar } from "../";
-import messageBus from "../../utils/MessageBus";
 import { formatTime } from "../../utils/formats";
 import { MusicIconSvg, PlayBehaviourIcon, MusicPausedSvg, MusicPlaySvg, ChangeTrack } from "../../icons";
 import { nextPlayBehaviour } from "../../utils/playBehaviour";
+import { AudioTimeContext } from "../../contexts/AudioTimeContext";
 
 export default function CurrengSongModal() {
-    const [totalDuration, setTotalDuration] = React.useState(0);
-    const [currentTime, setCurrentTime] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
-
-    React.useEffect(function () {
-        messageBus.subscribe("totalDurationUpdate", setTotalDuration);
-        messageBus.subscribe("audioTimeUpdate", setCurrentTime);
-
-        return function () {
-            messageBus.unSubscribe("totalDurationUpdate", setTotalDuration);
-            messageBus.unSubscribe("audioTimeUpdate", setCurrentTime);
-        };
-    }, []);
+    const audioTimeContext = React.useContext(AudioTimeContext);
 
     function onFastForward(secs: number) {
-        messageBus.publish("updateSongTime", secs);
+        audioTimeContext.setRequestTime(secs);
     }
 
     function handlePlayPause() {
@@ -49,10 +38,10 @@ export default function CurrengSongModal() {
             </div>
 
             <div className="flex flex-col">
-                <MusicProgressBar songDurationSecs={totalDuration} currentTime={currentTime} onFastForward={onFastForward} />
+                <MusicProgressBar songDurationSecs={audioTimeContext.totalDuration || 0} currentTime={audioTimeContext.currentTime || 0} onFastForward={onFastForward} />
 
                 <span className="textfont-semibold w-full text-center">
-                    {formatTime(currentTime)} / {formatTime(totalDuration)}
+                    {formatTime(audioTimeContext.currentTime || 0)} / {formatTime(audioTimeContext.totalDuration || 0)}
                 </span>
             </div>
 

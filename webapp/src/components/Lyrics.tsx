@@ -1,10 +1,10 @@
 import React from "react";
-import messageBus from "../utils/MessageBus";
 import { Scrollable } from ".";
 import { ToggleSonglist } from "../icons";
 import { MusicContext } from "../contexts/MusicContext";
 import { downloadLyrics } from "../utils/url-builder.api";
 import useFetch from "../hooks/useFetch";
+import { AudioTimeContext } from "../contexts/AudioTimeContext";
 
 const SCROLL_IGNORE_DURATION = 1500;
 
@@ -32,34 +32,13 @@ export default function Lyrics({ height, showSonglist }: LyricsProps) {
     const [currentSongId, setCurrentSongId] = React.useState<number>(0);
     const timerRef = React.useRef<number | null>(null);
     const musicContext = React.useContext(MusicContext);
-
-    React.useEffect(
-        function () {
-            function handler(msg: number) {
-                const highlightedIndex = lyrics.findIndex(({ time }) => time > msg);
-                const nextIndex = highlightedIndex === -1 ? lyrics.length - 1 : highlightedIndex - 1;
-
-                setIndex(nextIndex);
-
-                if (!timerRef.current) {
-                    setScrollTop(nextIndex * lineHeight);
-                }
-            }
-
-            messageBus.subscribe("audioTimeUpdate", handler);
-
-            return function () {
-                messageBus.unSubscribe("audioTimeUpdate", handler);
-            };
-        },
-        [lyrics, lineHeight]
-    );
+    const audioTimeContext = React.useContext(AudioTimeContext);
 
     function updateIndex(i: number) {
         setIndex(i);
         setScrollTop(i * lineHeight);
 
-        messageBus.publish("updateSongTime", lyrics[i].time);
+        audioTimeContext.setRequestTime(lyrics[i].time);
     }
 
     function handleScroll() {
@@ -78,6 +57,15 @@ export default function Lyrics({ height, showSonglist }: LyricsProps) {
         if (musicContext.currentSongId > 0) {
             setCurrentSongId(musicContext.currentSongId);
             refreshData(downloadLyrics(musicContext.currentSongId));
+        }
+
+        const highlightedIndex = lyrics.findIndex(({ time }) => time > (audioTimeContext.currentTime ?? 0));
+        const nextIndex = highlightedIndex === -1 ? lyrics.length - 1 : highlightedIndex - 1;
+
+        setIndex(nextIndex);
+
+        if (!timerRef.current) {
+            setScrollTop(nextIndex * lineHeight);
         }
     }
 

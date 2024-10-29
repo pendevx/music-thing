@@ -2,9 +2,9 @@
 import { LoopShuffleControl, MusicProgressBar, TrackButtons } from ".";
 import React from "react";
 import { MusicContext } from "../contexts/MusicContext";
-import messageBus from "../utils/MessageBus";
 import { downloadSong } from "../utils/url-builder.api";
 import { formatTime } from "../utils/formats";
+import { AudioTimeContext } from "../contexts/AudioTimeContext";
 
 type MusicPlayerControlProps = {
     onplay?: () => void;
@@ -13,21 +13,13 @@ type MusicPlayerControlProps = {
 };
 
 export default function MusicPlayerControl({ onplay, goFullscreen, audioRef }: MusicPlayerControlProps) {
-    const [audioTime, setAudioTime] = React.useState(0);
     const [currentSongId, setCurrentSongId] = React.useState(0);
     const musicContext = React.useContext(MusicContext);
+    const audioTimeContext = React.useContext(AudioTimeContext);
 
     React.useEffect(
         function () {
-            function timeUpdated(time: number) {
-                if (audioRef.current) {
-                    audioRef.current.currentTime = time;
-                }
-            }
-
-            messageBus.publish("totalDurationUpdate", audioRef.current?.duration);
-
-            messageBus.subscribe("updateSongTime", timeUpdated);
+            audioTimeContext.setTotalDuration(audioRef.current?.duration || 0);
 
             if (navigator.mediaSession) {
                 navigator.mediaSession.setActionHandler("previoustrack", musicContext.previous);
@@ -35,21 +27,23 @@ export default function MusicPlayerControl({ onplay, goFullscreen, audioRef }: M
                 navigator.mediaSession.setActionHandler("play", musicContext.play);
                 navigator.mediaSession.setActionHandler("pause", musicContext.pause);
             }
-
-            return function () {
-                messageBus.unSubscribe("updateSongTime", timeUpdated);
-            };
         },
         [musicContext]
     );
+
+    React.useEffect(() => {
+        if (audioRef.current && (audioTimeContext.requestTime ?? 0) >= 0) {
+            audioRef.current.currentTime = audioTimeContext.requestTime || 0;
+            audioTimeContext.setRequestTime(-1);
+        }
+    }, [audioTimeContext.requestTime]);
 
     function timeUpdateHandler() {
         if (!audioRef.current) {
             return;
         }
 
-        setAudioTime(audioRef.current.currentTime);
-        messageBus.publish("audioTimeUpdate", audioRef.current.currentTime);
+        audioTimeContext.setCurrentTime(audioRef.current.currentTime);
     }
 
     function fastforwardHandler(secs: number) {
@@ -58,7 +52,7 @@ export default function MusicPlayerControl({ onplay, goFullscreen, audioRef }: M
         }
 
         audioRef.current.currentTime = secs;
-        setAudioTime(secs);
+        audioTimeContext.setCurrentTime(secs);
     }
 
     function handlePlayPause() {
@@ -91,7 +85,7 @@ export default function MusicPlayerControl({ onplay, goFullscreen, audioRef }: M
         audioRef.current?.pause();
     }
 
-    const time = audioRef.current?.duration ? formatTime(audioTime) : "--:--";
+    const time = audioTimeContext.currentTime ? formatTime(audioTimeContext.currentTime) : "--:--";
     const totalDuration = audioRef.current?.duration ? formatTime(audioRef.current.duration) : "--:--";
     const songDurationSecs = audioRef.current?.duration || 0;
 
@@ -102,7 +96,7 @@ export default function MusicPlayerControl({ onplay, goFullscreen, audioRef }: M
                 onTimeUpdate={timeUpdateHandler}
                 onEnded={musicContext.next}
                 onPlay={onplay}
-                onLoadedMetadata={() => messageBus.publish("totalDurationUpdate", audioRef.current?.duration)}
+                onLoadedMetadata={() => audioTimeContext.setTotalDuration(audioRef.current?.duration || 0)}
                 crossOrigin="anonymous"
                 loop={musicContext.playBehaviour === "loop"}
             />
@@ -117,7 +111,7 @@ export default function MusicPlayerControl({ onplay, goFullscreen, audioRef }: M
                     <TrackButtons handlePlayPause={handlePlayPause} isPlaying={musicContext.isPlaying} next={musicContext.next} previous={musicContext.previous} className="ml-1 mr-2" />
                 </div>
                 <div className="hidden grow tablet:block">
-                    <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTime} onFastForward={fastforwardHandler} />
+                    <MusicProgressBar songDurationSecs={songDurationSecs} currentTime={audioTimeContext.currentTime || 0} onFastForward={fastforwardHandler} />
                 </div>
                 {time} / {totalDuration}
                 <LoopShuffleControl />

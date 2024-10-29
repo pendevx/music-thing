@@ -2,11 +2,15 @@ import React from "react";
 import { MusicContext } from "../../contexts/MusicContext";
 import { MusicProgressBar } from "../";
 import { formatTime } from "../../utils/formats";
-import { MusicIconSvg, PlayBehaviourIcon, MusicPausedSvg, MusicPlaySvg, ChangeTrack } from "../../icons";
+import { MusicIconSvg, PlayBehaviourIcon, MusicPausedSvg, MusicPlaySvg, ChangeTrack, Cross } from "../../icons";
 import { nextPlayBehaviour } from "../../utils/playBehaviour";
 import { AudioTimeContext } from "../../contexts/AudioTimeContext";
 
-export default function CurrengSongModal() {
+type CurrentSongModalProps = {
+    closeModal: () => void;
+};
+
+export default function CurrentSongModal({ closeModal }: CurrentSongModalProps) {
     const musicContext = React.useContext(MusicContext);
     const audioTimeContext = React.useContext(AudioTimeContext);
 
@@ -48,10 +52,12 @@ export default function CurrengSongModal() {
             <div className="grid grid-cols-3 grid-rows-2 gap-x-10 gap-y-16 p-2 laptop:gap-y-0">
                 <IconContainer></IconContainer>
 
-                <IconContainer></IconContainer>
+                <IconContainer onClick={closeModal}>
+                    <Cross className="p-1" fill="fill-[#cea127]" />
+                </IconContainer>
 
                 <IconContainer onClick={changePlayBehaviour}>
-                    <PlayBehaviourIcon playBehaviour={musicContext.playBehaviour} className="h-full w-full fill-white" />
+                    <PlayBehaviourIcon playBehaviour={musicContext.playBehaviour} className="h-full w-full" fill="fill-white" />
                 </IconContainer>
 
                 <IconContainer onClick={musicContext.previous}>

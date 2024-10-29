@@ -8,3 +8,4 @@ export { default as ChangeTrack } from "./ChangeTrack";
 export { default as MusicPlaySvg } from "./MusicPlay";
 export { default as PlayBehaviourIcon } from "./PlayBehaviourIcon";
 export { default as Settings } from "./Settings";
+export { default as Cross } from "./Cross";

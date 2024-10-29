@@ -4,22 +4,23 @@ import { PlayBehaviour } from "../types/playBehaviour";
 type PlayBehaviourIconProps = {
     playBehaviour: PlayBehaviour;
     className?: string;
+    fill?: string;
 };
 
-export default function PlayBehaviourIcon({ playBehaviour, className }: PlayBehaviourIconProps) {
+export default function PlayBehaviourIcon({ playBehaviour, className, fill }: PlayBehaviourIconProps) {
     let icon;
 
     switch (playBehaviour) {
         case "loop":
-            icon = <MusicLoopSvg className={className} />;
+            icon = <MusicLoopSvg className={className} fill={fill} />;
             break;
 
         case "shuffle":
-            icon = <MusicShuffleSvg className={className} />;
+            icon = <MusicShuffleSvg className={className} fill={fill} />;
             break;
 
         default:
-            icon = <MusicIconSvg className={className} />;
+            icon = <MusicIconSvg className={className} fill={fill} />;
             break;
     }
 

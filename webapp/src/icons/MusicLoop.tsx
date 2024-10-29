@@ -1,8 +1,9 @@
 type MusicLoopProps = {
     className?: string;
+    fill?: string;
 };
 
-export default function MusicLoop({ className }: MusicLoopProps) {
+export default function MusicLoop({ className, fill }: MusicLoopProps) {
     return (
         <svg
             version="1.1"
@@ -14,7 +15,7 @@ export default function MusicLoop({ className }: MusicLoopProps) {
             viewBox="0 0 64 64"
             enableBackground="new 0 0 64 64"
             xmlSpace="preserve"
-            className={`h-full w-auto bg-transparent ${className}`}>
+            className={`h-full w-auto bg-transparent ${className} ${fill}`}>
             <g>
                 <path
                     d="M54,46H12V28.828l4.586,4.586C16.977,33.805,17.488,34,18,34s1.023-0.195,1.414-0.586c0.781-0.781,0.781-2.047,0-2.828

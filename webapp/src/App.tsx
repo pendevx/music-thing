@@ -103,7 +103,7 @@ export default function App() {
 
             <BlurredModal show={activeModal != Modal.None}>
                 <ModalContainer isActive={activeModal === Modal.Fullscreen} hideFullscreen={hideFullscreen}>
-                    <CurrentSongModal />
+                    <CurrentSongModal closeModal={hideFullscreen} />
                 </ModalContainer>
 
                 <ModalContainer isActive={activeModal === Modal.Settings} hideFullscreen={hideFullscreen}>
@@ -114,7 +114,7 @@ export default function App() {
             <div className="fixed right-6 top-6 z-20 flex w-12 flex-col gap-2 p-1 laptop:w-14">
                 <ToggleSonglist isOpen={showSonglist} onClick={() => setShowSonglist(!showSonglist)} />
                 <SettingsButton isOpen={activeModal === Modal.Settings} onClick={() => dispatchModal({ type: Modal.Settings })} />
-                <FullscreenButton isOpen={activeModal === Modal.Fullscreen} onClick={() => dispatchModal({ type: Modal.Fullscreen })} />
+                {/* <FullscreenButton isOpen={activeModal === Modal.Fullscreen} onClick={() => dispatchModal({ type: Modal.Fullscreen })} /> */}
             </div>
         </div>
     );

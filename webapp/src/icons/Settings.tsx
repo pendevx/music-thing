@@ -1,5 +1,5 @@
 type SettingsIconProps = {
-    isOpen: boolean;
+    isOpen?: boolean;
 };
 
 export default function SettingsIcon({ isOpen }: SettingsIconProps) {

@@ -1,5 +1,5 @@
 type SongListProps = {
-    isOpen: boolean;
+    isOpen?: boolean;
 };
 
 export default function SongList({ isOpen }: SongListProps) {

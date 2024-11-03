@@ -72,9 +72,9 @@ export default function App() {
         }
     }
 
-    function onSongSelected() {
-        const resolution = getViewportResolution();
+    const resolution = getViewportResolution();
 
+    function onSongSelected() {
         if (resolution < ViewportResolution.Laptop) {
             setShowSonglist(false);
         }
@@ -111,9 +111,12 @@ export default function App() {
                 </ModalContainer>
             </BlurredModal>
 
-            <div className="fixed right-6 top-6 z-20 flex w-12 flex-col gap-2 p-1 laptop:w-14">
-                <ToggleSonglist isOpen={showSonglist} onClick={() => setShowSonglist(!showSonglist)} />
-                <SettingsButton isOpen={activeModal === Modal.Settings} onClick={() => dispatchModal({ type: Modal.Settings })} />
+            <div className="fixed right-6 top-6 w-12 p-1 laptop:w-14">
+                <div className="flex flex-col gap-2">
+                    <ToggleSonglist onClick={() => setShowSonglist(!showSonglist)} />
+                    <SettingsButton onClick={() => dispatchModal({ type: Modal.Settings })} />
+                </div>
+
                 {/* <FullscreenButton isOpen={activeModal === Modal.Fullscreen} onClick={() => dispatchModal({ type: Modal.Fullscreen })} /> */}
             </div>
         </div>

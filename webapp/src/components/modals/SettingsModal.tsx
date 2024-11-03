@@ -1,6 +1,7 @@
 import React from "react";
 import { Scrollable } from "../";
 import { AccountTab, AppearanceTab, GeneralTab } from "./SettingsModalTabs";
+import ModalTemplate from "./ModalTemplate";
 
 enum SettingsTabs {
     General,
@@ -12,7 +13,7 @@ export default function SettingsModal() {
     const [currentTab, setCurrentTab] = React.useState<SettingsTabs>(SettingsTabs.General);
 
     return (
-        <div className="m-auto flex h-[80vh] w-3/4 overflow-hidden rounded-lg border-[1px] border-solid border-[#111] bg-[#080808]">
+        <ModalTemplate>
             <div className="mt-4 hidden grow basis-1 desktop:block">
                 <div className="relative ml-8">
                     <SelectableTab selected={currentTab === SettingsTabs.General} onClick={() => setCurrentTab(SettingsTabs.General)}>
@@ -34,7 +35,7 @@ export default function SettingsModal() {
                 <AppearanceTab />
                 <AccountTab />
             </Scrollable>
-        </div>
+        </ModalTemplate>
     );
 }
 

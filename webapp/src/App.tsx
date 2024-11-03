@@ -1,9 +1,9 @@
-import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, BlurredModal, SettingsButton, FullScreenOverlay, FullscreenButton } from "./components";
+import { MusicPlayerControl, FrequencyGraph, MusicList, Lyrics, BlurredModal, SettingsButton, FullScreenOverlay, UploadSongButton } from "./components";
 import React from "react";
 import { MusicContext } from "./contexts/MusicContext";
 import { ToggleSonglist } from "./icons";
 import getViewportResolution, { ViewportResolution } from "./utils/viewportResolution";
-import { CurrentSongModal, SettingsModal } from "./components/modals";
+import { CurrentSongModal, RequestSongModal, SettingsModal } from "./components/modals";
 
 const modalReducer = (state: Modal, action: { type: Modal; toggle?: boolean }): Modal => (action.toggle === false ? action.type : action.type === state ? Modal.None : action.type);
 
@@ -11,6 +11,7 @@ enum Modal {
     None,
     Fullscreen,
     Settings,
+    RequestSong,
 }
 
 export default function App() {
@@ -69,6 +70,11 @@ export default function App() {
                 setShowSonglist(!showSonglist);
                 break;
             }
+
+            case "u": {
+                dispatchModal({ type: Modal.RequestSong });
+                break;
+            }
         }
     }
 
@@ -109,15 +115,18 @@ export default function App() {
                 <ModalContainer isActive={activeModal === Modal.Settings} hideFullscreen={hideFullscreen}>
                     <SettingsModal />
                 </ModalContainer>
+
+                <ModalContainer isActive={activeModal === Modal.RequestSong} hideFullscreen={hideFullscreen}>
+                    <RequestSongModal />
+                </ModalContainer>
             </BlurredModal>
 
             <div className="fixed right-6 top-6 w-12 p-1 laptop:w-14">
                 <div className="flex flex-col gap-2">
                     <ToggleSonglist onClick={() => setShowSonglist(!showSonglist)} />
                     <SettingsButton onClick={() => dispatchModal({ type: Modal.Settings })} />
+                    <UploadSongButton onClick={() => dispatchModal({ type: Modal.RequestSong })} />
                 </div>
-
-                {/* <FullscreenButton isOpen={activeModal === Modal.Fullscreen} onClick={() => dispatchModal({ type: Modal.Fullscreen })} /> */}
             </div>
         </div>
     );

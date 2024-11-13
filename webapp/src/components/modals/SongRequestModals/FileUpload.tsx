@@ -15,7 +15,13 @@ export default function FileUpload({ reportValidity }: UploaderProps) {
                 reportValidity={reportValidity}
             />
 
-            <input type="file" name="file" required className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white" />
+            <input
+                type="file"
+                name="file"
+                required
+                className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white"
+                onChange={e => reportValidity(1, !!e.target.value)}
+            />
         </div>
     );
 }

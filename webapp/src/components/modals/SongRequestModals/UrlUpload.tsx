@@ -26,7 +26,10 @@ export default function UrlUpload({ reportValidity }: UploaderProps) {
                 reportValidity={reportValidity}
             />
 
-            <select name="source" className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white">
+            <select name="source" className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white" onChange={e => reportValidity(2, !!e.target.value)}>
+                <option className="text-black" value="">
+                    Please select
+                </option>
                 <option className="text-black" value="YouTube">
                     YouTube
                 </option>

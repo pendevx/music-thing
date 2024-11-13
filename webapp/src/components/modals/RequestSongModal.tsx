@@ -8,18 +8,10 @@ type InputType = React.InputHTMLAttributes<HTMLInputElement> & CommonInputType &
 type SelectType = React.SelectHTMLAttributes<HTMLSelectElement> & CommonInputType & { options: string[]; type: "select" };
 type FileType = React.InputHTMLAttributes<HTMLInputElement> & CommonInputType & { type: "file" };
 
-const isSelect = (field: any): field is SelectType => field.type === "select";
-const isInput = (field: any): field is InputType => field.type !== "select" && field.type !== "file";
-const isFile = (field: any): field is FileType => field.type === "file";
-
 type FormFieldType = SelectType | InputType | FileType;
 
 export default function RequestSongModal() {
-    const baseFields: FormFieldType[] = [
-        { placeholder: "Title", type: "text", required: true, name: "title" },
-        // { placeholder: "Artist", type: "text", required: true, name: "artist" },
-        // { placeholder: "Album", type: "text", required: false, name: "album" },
-    ];
+    const baseFields: FormFieldType[] = [{ placeholder: "Title", type: "text", required: true, name: "title" }];
     const [uploadMethod, setUploadMethod] = React.useState<"file" | "url">("url");
     const uploadFields = React.useMemo<FormFieldType[]>(() => {
         switch (uploadMethod) {
@@ -60,28 +52,12 @@ export default function RequestSongModal() {
         setFormValid(newValid.every(x => x));
     };
 
-    const fields = [...baseFields, ...uploadFields];
-
     return (
         <ModalTemplate>
             <h3 className="mb-4 text-xl font-semibold">Request to upload a song</h3>
 
             <KeyedForm onSubmit={submitSongRequest} onKeyDown={e => e.stopPropagation()}>
-                <div className="flex flex-col gap-2">
-                    {fields.map((field, i) => {
-                        if (isSelect(field)) {
-                            return <Select field={field} i={i} key={field.name} />;
-                        }
-
-                        if (isFile(field)) {
-                            return <File field={field} i={i} key={field.name} />;
-                        }
-
-                        if (isInput(field)) {
-                            return <Input field={{ ...field, reportValidity }} i={i} key={field.name} />;
-                        }
-                    })}
-                </div>
+                {uploadMethod === "file" ? <FileUpload reportValidity={reportValidity} /> : <UrlUpload reportValidity={reportValidity} />}
 
                 <div className="mt-4 grid w-full grid-cols-2 gap-4">
                     <button
@@ -102,53 +78,65 @@ export default function RequestSongModal() {
     );
 }
 
-type SelectProps = {
-    field: SelectType;
-    i: number;
+type UploaderProps = {
+    reportValidity: (id: number, value: boolean) => void;
 };
-function Select({ field, i }: SelectProps) {
+
+function FileUpload({ reportValidity }: UploaderProps) {
     return (
-        <select {...field} className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white">
-            {field.options.map(option => (
-                <option key={i} value={option} className="text-black">
-                    {option}
+        <div className="flex flex-col gap-2">
+            <RaisedInputPlaceholder
+                className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
+                colorClass="text-white bg-[#080808] px-2"
+                index={0}
+                placeholder="Title"
+                required
+                type="text"
+                name="title"
+                reportValidity={reportValidity}
+            />
+
+            <input type="file" name="file" required className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white" />
+        </div>
+    );
+}
+
+function UrlUpload({ reportValidity }: UploaderProps) {
+    return (
+        <div className="flex flex-col gap-2">
+            <RaisedInputPlaceholder
+                className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
+                colorClass="text-white bg-[#080808] px-2"
+                index={0}
+                placeholder="Title"
+                required
+                type="text"
+                name="title"
+                reportValidity={reportValidity}
+            />
+
+            <RaisedInputPlaceholder
+                className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
+                colorClass="text-white bg-[#080808] px-2"
+                index={1}
+                placeholder="URL"
+                required
+                type="url"
+                name="url"
+                reportValidity={reportValidity}
+            />
+
+            <select name="source" className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white">
+                <option className="text-black" value="YouTube">
+                    YouTube
                 </option>
-            ))}
-        </select>
-    );
-}
-
-type FileProps = {
-    field: FileType;
-    i: number;
-};
-function File({ field, i }: FileProps) {
-    return (
-        <input
-            type="file"
-            name={field.name}
-            required={field.required}
-            key={i}
-            onChange={e => {
-                const file = e.target.files?.[0];
-                console.log(file);
-            }}
-        />
-    );
-}
-
-type InputProps = {
-    field: InputType & { reportValidity: (id: number, value: boolean) => void };
-    i: number;
-};
-function Input({ field, i }: InputProps) {
-    return (
-        <RaisedInputPlaceholder
-            key={i}
-            className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
-            colorClass="text-white bg-[#080808] px-2"
-            index={i}
-            {...field}
-        />
+                <option className="text-black" value="YouTube Music">
+                    YouTube Music
+                </option>
+                <option className="text-black" value="Soundcloud">
+                    Soundcloud
+                </option>
+            </select>
+        </div>
     );
 }

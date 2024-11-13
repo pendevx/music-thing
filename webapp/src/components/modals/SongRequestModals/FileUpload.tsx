@@ -3,7 +3,7 @@ import { UploaderProps } from "./types";
 
 export default function FileUpload({ reportValidity }: UploaderProps) {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
             <RaisedInputPlaceholder
                 className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
                 colorClass="text-white bg-[#080808] px-2"

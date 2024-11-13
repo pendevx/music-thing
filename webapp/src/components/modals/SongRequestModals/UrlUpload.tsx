@@ -3,7 +3,7 @@ import { UploaderProps } from "./types";
 
 export default function UrlUpload({ reportValidity }: UploaderProps) {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
             <RaisedInputPlaceholder
                 className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
                 colorClass="text-white bg-[#080808] px-2"
@@ -15,31 +15,33 @@ export default function UrlUpload({ reportValidity }: UploaderProps) {
                 reportValidity={reportValidity}
             />
 
-            <RaisedInputPlaceholder
-                className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
-                colorClass="text-white bg-[#080808] px-2"
-                index={1}
-                placeholder="URL"
-                required
-                type="url"
-                name="url"
-                reportValidity={reportValidity}
-            />
+            <div className="grid grid-cols-2 gap-4">
+                <RaisedInputPlaceholder
+                    className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
+                    colorClass="text-white bg-[#080808] px-2"
+                    index={1}
+                    placeholder="URL"
+                    required
+                    type="url"
+                    name="url"
+                    reportValidity={reportValidity}
+                />
 
-            <select name="source" className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white" onChange={e => reportValidity(2, !!e.target.value)}>
-                <option className="text-black" value="">
-                    Please select
-                </option>
-                <option className="text-black" value="YouTube">
-                    YouTube
-                </option>
-                <option className="text-black" value="YouTube Music">
-                    YouTube Music
-                </option>
-                <option className="text-black" value="Soundcloud">
-                    Soundcloud
-                </option>
-            </select>
+                <select name="source" className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white" onChange={e => reportValidity(2, !!e.target.value)}>
+                    <option className="text-black" value="">
+                        Please select
+                    </option>
+                    <option className="text-black" value="YouTube">
+                        YouTube
+                    </option>
+                    <option className="text-black" value="YouTube Music">
+                        YouTube Music
+                    </option>
+                    <option className="text-black" value="Soundcloud">
+                        Soundcloud
+                    </option>
+                </select>
+            </div>
         </div>
     );
 }

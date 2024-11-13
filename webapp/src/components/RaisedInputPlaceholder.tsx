@@ -1,16 +1,15 @@
 import React from "react";
 import { AccountSettingsContext } from "./KeyedForm";
 
-type RaisedInputPlaceholderProps = {
-    className?: string;
-    placeholder?: string;
+type ValiditableFormProps = {
     colorClass?: string;
-    reportValidity?: (id: number, value: boolean) => void;
+    reportValidity: (id: number, value: boolean) => void;
     index: number;
-    name: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+};
 
-export default function RaisedInputPlaceholder({ className, placeholder, colorClass, reportValidity, index, name, ...props }: RaisedInputPlaceholderProps) {
+type RaisedInputPlaceholderProps = ValiditableFormProps & React.InputHTMLAttributes<HTMLInputElement>;
+
+export default function RaisedInputPlaceholder({ className, placeholder, colorClass, reportValidity, index, ...props }: RaisedInputPlaceholderProps) {
     const [value, setValue] = React.useState<string>("");
     const [key, setKey] = React.useState<number>(0);
     const [valid, setValid] = React.useState<boolean>(true);
@@ -51,7 +50,7 @@ export default function RaisedInputPlaceholder({ className, placeholder, colorCl
                 className={`absolute my-auto origin-left cursor-text align-bottom transition-transform duration-300 group-focus-within:-translate-y-4 group-focus-within:scale-90 ${colorClass} ${isRaised && "-translate-y-4 scale-90"}`}>
                 {placeholder}
             </span>
-            <input className={`h-full w-full cursor-text ${colorClass}`} {...props} onChange={onChangeHandler} name={name} key={ctx} />
+            <input className={`h-full w-full cursor-text ${colorClass}`} {...props} onChange={onChangeHandler} key={ctx} />
         </label>
     );
 }

@@ -4,7 +4,7 @@ import { LoginForm, RegistrationForm } from ".";
 import { AccountsContext } from "../../../../contexts/AccountsContext";
 
 export default function Unauthenticated() {
-    const [action, setAction] = React.useState<"login" | "register">("register");
+    const [action, setAction] = React.useState<"login" | "register">("login");
     const [formValid, setFormValid] = React.useState<boolean>(false);
     const { login, register } = React.useContext(AccountsContext);
 

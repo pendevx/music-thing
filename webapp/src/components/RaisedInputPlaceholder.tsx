@@ -9,6 +9,7 @@ type ValiditableFormProps = {
 
 type RaisedInputPlaceholderProps = ValiditableFormProps & React.InputHTMLAttributes<HTMLInputElement>;
 
+// TODO: refactor reportValidity into onChange prop
 export default function RaisedInputPlaceholder({ className, placeholder, colorClass, reportValidity, index, ...props }: RaisedInputPlaceholderProps) {
     const [value, setValue] = React.useState<string>("");
     const [key, setKey] = React.useState<number>(0);

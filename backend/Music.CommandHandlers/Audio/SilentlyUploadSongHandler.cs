@@ -3,11 +3,11 @@ using Music.Repository.EF.Models.Generated;
 
 namespace Music.CommandHandlers.Audio;
 
-public class UploadSongHandler : IBaseCommandHandler<object>
+public class SilentlyUploadSongHandler : IBaseCommandHandler<object>
 {
     private readonly ISongRepository _songRepository;
 
-    public UploadSongHandler(ISongRepository songRepository)
+    public SilentlyUploadSongHandler(ISongRepository songRepository)
     {
         _songRepository = songRepository;
     }

@@ -6,18 +6,18 @@ namespace Music.Backend.Endpoints.Audio;
 
 [HttpGet("/audio/upload/silent")]
 [AllowAnonymous]
-public class UploadSongEndpoint : Ep.NoReq.NoRes
+public class SilentlyUploadSongEndpoint : Ep.NoReq.NoRes
 {
-    private readonly UploadSongHandler _uploadSongHandler;
+    private readonly SilentlyUploadSongHandler _silentlyUploadSong;
 
-    public UploadSongEndpoint(UploadSongHandler uploadSongHandler)
+    public SilentlyUploadSongEndpoint(SilentlyUploadSongHandler silentlyUploadSong)
     {
-        _uploadSongHandler = uploadSongHandler;
+        _silentlyUploadSong = silentlyUploadSong;
     }
 
     public override Task HandleAsync(CancellationToken ct)
     {
-        _uploadSongHandler.Execute(null!);
+        _silentlyUploadSong.Execute(null!);
         return Task.CompletedTask;
     }
 }

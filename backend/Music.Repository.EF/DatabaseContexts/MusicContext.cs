@@ -18,6 +18,8 @@ public partial class MusicContext : DbContext
 
     public virtual DbSet<Song> Songs { get; set; }
 
+    public virtual DbSet<SongRequest> SongRequests { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -41,6 +43,15 @@ public partial class MusicContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Songs__3214EC0777BE66D4");
 
             entity.Property(e => e.CreatedOn).HasDefaultValueSql("(sysutcdatetime())");
+        });
+
+        modelBuilder.Entity<SongRequest>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SongRequ__3214EC07BE7B5A75");
+
+            entity.HasOne(d => d.UploaderAccount).WithMany(p => p.SongRequests)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__SongReque__Uploa__5FB337D6");
         });
 
         OnModelCreatingPartial(modelBuilder);

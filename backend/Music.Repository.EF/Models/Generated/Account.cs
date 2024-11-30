@@ -22,4 +22,7 @@ public partial class Account : Entity
 
     [InverseProperty("Account")]
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+
+    [InverseProperty("UploaderAccount")]
+    public virtual ICollection<SongRequest> SongRequests { get; set; } = new List<SongRequest>();
 }

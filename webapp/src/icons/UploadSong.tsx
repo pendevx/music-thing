@@ -1,11 +1,12 @@
 type UploadSongProps = {
     isOpen?: boolean;
+    className?: string;
 };
 
-export default function UploadSong({ isOpen }: UploadSongProps) {
+export default function UploadSong({ isOpen, className }: UploadSongProps) {
     return (
         <svg
-            className={`h-full w-full p-1 transition-colors duration-1000 ${isOpen ? "fill-[#ffc421]" : "fill-white"}`}
+            className={`h-full p-1 transition-colors duration-1000 ${isOpen ? "fill-[#ffc421]" : "fill-white"} ${className}`}
             fill="#000000"
             height="800px"
             width="800px"

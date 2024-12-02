@@ -29,16 +29,16 @@ export default function UrlUpload({ reportValidity }: UploaderProps) {
                     reportValidity={reportValidity}
                 />
 
-                <select name="source" className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white" onChange={e => reportValidity(2, !!e.target.value)}>
-                    <option className="text-black" value="">
-                        Please select
-                    </option>
-                    {options.map((option, i) => (
-                        <option key={option} className="text-black" value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
+                <label className="rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white pr-2">
+                    <select name="source" className="block w-full p-2 text-white" onChange={e => reportValidity(2, e.target.value !== "Please select" && !!e.target.value)}>
+                        <option className="text-black">Please select</option>
+                        {options.map((option, i) => (
+                            <option key={option} className="text-black" value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
         </div>
     );

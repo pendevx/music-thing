@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function useFetch<T>(fallbackValue: T) {
-    const [data, setData] = React.useState<T>(fallbackValue);
+export default function useFetch<T>(fallbackValue?: T) {
+    const [data, setData] = React.useState<T | undefined>(fallbackValue);
     const [error, setError] = React.useState<Error | null>(null);
     const [isFetching, setIsFetching] = React.useState<boolean>(false);
     const aborter = React.useRef<AbortController | null>(null);

@@ -3,8 +3,15 @@ import ModalTemplate from "./ModalTemplate";
 import { KeyedForm } from "..";
 import useValidateForm from "../../hooks/useValidateForm";
 import { FileUpload, UrlUpload } from "./SongRequestModals";
+import useFetch from "../../hooks/useFetch";
 
 type UploadTypes = "file" | "url";
+
+type UrlUploadDto = {
+    title: string;
+    url: string;
+    source: string;
+};
 
 const lengths: {
     [key in UploadTypes]: number;
@@ -16,21 +23,53 @@ const lengths: {
 export default function RequestSongModal() {
     const [uploadMethod, setUploadMethod] = React.useState<UploadTypes>("url");
     const { formValid, reportValidity } = useValidateForm(lengths[uploadMethod], uploadMethod);
+    const { refreshData: uploadByUrl } = useFetch();
+    const { refreshData: uploadByFile } = useFetch();
+
+    const map = {
+        file: {
+            uploadMethodForm: <FileUpload reportValidity={reportValidity} />,
+            uploadMethodButton: "URL",
+            uploadFn: (file: File) => {
+                uploadByFile("/api/music/uploadByFile", {});
+            },
+        },
+        url: {
+            uploadMethodForm: <UrlUpload reportValidity={reportValidity} />,
+            uploadMethodButton: "File",
+            uploadFn: async (json: UrlUploadDto) => {
+                uploadByUrl("/api/music/uploadByUrl", {
+                    method: "POST",
+                    body: JSON.stringify(json),
+                });
+            },
+        },
+    };
 
     const switchUploadMethod = () => setUploadMethod(uploadMethod === "file" ? "url" : "file");
 
     const submitSongRequest = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const form = e.currentTarget as HTMLFormElement;
-        const formData = new FormData(form);
+        if (uploadMethod === "url") {
+            const form = e.currentTarget as HTMLFormElement;
+            const formData = new FormData(form);
 
-        const title = formData.get("title") as string;
-        const artist = formData.get("artist") as string;
-        const album = formData.get("album") as string;
-        const url = formData.get("url") as string;
+            const requestObject = Array.from(formData.entries()).reduce(
+                (memo, [key, value]) => ({
+                    ...memo,
+                    [key]: value,
+                }),
+                {}
+            ) as UrlUploadDto;
 
-        console.log({ title, artist, album, url });
+            map[uploadMethod].uploadFn(requestObject);
+        } else {
+            const file = (e.currentTarget as HTMLFormElement).file.files?.[0];
+            if (file) {
+                map[uploadMethod].uploadFn(file);
+            }
+        }
     };
 
     return (
@@ -38,20 +77,20 @@ export default function RequestSongModal() {
             <h3 className="mb-4 text-xl font-semibold">Request to upload a song</h3>
 
             <KeyedForm onSubmit={submitSongRequest} onKeyDown={e => e.stopPropagation()}>
-                {uploadMethod === "file" ? <FileUpload reportValidity={reportValidity} /> : <UrlUpload reportValidity={reportValidity} />}
+                {map[uploadMethod].uploadMethodForm}
 
                 <div className="mt-4 grid w-full grid-cols-2 gap-4">
                     <button
                         type="reset"
                         onClick={switchUploadMethod}
                         className="w-full cursor-pointer rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white bg-[#333] p-2 text-center text-white">
-                        Switch to {uploadMethod === "file" ? "URL" : "File"} Upload
+                        Switch to {map[uploadMethod].uploadMethodButton} Upload
                     </button>
                     <button
                         type="submit"
                         className="w-full cursor-pointer rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white bg-[#004317] p-2 text-center text-white disabled:cursor-not-allowed disabled:bg-[#355c42] [&:hover:not(:disabled)]:bg-[#117b38]"
                         disabled={!formValid}>
-                        Submit Request
+                        Submit Song Request
                     </button>
                 </div>
             </KeyedForm>

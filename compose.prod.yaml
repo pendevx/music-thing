@@ -10,6 +10,7 @@ services:
         container_name: music-frontend
         ports:
             - "8000:443"
+            - "8888:8888"
         volumes:
             - ./certbot/www/:/var/www/certbot/:ro
             - ./certbot/conf/:/etc/letsencrypt/:ro

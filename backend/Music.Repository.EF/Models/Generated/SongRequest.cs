@@ -8,6 +8,10 @@ namespace Music.Repository.EF.Models.Generated;
 
 public partial class SongRequest : Entity
 {
+    public SongRequest() : base()
+    {
+    }
+
     [StringLength(100)]
     [Unicode(false)]
     public string RequestStatus { get; set; } = null!;

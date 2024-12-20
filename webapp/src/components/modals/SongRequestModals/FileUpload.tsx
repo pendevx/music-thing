@@ -16,7 +16,7 @@ export default function FileUpload({ reportValidity }: UploaderProps) {
                 required
                 type="text"
                 name="title"
-                reportValidity={reportValidity}
+                onchange={reportValidity}
             />
 
             <label className="relative bottom-0 top-0 block h-40 rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2 text-white">

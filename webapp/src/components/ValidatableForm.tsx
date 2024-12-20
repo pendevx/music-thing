@@ -29,8 +29,8 @@ export default function ValidatableForm({ fields, reportValidity, className, chi
                 <RaisedInputPlaceholder
                     key={i}
                     className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
-                    colorClass="text-white bg-[#080808] px-2"
-                    reportValidity={checkValidity}
+                    colorClass="text-white bg-[#080808]"
+                    onchange={checkValidity}
                     index={i}
                     {...field}
                 />

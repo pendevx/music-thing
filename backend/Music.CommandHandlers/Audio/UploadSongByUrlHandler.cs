@@ -29,10 +29,21 @@ public class UploadSongByUrlHandler : IBaseCommandHandler<UploadSongByUrlCommand
             Name = command.Title,
             UploaderAccountId = account.Id,
             RequestStatusEnum = RequestStatus.Pending,
-            Source = command.Source,
-            SourceUrl = command.Url,
+            Source = command.Source.ToString(),
+            SourceUrl = GetSourceUrl(command.Url, command.Source),
         });
 
         _dbContext.SaveChanges();
+    }
+
+    private static string GetSourceUrl(string urlSuffix, UploadSongSource source)
+    {
+        return source switch
+        {
+            UploadSongSource.YouTube => "https://www.youtube.com/watch?v=",
+            UploadSongSource.YouTubeMusic => "https://music.youtube.com/watch?v=",
+            UploadSongSource.Soundcloud => "https://soundcloud.com/",
+            _ => throw new Exception("Terrible, terrible value.")
+        } + urlSuffix;
     }
 }

@@ -21,7 +21,8 @@ public class UploadSongByUrlEndpoint : Endpoint<UrlSongUpload>
 
     public override Task HandleAsync(UrlSongUpload req, CancellationToken ct)
     {
-        _uploadSongByUrl.Execute(new UploadSongByUrlCommand(req.Title, req.Url, req.Source));
+        if (Enum.TryParse(req.Source, out UploadSongSource source))
+            _uploadSongByUrl.Execute(new UploadSongByUrlCommand(req.Title, req.Url, source));
 
         return Task.CompletedTask;
     }

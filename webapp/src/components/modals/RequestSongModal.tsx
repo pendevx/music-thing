@@ -4,14 +4,10 @@ import { KeyedForm } from "..";
 import useValidateForm from "../../hooks/useValidateForm";
 import { FileUpload, UrlUpload } from "./SongRequestModals";
 import useFetch from "../../hooks/useFetch";
+import { UrlUploadDto } from "./SongRequestModals/UrlUpload";
+import { UploadSongDtoBase } from "./SongRequestModals/types";
 
 type UploadTypes = "file" | "url";
-
-type UrlUploadDto = {
-    title: string;
-    url: string;
-    source: string;
-};
 
 const lengths: {
     [key in UploadTypes]: number;
@@ -22,23 +18,24 @@ const lengths: {
 
 export default function RequestSongModal() {
     const [uploadMethod, setUploadMethod] = React.useState<UploadTypes>("url");
+    const [uploadParameters, setUploadParameters] = React.useState<UploadSongDtoBase>({} as UploadSongDtoBase);
     const { formValid, reportValidity } = useValidateForm(lengths[uploadMethod], uploadMethod);
-    const { refreshData: uploadByUrl } = useFetch();
-    const { refreshData: uploadByFile } = useFetch();
+    const { refreshData: uploadByUrl } = useFetch(null, "/api/music/uploadByUrl");
+    const { refreshData: uploadByFile } = useFetch(null, "/api/music/uploadByFile");
 
     const map = {
         file: {
-            uploadMethodForm: <FileUpload reportValidity={reportValidity} />,
+            uploadMethodForm: <FileUpload reportValidity={reportValidity} onParameterChange={setUploadParameters} />,
             uploadMethodButton: "URL",
             uploadFn: (file: File) => {
-                uploadByFile("/api/music/uploadByFile", {});
+                uploadByFile(null, {});
             },
         },
         url: {
-            uploadMethodForm: <UrlUpload reportValidity={reportValidity} />,
+            uploadMethodForm: <UrlUpload reportValidity={reportValidity} onParameterChange={setUploadParameters} />,
             uploadMethodButton: "File",
             uploadFn: async (json: UrlUploadDto) => {
-                uploadByUrl("/api/music/uploadByUrl", {
+                uploadByUrl(null, {
                     method: "POST",
                     body: JSON.stringify(json),
                 });
@@ -52,18 +49,7 @@ export default function RequestSongModal() {
         e.preventDefault();
 
         if (uploadMethod === "url") {
-            const form = e.currentTarget as HTMLFormElement;
-            const formData = new FormData(form);
-
-            const requestObject = Array.from(formData.entries()).reduce(
-                (memo, [key, value]) => ({
-                    ...memo,
-                    [key]: value,
-                }),
-                {}
-            ) as UrlUploadDto;
-
-            map[uploadMethod].uploadFn(requestObject);
+            map[uploadMethod].uploadFn(uploadParameters as UrlUploadDto);
         } else {
             const file = (e.currentTarget as HTMLFormElement).file.files?.[0];
             if (file) {

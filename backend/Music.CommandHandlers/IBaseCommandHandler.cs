@@ -9,9 +9,4 @@
     {
         public void Execute(TCommand command);
     }
-
-    public interface IBaseCommandHandler
-    {
-        public void Execute();
-    }
 }

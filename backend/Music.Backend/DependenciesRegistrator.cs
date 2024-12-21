@@ -19,7 +19,7 @@ public static class DependencyInjectionConfiguration
     {
         return extractFrom
             .Where(p => p.GetInterfaces()
-                .Any(i => i.IsGenericType && baseCommandTypes.Contains(i.GetGenericTypeDefinition())));
+                .Any(i => baseCommandTypes.Contains(i.IsGenericType ? i.GetGenericTypeDefinition() : i)));
     }
 
     private static void RegisterCommandHandlers(WebApplicationBuilder builder, Type[] extractFrom, Type[] baseCommandTypes)

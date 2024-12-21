@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function useFetch<T>(fallbackValue: T) {
-    const [data, setData] = React.useState<T>(fallbackValue);
+export default function useFetch<T>(fallbackValue?: T, defaultUrl?: string) {
+    const [data, setData] = React.useState<T | undefined>(fallbackValue);
     const [error, setError] = React.useState<Error | null>(null);
     const [isFetching, setIsFetching] = React.useState<boolean>(false);
     const aborter = React.useRef<AbortController | null>(null);
@@ -12,17 +12,21 @@ export default function useFetch<T>(fallbackValue: T) {
          * @param {object} options Fetch API options object
          * @returns A promise resolving to the returned data as a JSON object
          */
-        async function (url: string, options: RequestInit = {}) {
+        async function (url: string | null = null, options: RequestInit = {}) {
             setError(null);
 
             aborter.current && aborter.current.abort();
             aborter.current = new AbortController();
 
-            if (!url) {
+            console.log(url, defaultUrl);
+
+            if (!url && !defaultUrl) {
                 setData(fallbackValue);
                 setError(new Error("A URL must be provided."));
                 return;
             }
+
+            const finalUrl = url || (defaultUrl as string);
 
             setIsFetching(true);
 
@@ -33,7 +37,7 @@ export default function useFetch<T>(fallbackValue: T) {
                     signal: aborter.current?.signal,
                 };
 
-                const response = await fetch(url, fetchOptions);
+                const response = await fetch(finalUrl, fetchOptions);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data: ${response.statusText}`);

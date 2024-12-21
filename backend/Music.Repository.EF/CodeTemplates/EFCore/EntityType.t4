@@ -78,6 +78,10 @@ namespace <#= NamespaceHint #>;
 #>
 public partial class <#= EntityType.Name #> : Entity
 {
+    public <#= EntityType.Name #>() : base()
+    {
+    }
+
 <#
     var firstProperty = true;
     foreach (var property in EntityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))

@@ -2,9 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <InvariantGlobalization>false</InvariantGlobalization>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Music.Repository.EF\Music.Repository.EF.csproj" />
+    </ItemGroup>
 
 </Project>

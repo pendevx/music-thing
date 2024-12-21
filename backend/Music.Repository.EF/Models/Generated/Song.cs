@@ -9,6 +9,10 @@ namespace Music.Repository.EF.Models.Generated;
 [Index("Guid", Name = "UQ__Songs__A2B5777D2053A439", IsUnique = true)]
 public partial class Song : Entity
 {
+    public Song() : base()
+    {
+    }
+
     public Guid Guid { get; set; }
 
     [StringLength(256)]

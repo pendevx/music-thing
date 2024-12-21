@@ -5,8 +5,8 @@
         public TResult Execute(TQuery command);
     }
 
-    public interface IBaseQueryHandler<in TQuery>
+    public interface IBaseQueryHandler<out TResult>
     {
-        public void Execute(TQuery command);
+        public TResult Execute();
     }
 }

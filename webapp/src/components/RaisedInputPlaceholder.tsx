@@ -2,18 +2,16 @@ import React from "react";
 import { AccountSettingsContext } from "./KeyedForm";
 
 type RaisedInputPlaceholderProps = {
-    className?: string;
-    placeholder?: string;
     colorClass?: string;
-    reportValidity?: (id: number, value: boolean) => void;
+    onchange: (id: number, isValid: boolean, key: string, e: React.ChangeEvent<HTMLInputElement>) => void;
     index: number;
-    name: string;
+    before?: React.ReactNode;
+    forceRaise?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-export default function RaisedInputPlaceholder({ className, placeholder, colorClass, reportValidity, index, name, ...props }: RaisedInputPlaceholderProps) {
+export default function RaisedInputPlaceholder({ className, placeholder, colorClass, onchange, index, before, forceRaise, ...props }: RaisedInputPlaceholderProps) {
     const [value, setValue] = React.useState<string>("");
     const [key, setKey] = React.useState<number>(0);
-    const [valid, setValid] = React.useState<boolean>(true);
     const ctx = React.useContext(AccountSettingsContext);
 
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,36 +20,28 @@ export default function RaisedInputPlaceholder({ className, placeholder, colorCl
         setValue(curValue);
         const validity = e.target.checkValidity();
 
-        if (reportValidity) {
-            reportValidity(index, validity);
-        }
-
-        if (curValue) {
-            setValid(validity);
-        } else {
-            setValid(true);
+        if (onchange) {
+            onchange(index, validity, e.target.name, e);
         }
     };
 
     if (key !== ctx) {
         setKey(ctx);
         setValue("");
-        setValid(true);
     }
 
-    const isRaised = value.length > 0;
-    let style: React.CSSProperties = {};
-    if (!valid) {
-        style.borderColor = "red";
-    }
+    const isRaised = forceRaise || value.length > 0;
 
     return (
-        <label className={`group relative cursor-text ${className}`} style={style}>
+        <label className={`group relative cursor-text ${className}`}>
             <span
-                className={`absolute my-auto origin-left cursor-text align-bottom transition-transform duration-300 group-focus-within:-translate-y-4 group-focus-within:scale-90 ${colorClass} ${isRaised && "-translate-y-4 scale-90"}`}>
+                className={`absolute my-auto origin-left cursor-text px-2 align-bottom transition-transform duration-300 group-focus-within:-translate-y-4 group-focus-within:scale-90 ${colorClass} ${isRaised && "-translate-y-4 scale-90"}`}>
                 {placeholder}
             </span>
-            <input className={`h-full w-full cursor-text ${colorClass}`} {...props} onChange={onChangeHandler} name={name} key={ctx} />
+            <div className={`h-full w-full cursor-text ${colorClass} flex px-2`}>
+                {before}
+                <input className={`${colorClass} grow`} {...props} onChange={onChangeHandler} key={ctx} />
+            </div>
         </label>
     );
 }

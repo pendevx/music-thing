@@ -1,4 +1,6 @@
+using Music.Backend.Global.Impl;
 using Music.CommandHandlers;
+using Music.Global.Contracts;
 using Music.QueryHandlers;
 using Music.Repositories;
 using Music.Repositories.Contracts;
@@ -42,13 +44,16 @@ public static class DependencyInjectionConfiguration
         builder.Services.AddScoped<IAccountRepository, AccountRepository>();
         builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 
+        builder.Services.AddScoped<IAuthContext, WebAuthContext>();
+        builder.Services.AddHttpContextAccessor();
+
         var assemblies = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => a.FullName?.StartsWith("Music.") ?? false);
 
         var types = assemblies.SelectMany(s => s.GetTypes()).ToArray();
 
         RegisterCommandHandlers(builder, types, [ typeof(IBaseCommandHandler<>), typeof(IBaseCommandHandler<,>) ]);
-        RegisterQueryHandlers(builder, types, [ typeof(IBaseQueryHandler<>), typeof(IBaseQueryHandler<,>) ]);
+        RegisterQueryHandlers(builder, types, [ typeof(IBaseQueryHandler<,>) ]);
 
         return builder;
     }

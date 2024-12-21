@@ -10,6 +10,10 @@ namespace Music.Repository.EF.Models.Generated;
 [Index("Guid", Name = "UQ__Accounts__A2B5777DA7795D85", IsUnique = true)]
 public partial class Account : Entity
 {
+    public Account() : base()
+    {
+    }
+
     public Guid Guid { get; set; }
 
     [StringLength(256)]
@@ -22,4 +26,7 @@ public partial class Account : Entity
 
     [InverseProperty("Account")]
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+
+    [InverseProperty("UploaderAccount")]
+    public virtual ICollection<SongRequest> SongRequests { get; set; } = new List<SongRequest>();
 }

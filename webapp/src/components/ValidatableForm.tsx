@@ -1,18 +1,18 @@
 import React from "react";
 import RaisedInputPlaceholder from "./RaisedInputPlaceholder";
 
-type FormField = {
-    placeholder: string;
-    type: string;
-    required: boolean;
-    name: string;
+type ValidatableFormProps = {
+    fields: React.InputHTMLAttributes<HTMLInputElement>[];
+    reportValidity: ReportValidity;
+    className?: string;
+    children?: React.ReactNode;
 };
 
 export type ReportValidity = {
     (subformValid: boolean): void;
 };
 
-export default function ValidatableForm({ fields, reportValidity }: { fields: FormField[]; reportValidity: ReportValidity }) {
+export default function ValidatableForm({ fields, reportValidity, className, children }: ValidatableFormProps) {
     const [valid, setValid] = React.useState<boolean[]>(Array(fields.length).fill(false));
 
     const checkValidity = (id: number, v: boolean) => {
@@ -24,20 +24,19 @@ export default function ValidatableForm({ fields, reportValidity }: { fields: Fo
     };
 
     return (
-        <div className="grid w-full grid-cols-2 gap-4">
+        <div className={className}>
             {fields.map((field, i) => (
                 <RaisedInputPlaceholder
                     key={i}
-                    placeholder={field.placeholder}
-                    className="w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
-                    colorClass="text-white bg-[#080808] px-2"
-                    reportValidity={checkValidity}
+                    className="block w-full rounded-br-lg rounded-tl-lg border-[1px] border-solid border-white p-2"
+                    colorClass="text-white bg-[#080808]"
+                    onchange={checkValidity}
                     index={i}
-                    type={field.type}
-                    required={field.required}
-                    name={field.name}
+                    {...field}
                 />
             ))}
+
+            {children}
         </div>
     );
 }

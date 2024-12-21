@@ -31,4 +31,10 @@
 
 * {
     user-select: none;
+    font-family: inherit;
+}
+
+input,
+select {
+    font-size: inherit;
 }

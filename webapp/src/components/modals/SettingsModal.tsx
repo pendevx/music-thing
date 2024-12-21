@@ -14,27 +14,29 @@ export default function SettingsModal() {
 
     return (
         <ModalTemplate>
-            <div className="mt-4 hidden grow basis-1 desktop:block">
-                <div className="relative ml-8">
-                    <SelectableTab selected={currentTab === SettingsTabs.General} onClick={() => setCurrentTab(SettingsTabs.General)}>
-                        <span className="relative z-10">General</span>
-                    </SelectableTab>
-                    <SelectableTab selected={currentTab === SettingsTabs.Appearance} onClick={() => setCurrentTab(SettingsTabs.Appearance)}>
-                        <span className="relative z-10">Appearance</span>
-                    </SelectableTab>
-                    <SelectableTab selected={currentTab === SettingsTabs.Account} onClick={() => setCurrentTab(SettingsTabs.Account)}>
-                        <span className="relative z-10">Account</span>
-                    </SelectableTab>
+            <div className="flex">
+                <div className="hidden grow basis-1 desktop:block">
+                    <div className="relative">
+                        <SelectableTab selected={currentTab === SettingsTabs.General} onClick={() => setCurrentTab(SettingsTabs.General)}>
+                            <span className="relative z-10">General</span>
+                        </SelectableTab>
+                        <SelectableTab selected={currentTab === SettingsTabs.Appearance} onClick={() => setCurrentTab(SettingsTabs.Appearance)}>
+                            <span className="relative z-10">Appearance</span>
+                        </SelectableTab>
+                        <SelectableTab selected={currentTab === SettingsTabs.Account} onClick={() => setCurrentTab(SettingsTabs.Account)}>
+                            <span className="relative z-10">Account</span>
+                        </SelectableTab>
 
-                    <i className="absolute bottom-0 left-0 top-0 w-[1px] bg-[#333]" />
+                        <i className="absolute bottom-0 left-0 top-0 w-[1px] bg-[#333]" />
+                    </div>
                 </div>
-            </div>
 
-            <Scrollable showScroller={false} className="grow-[3] basis-1 px-12 py-4">
-                <GeneralTab />
-                <AppearanceTab />
-                <AccountTab />
-            </Scrollable>
+                <Scrollable showScroller={false} className="grow-[3] basis-1 pl-12">
+                    <GeneralTab />
+                    <AppearanceTab />
+                    <AccountTab />
+                </Scrollable>
+            </div>
         </ModalTemplate>
     );
 }

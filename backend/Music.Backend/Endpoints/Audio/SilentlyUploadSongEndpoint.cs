@@ -17,7 +17,7 @@ public class SilentlyUploadSongEndpoint : Ep.NoReq.NoRes
 
     public override Task HandleAsync(CancellationToken ct)
     {
-        _silentlyUploadSong.Execute(null!);
+        _silentlyUploadSong.Execute();
         return Task.CompletedTask;
     }
 }

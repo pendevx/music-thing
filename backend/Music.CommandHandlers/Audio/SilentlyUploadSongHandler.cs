@@ -3,7 +3,7 @@ using Music.Repository.EF.Models.Generated;
 
 namespace Music.CommandHandlers.Audio;
 
-public class SilentlyUploadSongHandler : IBaseCommandHandler<object>
+public class SilentlyUploadSongHandler : IBaseCommandHandler
 {
     private readonly ISongRepository _songRepository;
 
@@ -12,7 +12,7 @@ public class SilentlyUploadSongHandler : IBaseCommandHandler<object>
         _songRepository = songRepository;
     }
 
-    public void Execute(object o)
+    public void Execute()
     {
         // Silently scan ON THE SERVER
         var files = Directory.GetFiles(@"C:\Downloads");

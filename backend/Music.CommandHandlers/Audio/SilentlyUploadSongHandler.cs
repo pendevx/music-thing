@@ -1,15 +1,16 @@
 using Music.Repositories.Contracts;
+using Music.Repository.EF.DatabaseContexts;
 using Music.Repository.EF.Models.Generated;
 
 namespace Music.CommandHandlers.Audio;
 
 public class SilentlyUploadSongHandler : IBaseCommandHandler
 {
-    private readonly ISongRepository _songRepository;
+    private readonly MusicContext _dbContext;
 
-    public SilentlyUploadSongHandler(ISongRepository songRepository)
+    public SilentlyUploadSongHandler(MusicContext dbContext)
     {
-        _songRepository = songRepository;
+        _dbContext = dbContext;
     }
 
     public void Execute()
@@ -19,13 +20,15 @@ public class SilentlyUploadSongHandler : IBaseCommandHandler
         foreach (var file in files)
         {
             var content = File.ReadAllBytes(file);
-            _songRepository.Create(new Song
+            _dbContext.Songs.Add(new Song
             {
                 Contents = content,
                 Name = file[(file.LastIndexOf('\\') + 1)..],
                 MimeType = "audio/mpeg"
             });
         }
+
+        _dbContext.SaveChanges();
 
         // Remove once added
         foreach (var file in files)

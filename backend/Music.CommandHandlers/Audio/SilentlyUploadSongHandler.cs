@@ -6,11 +6,11 @@ namespace Music.CommandHandlers.Audio;
 
 public class SilentlyUploadSongHandler : IBaseCommandHandler
 {
-    private readonly MusicContext _musicContext;
+    private readonly MusicContext _dbContext;
 
-    public SilentlyUploadSongHandler(MusicContext musicContext)
+    public SilentlyUploadSongHandler(MusicContext dbContext)
     {
-        _musicContext = musicContext;
+        _dbContext = dbContext;
     }
 
     public void Execute()
@@ -20,7 +20,7 @@ public class SilentlyUploadSongHandler : IBaseCommandHandler
         foreach (var file in files)
         {
             var content = File.ReadAllBytes(file);
-            _musicContext.Songs.Add(new Song
+            _dbContext.Songs.Add(new Song
             {
                 Contents = content,
                 Name = file[(file.LastIndexOf('\\') + 1)..],
@@ -28,7 +28,7 @@ public class SilentlyUploadSongHandler : IBaseCommandHandler
             });
         }
 
-        _musicContext.SaveChanges();
+        _dbContext.SaveChanges();
 
         // Remove once added
         foreach (var file in files)

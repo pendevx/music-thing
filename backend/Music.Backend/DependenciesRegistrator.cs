@@ -52,8 +52,8 @@ public static class DependencyInjectionConfiguration
 
         var types = assemblies.SelectMany(s => s.GetTypes()).ToArray();
 
-        RegisterCommandHandlers(builder, types, [ typeof(IBaseCommandHandler<>), typeof(IBaseCommandHandler<,>) ]);
-        RegisterQueryHandlers(builder, types, [ typeof(IBaseQueryHandler<,>) ]);
+        RegisterCommandHandlers(builder, types, [ typeof(IBaseCommandHandler), typeof(IBaseCommandHandler<>), typeof(IBaseCommandHandler<,>) ]);
+        RegisterQueryHandlers(builder, types, [ typeof(IBaseQueryHandler<>), typeof(IBaseQueryHandler<,>) ]);
 
         return builder;
     }

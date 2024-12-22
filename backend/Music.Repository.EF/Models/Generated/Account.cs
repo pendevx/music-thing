@@ -25,6 +25,9 @@ public partial class Account : Entity
     public string DisplayName { get; set; } = null!;
 
     [InverseProperty("Account")]
+    public virtual ICollection<AccountRole> AccountRoles { get; set; } = new List<AccountRole>();
+
+    [InverseProperty("Account")]
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
 
     [InverseProperty("UploaderAccount")]
